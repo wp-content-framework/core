@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Configs Slug
+ * WP_Framework_Core Configs Slug
  *
  * @version 0.0.1
  * @author technote-space

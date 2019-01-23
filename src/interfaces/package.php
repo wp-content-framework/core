@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Traits Uninstall
+ * WP_Framework_Core Interfaces Package
  *
  * @version 0.0.1
  * @author technote-space
@@ -10,27 +10,21 @@
  * @link https://technote.space
  */
 
-namespace WP_Framework\Traits;
+namespace WP_Framework_Core\Interfaces;
 
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
 }
 
 /**
- * Trait Uninstall
- * @package WP_Framework\Traits
+ * Interface Package
+ * @package WP_Framework_Core\Interfaces
  */
-trait Uninstall {
+interface Package {
 
 	/**
-	 * uninstall
+	 * @return string
 	 */
-	public abstract function uninstall();
+	public function get_package();
 
-	/**
-	 * @return int
-	 */
-	public function get_uninstall_priority() {
-		return 10;
-	}
 }

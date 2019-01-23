@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Interfaces Readonly
+ * WP_Framework_Core Interfaces Readonly
  *
  * @version 0.0.1
  * @author technote-space
@@ -10,7 +10,7 @@
  * @link https://technote.space
  */
 
-namespace WP_Framework\Interfaces;
+namespace WP_Framework_Core\Interfaces;
 
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
@@ -18,7 +18,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 
 /**
  * Interface Readonly
- * @package WP_Framework\Interfaces
+ * @package WP_Framework_Core\Interfaces
  */
 interface Readonly {
 

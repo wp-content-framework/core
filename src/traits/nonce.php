@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Traits Nonce
+ * WP_Framework_Core Traits Nonce
  *
  * @version 0.0.1
  * @author technote-space
@@ -10,7 +10,7 @@
  * @link https://technote.space
  */
 
-namespace WP_Framework\Traits;
+namespace WP_Framework_Core\Traits;
 
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
@@ -18,7 +18,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 
 /**
  * Trait Nonce
- * @package WP_Framework\Traits
+ * @package WP_Framework_Core\Traits
  * @property \WP_Framework $app
  */
 trait Nonce {

@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Traits Helper Data Helper
+ * WP_Framework_Core Traits Helper Data Helper
  *
  * @version 0.0.1
  * @author technote-space
@@ -10,7 +10,7 @@
  * @link https://technote.space
  */
 
-namespace WP_Framework\Traits\Helper;
+namespace WP_Framework_Core\Traits\Helper;
 
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
@@ -18,7 +18,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 
 /**
  * Trait Data_Helper
- * @package WP_Framework\Traits\Helper
+ * @package WP_Framework_Core\Traits\Helper
  * @property \WP_Framework $app
  */
 trait Data_Helper {

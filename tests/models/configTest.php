@@ -21,7 +21,7 @@ namespace WP_Framework\Tests\Models;
 class ConfigTest extends \WP_Framework\Tests\TestCase {
 
 	/**
-	 * @var \WP_Framework\Classes\Models\Config $_config
+	 * @var \WP_Framework_Common\Classes\Models\Config $_config
 	 */
 	private static $_config;
 
@@ -32,11 +32,11 @@ class ConfigTest extends \WP_Framework\Tests\TestCase {
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
-		static::$_config = \WP_Framework\Classes\Models\Config::get_instance( static::$app );
+		static::$_config = \WP_Framework_Common\Classes\Models\Config::get_instance( static::$app );
 
 		static::$_config_file = 'technote_test_config';
-		touch( static::$app->define->lib_configs_dir . DS . static::$_config_file . '.php' );
-		file_put_contents( static::$app->define->lib_configs_dir . DS . static::$_config_file . '.php', <<< EOS
+		touch( static::$app->define->framework_configs_dir . DS . static::$_config_file . '.php' );
+		file_put_contents( static::$app->define->framework_configs_dir . DS . static::$_config_file . '.php', <<< EOS
 <?php
 
 return array(
@@ -72,12 +72,12 @@ EOS
 		if ( file_exists( static::$app->define->plugin_configs_dir . DS . static::$_config_file . '.php' ) ) {
 			unlink( static::$app->define->plugin_configs_dir . DS . static::$_config_file . '.php' );
 		}
-		if ( file_exists( static::$app->define->lib_configs_dir . DS . static::$_config_file . '.php' ) ) {
-			unlink( static::$app->define->lib_configs_dir . DS . static::$_config_file . '.php' );
+		if ( file_exists( static::$app->define->framework_configs_dir . DS . static::$_config_file . '.php' ) ) {
+			unlink( static::$app->define->framework_configs_dir . DS . static::$_config_file . '.php' );
 		}
 	}
 
-	public function test_get_only_lib_config() {
+	public function test_get_only_framework_config() {
 		$this->assertEquals( 'test1', static::$_config->get( static::$_config_file, 'test1' ) );
 	}
 

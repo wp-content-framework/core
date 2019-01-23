@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Configs Db
+ * WP_Framework_Core Configs Db
  *
  * @version 0.0.1
  * @author technote-space
@@ -77,7 +77,7 @@ return [
 				'unsigned' => true,
 				'null'     => true,
 			],
-			'lib_version'       => [
+			'framework_version' => [
 				'type' => 'VARCHAR(32)',
 				'null' => false,
 			],

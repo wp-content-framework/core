@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Views Include Style Modal
+ * WP_Framework_Core Views Include Style Modal
  *
  * @version 0.0.1
  * @author technote-space
@@ -13,7 +13,7 @@
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	return;
 }
-/** @var \WP_Framework\Traits\Presenter $instance */
+/** @var \WP_Framework_Presenter\Interfaces\Presenter $instance */
 ?>
 
 <style>

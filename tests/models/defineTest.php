@@ -21,26 +21,13 @@ namespace WP_Framework\Tests\Models;
 class DefineTest extends \WP_Framework\Tests\TestCase {
 
 	/**
-	 * @var \WP_Framework\Classes\Models\Define $_define
+	 * @var \WP_Framework_Common\Classes\Models\Define $_define
 	 */
 	private static $_define;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 		static::$_define = static::$app->define;
-	}
-
-	public function test_lib_property() {
-		$this->assertEquals( WP_CONTENT_FRAMEWORK, static::$_define->lib_name );
-		$this->assertEquals( ucfirst( WP_CONTENT_FRAMEWORK ), static::$_define->lib_namespace );
-		$this->assertNotEmpty( static::$_define->lib_dir );
-		$this->assertNotEmpty( static::$_define->lib_assets_dir );
-		$this->assertNotEmpty( static::$_define->lib_src_dir );
-		$this->assertNotEmpty( static::$_define->lib_configs_dir );
-		$this->assertNotEmpty( static::$_define->lib_views_dir );
-		$this->assertNotEmpty( static::$_define->lib_languages_dir );
-		$this->assertNotEmpty( static::$_define->lib_vendor_dir );
-		$this->assertNotEmpty( static::$_define->lib_assets_url );
 	}
 
 	public function test_plugin_property() {

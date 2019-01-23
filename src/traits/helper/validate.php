@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Traits Helper Validate
+ * WP_Framework_Core Traits Helper Validate
  *
  * @version 0.0.1
  * @author technote-space
@@ -10,7 +10,7 @@
  * @link https://technote.space
  */
 
-namespace WP_Framework\Traits\Helper;
+namespace WP_Framework_Core\Traits\Helper;
 
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
@@ -18,7 +18,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 
 /**
  * Trait Validate
- * @package WP_Framework\Traits\Helper
+ * @package WP_Framework_Core\Traits\Helper
  * @property \WP_Framework $app
  */
 trait Validate {
@@ -38,7 +38,7 @@ trait Validate {
 			return true;
 		}
 
-		return new \WP_Error( 400, $this->app->translate( 'Value is required.' ) );
+		return new \WP_Error( 400, $this->translate( 'Value is required.' ) );
 	}
 
 	/**
@@ -51,7 +51,7 @@ trait Validate {
 			return true;
 		}
 
-		return new \WP_Error( 400, $this->app->translate( 'Invalid format.' ) );
+		return new \WP_Error( 400, $this->translate( 'Invalid format.' ) );
 	}
 
 	/**
@@ -64,7 +64,7 @@ trait Validate {
 			return true;
 		}
 
-		return new \WP_Error( 400, $this->app->translate( 'Invalid format.' ) );
+		return new \WP_Error( 400, $this->translate( 'Invalid format.' ) );
 	}
 
 	/**
@@ -77,7 +77,7 @@ trait Validate {
 			return true;
 		}
 
-		return new \WP_Error( 400, $this->app->translate( 'Invalid format.' ) );
+		return new \WP_Error( 400, $this->translate( 'Invalid format.' ) );
 	}
 
 	/**
@@ -90,7 +90,7 @@ trait Validate {
 			return true;
 		}
 
-		return new \WP_Error( 400, $this->app->translate( 'Invalid format.' ) );
+		return new \WP_Error( 400, $this->translate( 'Invalid format.' ) );
 	}
 
 	/**
@@ -103,7 +103,7 @@ trait Validate {
 			return true;
 		}
 
-		return new \WP_Error( 400, $this->app->translate( 'Invalid format.' ) );
+		return new \WP_Error( 400, $this->translate( 'Invalid format.' ) );
 	}
 
 	/**
@@ -114,10 +114,10 @@ trait Validate {
 	 */
 	protected function validate_positive( $var, $include_zero = false ) {
 		if ( ! is_numeric( $var ) ) {
-			return new \WP_Error( 400, $this->app->translate( 'Invalid format.' ) );
+			return new \WP_Error( 400, $this->translate( 'Invalid format.' ) );
 		}
 		if ( ( ! $include_zero && $var <= 0 ) || ( $include_zero && $var < 0 ) ) {
-			return new \WP_Error( 400, $this->app->translate( 'Outside the range of allowed values.' ) );
+			return new \WP_Error( 400, $this->translate( 'Outside the range of allowed values.' ) );
 		}
 
 		return true;
@@ -131,10 +131,10 @@ trait Validate {
 	 */
 	protected function validate_negative( $var, $include_zero = false ) {
 		if ( ! is_numeric( $var ) ) {
-			return new \WP_Error( 400, $this->app->translate( 'Invalid format.' ) );
+			return new \WP_Error( 400, $this->translate( 'Invalid format.' ) );
 		}
 		if ( ( ! $include_zero && $var >= 0 ) || ( $include_zero && $var > 0 ) ) {
-			return new \WP_Error( 400, $this->app->translate( 'Outside the range of allowed values.' ) );
+			return new \WP_Error( 400, $this->translate( 'Outside the range of allowed values.' ) );
 		}
 
 		return true;
@@ -149,16 +149,16 @@ trait Validate {
 	 */
 	protected function validate_int( $var, $min = null, $max = null ) {
 		if ( ! is_int( $var ) && ! is_string( $var ) && empty( $var ) ) {
-			return new \WP_Error( 400, $this->app->translate( 'Value is required.' ) );
+			return new \WP_Error( 400, $this->translate( 'Value is required.' ) );
 		}
 		if ( ! is_int( $var ) && ( ! is_string( $var ) || ! preg_match( '#\A-?\d+\z#', $var ) ) ) {
-			return new \WP_Error( 400, $this->app->translate( 'Invalid format.' ) );
+			return new \WP_Error( 400, $this->translate( 'Invalid format.' ) );
 		}
 		if ( isset( $min ) && $var < $min ) {
-			return new \WP_Error( 400, $this->app->translate( 'Outside the range of allowed values.' ) );
+			return new \WP_Error( 400, $this->translate( 'Outside the range of allowed values.' ) );
 		}
 		if ( isset( $max ) && $var > $max ) {
-			return new \WP_Error( 400, $this->app->translate( 'Outside the range of allowed values.' ) );
+			return new \WP_Error( 400, $this->translate( 'Outside the range of allowed values.' ) );
 		}
 
 		return true;
@@ -173,16 +173,16 @@ trait Validate {
 	 */
 	protected function validate_float( $var, $min = null, $max = null ) {
 		if ( ! is_int( $var ) && ! is_float( $var ) && ! is_string( $var ) && empty( $var ) ) {
-			return new \WP_Error( 400, $this->app->translate( 'Value is required.' ) );
+			return new \WP_Error( 400, $this->translate( 'Value is required.' ) );
 		}
 		if ( ! is_int( $var ) && ! is_float( $var ) && ( ! is_string( $var ) || ! preg_match( '#\A-?\d*\.?\d+\z#', $var ) ) ) {
-			return new \WP_Error( 400, $this->app->translate( 'Invalid format.' ) );
+			return new \WP_Error( 400, $this->translate( 'Invalid format.' ) );
 		}
 		if ( isset( $min ) && $var < $min ) {
-			return new \WP_Error( 400, $this->app->translate( 'Outside the range of allowed values.' ) );
+			return new \WP_Error( 400, $this->translate( 'Outside the range of allowed values.' ) );
 		}
 		if ( isset( $max ) && $var > $max ) {
-			return new \WP_Error( 400, $this->app->translate( 'Outside the range of allowed values.' ) );
+			return new \WP_Error( 400, $this->translate( 'Outside the range of allowed values.' ) );
 		}
 
 		return true;
@@ -270,7 +270,7 @@ trait Validate {
 			if ( $this->app->db->select_count( $table, $field, [
 					$id => $var,
 				] ) <= 0 ) {
-				return new \WP_Error( 400, $this->app->translate( 'Data does not exist.' ) );
+				return new \WP_Error( 400, $this->translate( 'Data does not exist.' ) );
 			}
 		}
 
@@ -284,7 +284,7 @@ trait Validate {
 	 */
 	protected function validate_authority( $capability ) {
 		if ( ! $this->app->user_can( $capability ) ) {
-			return new \WP_Error( 400, $this->app->translate( 'You have no authority.' ) );
+			return new \WP_Error( 400, $this->translate( 'You have no authority.' ) );
 		}
 
 		return true;
@@ -302,7 +302,7 @@ trait Validate {
 		if ( true === $validate ) {
 			$compare = $request->get_param( $target );
 			if ( $compare !== $var ) {
-				return new \WP_Error( 400, $this->app->translate( 'The confirmation value does not match.' ) );
+				return new \WP_Error( 400, $this->translate( 'The confirmation value does not match.' ) );
 			}
 		}
 
@@ -320,7 +320,7 @@ trait Validate {
 			return true;
 		}
 
-		return new \WP_Error( 400, $this->app->translate( 'Invalid format.' ) );
+		return new \WP_Error( 400, $this->translate( 'Invalid format.' ) );
 	}
 
 	/**
@@ -331,11 +331,11 @@ trait Validate {
 	 */
 	protected function validate_string_length( $var, $len ) {
 		if ( ! is_string( $var ) ) {
-			return new \WP_Error( 400, $this->app->translate( 'Invalid format.' ) );
+			return new \WP_Error( 400, $this->translate( 'Invalid format.' ) );
 		}
 
 		if ( strlen( $var ) > $len ) {
-			return new \WP_Error( 400, $this->app->translate( 'Input value is too long.' ) );
+			return new \WP_Error( 400, $this->translate( 'Input value is too long.' ) );
 		}
 
 		return true;

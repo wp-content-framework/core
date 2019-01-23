@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Interfaces Singleton
+ * WP_Framework_Core Interfaces Singleton
  *
  * @version 0.0.1
  * @author technote-space
@@ -10,7 +10,7 @@
  * @link https://technote.space
  */
 
-namespace WP_Framework\Interfaces;
+namespace WP_Framework_Core\Interfaces;
 
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
@@ -18,14 +18,14 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 
 /**
  * Interface Singleton
- * @package WP_Framework\Interfaces
+ * @package WP_Framework_Core\Interfaces
  */
-interface Singleton extends Readonly {
+interface Singleton extends Readonly, Translate, Package {
 
 	/**
 	 * @param \WP_Framework $app
 	 *
-	 * @return \WP_Framework\Traits\Singleton
+	 * @return \WP_Framework_Core\Traits\Singleton
 	 */
 	public static function get_instance( \WP_Framework $app );
 

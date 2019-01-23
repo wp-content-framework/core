@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Views Include Form Input Reset
+ * WP_Framework_Core Views Include Form Input Reset
  *
  * @version 0.0.1
  * @author technote-space
@@ -13,7 +13,7 @@
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	return;
 }
-/** @var \WP_Framework\Traits\Presenter $instance */
+/** @var \WP_Framework_Presenter\Interfaces\Presenter $instance */
 /** @var array $args */
 ?>
 <?php $instance->form( 'input', array_merge( $args, [

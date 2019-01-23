@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Traits Hook
+ * WP_Framework_Core Traits Hook
  *
  * @version 0.0.1
  * @author technote-space
@@ -10,7 +10,7 @@
  * @link https://technote.space
  */
 
-namespace WP_Framework\Traits;
+namespace WP_Framework_Core\Traits;
 
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
@@ -18,7 +18,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 
 /**
  * Trait Hook
- * @package WP_Framework\Traits
+ * @package WP_Framework_Core\Traits
  * @property \WP_Framework $app
  */
 trait Hook {
@@ -105,6 +105,8 @@ trait Hook {
 		$args[0] = $this->get_filter_prefix() . $key;
 		if ( count( $args ) < 2 ) {
 			$args[] = null;
+		} elseif ( ! is_string( $args[1] ) && is_callable( $args[1] ) ) {
+			$args[1] = ( $args[1] )( $this->app );
 		}
 		$default = call_user_func_array( 'apply_filters', $args );
 
@@ -124,7 +126,7 @@ trait Hook {
 				$value = call_user_func( [ $this, 'get_' . $type . '_value' ], $value, $default, $setting );
 			}
 			if ( ! empty( $setting['translate'] ) && $value === $default ) {
-				$value = $this->app->translate( $value );
+				$value = $this->translate( $value );
 			}
 
 			if ( $is_valid_cache ) {

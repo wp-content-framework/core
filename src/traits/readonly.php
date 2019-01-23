@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Traits Readonly
+ * WP_Framework_Core Traits Readonly
  *
  * @version 0.0.1
  * @author technote-space
@@ -10,7 +10,7 @@
  * @link https://technote.space
  */
 
-namespace WP_Framework\Traits;
+namespace WP_Framework_Core\Traits;
 
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
@@ -18,7 +18,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 
 /**
  * Trait Readonly
- * @package WP_Framework\Traits
+ * @package WP_Framework_Core\Traits
  * @property \WP_Framework $app
  * @internal|@property-read array|string[] $readonly_properties
  */
@@ -46,7 +46,7 @@ trait Readonly {
 			$this->$name              = $value;
 			$this->_is_allowed_access = false;
 		} else {
-			throw new \OutOfRangeException( sprintf( $this->app->translate( 'you cannot access %s->%s.' ), static::class, $name ) );
+			throw new \OutOfRangeException( sprintf( $this->translate( 'you cannot access %s->%s.' ), static::class, $name ) );
 		}
 	}
 
@@ -60,7 +60,7 @@ trait Readonly {
 		if ( $this->_is_allowed_access && $this->is_readonly_property( $name ) ) {
 			$this->$name = $value;
 		} else {
-			throw new \OutOfRangeException( sprintf( $this->app->translate( 'you cannot access %s->%s.' ), static::class, $name ) );
+			throw new \OutOfRangeException( sprintf( $this->translate( 'you cannot access %s->%s.' ), static::class, $name ) );
 		}
 	}
 
@@ -78,7 +78,7 @@ trait Readonly {
 
 			return null;
 		}
-		throw new \OutOfRangeException( sprintf( $this->app->translate( '%s is undefined.' ), $name ) );
+		throw new \OutOfRangeException( sprintf( $this->translate( '%s is undefined.' ), $name ) );
 	}
 
 	/**

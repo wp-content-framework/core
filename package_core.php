@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Interfaces Test
+ * WP_Framework_Core Package Core
  *
  * @version 0.0.1
  * @author technote-space
@@ -10,31 +10,41 @@
  * @link https://technote.space
  */
 
-namespace WP_Framework\Interfaces;
+namespace WP_Framework;
 
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
 }
 
 /**
- * Interface Test
- * @package WP_Framework\Interfaces
+ * Class Package_Core
+ * @package WP_Framework
  */
-interface Test extends Singleton, Hook {
+class Package_Core extends Package_Base {
 
 	/**
-	 * @return string
+	 * initialize
 	 */
-	public function get_test_slug();
+	protected function initialize() {
+
+	}
 
 	/**
-	 * @return bool
+	 * @return int
 	 */
-	public function has_dump_objects();
+	public function get_priority() {
+		return 100;
+	}
 
 	/**
 	 * @return array
 	 */
-	public function get_dump_objects();
-
+	public function get_configs() {
+		return [
+			'capability',
+			'db',
+			'setting',
+			'slug',
+		];
+	}
 }

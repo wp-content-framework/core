@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Views Admin Include Layout
+ * WP_Framework_Core Views Admin Include Layout
  *
  * @version 0.0.1
  * @author technote-space
@@ -13,9 +13,9 @@
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	return;
 }
-/** @var \WP_Framework\Traits\Presenter $instance */
+/** @var \WP_Framework_Presenter\Interfaces\Presenter $instance */
 /** @var string $slug */
-/** @var \WP_Framework\Classes\Controllers\Admin\Base $page */
+/** @var \WP_Framework_Admin\Classes\Controllers\Admin\Base $page */
 $instance->add_style_view( 'admin/style/button' );
 ?>
 <div class="wrap <?php $instance->id(); ?>-wrap">

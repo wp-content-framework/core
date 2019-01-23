@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Interfaces Helper Data Helper
+ * WP_Framework_Core Interfaces Helper Data Helper
  *
  * @version 0.0.1
  * @author technote-space
@@ -10,7 +10,7 @@
  * @link https://technote.space
  */
 
-namespace WP_Framework\Interfaces\Helper;
+namespace WP_Framework_Core\Interfaces\Helper;
 
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
@@ -18,7 +18,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 
 /**
  * Interface Data_Helper
- * @package WP_Framework\Interfaces\Helper
+ * @package WP_Framework_Core\Interfaces\Helper
  */
 interface Data_Helper {
 

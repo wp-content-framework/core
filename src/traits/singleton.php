@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Traits Singleton
+ * WP_Framework_Core Traits Singleton
  *
  * @version 0.0.1
  * @author technote-space
@@ -10,7 +10,7 @@
  * @link https://technote.space
  */
 
-namespace WP_Framework\Traits;
+namespace WP_Framework_Core\Traits;
 
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
@@ -18,12 +18,12 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 
 /**
  * Trait Singleton
- * @package WP_Framework\Traits
+ * @package WP_Framework_Core\Traits
  * @property \WP_Framework $app
  */
 trait Singleton {
 
-	use Readonly;
+	use Readonly, Translate, Package;
 
 	/**
 	 * @var Singleton[] $_instances
@@ -53,36 +53,36 @@ trait Singleton {
 	/**
 	 * @param \WP_Framework $app
 	 *
-	 * @return \WP_Framework\Traits\Singleton
+	 * @return \WP_Framework_Core\Traits\Singleton
 	 */
 	public static function get_instance( \WP_Framework $app ) {
 		$class = get_called_class();
 		if ( false === $class ) {
 			$class = get_class();
 		}
-		try {
-			$key = static::is_shared_class() ? '' : $app->plugin_name;
-			if ( empty( self::$_instances[ $key ] ) || ! array_key_exists( $class, self::$_instances[ $key ] ) ) {
+		$key = static::is_shared_class() ? '' : $app->plugin_name;
+		if ( empty( self::$_instances[ $key ] ) || ! array_key_exists( $class, self::$_instances[ $key ] ) ) {
+			try {
 				$reflection = new \ReflectionClass( $class );
-				if ( $reflection->isAbstract() ) {
-					self::$_instances[ $key ][ $class ] = null;
-				} else {
-					$instance = new static( $app, $reflection );
-					if ( $app->is_uninstall() && $instance instanceof \WP_Framework\Interfaces\Uninstall ) {
-						$app->uninstall->add_uninstall( [ $instance, 'uninstall' ], $instance->get_uninstall_priority() );
-					}
-					self::$_instances[ $key ][ $class ] = $instance;
-					$instance->set_allowed_access( true );
-					$instance->initialize();
-					$instance->set_allowed_access( false );
-				}
+			} catch ( \Exception $e ) {
+				$app->wp_die( 'unexpected error has occurred.', __FILE__, __LINE__ );
+				exit;
 			}
-
-			return self::$_instances[ $key ][ $class ];
-		} catch ( \Exception $e ) {
+			if ( $reflection->isAbstract() ) {
+				self::$_instances[ $key ][ $class ] = null;
+			} else {
+				$instance = new static( $app, $reflection );
+				if ( $app->is_uninstall() && $instance instanceof \WP_Framework_Common\Interfaces\Uninstall ) {
+					$app->uninstall->add_uninstall( [ $instance, 'uninstall' ], $instance->get_uninstall_priority() );
+				}
+				self::$_instances[ $key ][ $class ] = $instance;
+				$instance->set_allowed_access( true );
+				$instance->initialize();
+				$instance->set_allowed_access( false );
+			}
 		}
 
-		return null;
+		return self::$_instances[ $key ][ $class ];
 	}
 
 	/**
@@ -110,7 +110,7 @@ trait Singleton {
 		$this->app         = $app;
 		$this->_reflection = $reflection;
 		$this->_class_name = $reflection->getName();
-		if ( $this instanceof \WP_Framework\Interfaces\Hook ) {
+		if ( $this instanceof \WP_Framework_Core\Interfaces\Hook ) {
 			if ( $app->has_initialized() ) {
 				$this->initialized();
 			} else {

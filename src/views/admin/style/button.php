@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Views Admin Style Button
+ * WP_Framework_Core Views Admin Style Button
  *
  * @version 0.0.1
  * @author technote-space
@@ -13,7 +13,7 @@
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	return;
 }
-/** @var \WP_Framework\Traits\Presenter $instance */
+/** @var \WP_Framework_Presenter\Interfaces\Presenter $instance */
 ?>
 <style>
     #<?php $instance->id();?>-main-contents input[type="button"],

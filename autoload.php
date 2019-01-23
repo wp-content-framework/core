@@ -35,6 +35,8 @@ if ( defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 
 define( 'WP_CONTENT_FRAMEWORK', 'WP_Framework' );
 
+define( 'WP_FRAMEWORK_VENDOR_NAME', 'wp-content-framework' );
+
 define( 'WP_FRAMEWORK_BOOTSTRAP', __FILE__ );
 
 define( 'WP_FRAMEWORK_REQUIRED_PHP_VERSION', '5.6' );

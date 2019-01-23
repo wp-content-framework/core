@@ -259,8 +259,8 @@ msgstr "プラグイン"
 msgid "Theme"
 msgstr "テーマ"
 
-msgid "Library"
-msgstr "ライブラリ"
+msgid "Framework"
+msgstr "フレームワーク"
 
 msgid "PHP"
 msgstr "PHP"

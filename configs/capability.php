@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Configs Capability
+ * WP_Framework_Core Configs Capability
  *
  * @version 0.0.1
  * @author technote-space

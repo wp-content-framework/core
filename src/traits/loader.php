@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Traits Loader
+ * WP_Framework_Core Traits Loader
  *
  * @version 0.0.1
  * @author technote-space
@@ -10,7 +10,7 @@
  * @link https://technote.space
  */
 
-namespace WP_Framework\Traits;
+namespace WP_Framework_Core\Traits;
 
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
@@ -18,12 +18,12 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 
 /**
  * Trait Loader
- * @package WP_Framework\Traits\Controller
+ * @package WP_Framework_Core\Traits\Controller
  * @property \WP_Framework $app
  */
 trait Loader {
 
-	use Singleton, Hook, Presenter;
+	use Singleton, Hook;
 
 	/**
 	 * @var array $_list
@@ -58,9 +58,14 @@ trait Loader {
 		if ( preg_match( "#\A{$this->app->define->plugin_namespace}#", $namespace ) ) {
 			$namespace = preg_replace( "#\A{$this->app->define->plugin_namespace}#", '', $namespace );
 			$dir       = $this->app->define->plugin_src_dir;
-		} elseif ( preg_match( "#\A{$this->app->define->lib_namespace}#", $namespace ) ) {
-			$namespace = preg_replace( "#\A{$this->app->define->lib_namespace}#", '', $namespace );
-			$dir       = $this->app->define->lib_src_dir;
+		} else {
+			foreach ( $this->app->get_packages() as $package ) {
+				list( $dir, $relative ) = $package->namespace_to_dir( $namespace );
+				if ( isset( $dir ) ) {
+					$namespace = $relative;
+					break;
+				}
+			}
 		}
 
 		if ( isset( $dir ) ) {
@@ -83,7 +88,7 @@ trait Loader {
 		if ( ! isset( $this->_list ) ) {
 			$this->_list = [];
 			$sort        = [];
-			/** @var \WP_Framework\Traits\Singleton $class */
+			/** @var \WP_Framework_Core\Traits\Singleton $class */
 			foreach ( $this->get_namespaces() as $namespace ) {
 				foreach ( $this->get_classes( $this->namespace_to_dir( $namespace ), $this->get_instanceof() ) as $class ) {
 					$slug = $class->get_class_name();
@@ -101,8 +106,8 @@ trait Loader {
 			}
 			if ( ! empty( $sort ) ) {
 				uasort( $this->_list, function ( $a, $b ) use ( $sort ) {
-					/** @var \WP_Framework\Traits\Singleton $a */
-					/** @var \WP_Framework\Traits\Singleton $b */
+					/** @var \WP_Framework_Core\Traits\Singleton $a */
+					/** @var \WP_Framework_Core\Traits\Singleton $b */
 					$pa = isset( $sort[ $a->get_class_name() ] ) ? $sort[ $a->get_class_name() ] : 10;
 					$pb = isset( $sort[ $b->get_class_name() ] ) ? $sort[ $b->get_class_name() ] : 10;
 
@@ -197,12 +202,12 @@ trait Loader {
 	 * @return bool|Singleton
 	 */
 	protected function get_class_instance( array $class_setting, $instanceof ) {
-		if ( false !== $class_setting && class_exists( $class_setting[0] ) && is_subclass_of( $class_setting[0], '\WP_Framework\Interfaces\Singleton' ) ) {
+		if ( false !== $class_setting && class_exists( $class_setting[0] ) && is_subclass_of( $class_setting[0], '\WP_Framework_Core\Interfaces\Singleton' ) ) {
 			try {
 				/** @var Singleton[] $class_setting */
 				$instance = $class_setting[0]::get_instance( $this->app );
 				if ( $instance instanceof $instanceof ) {
-					if ( $instance instanceof \WP_Framework\Interfaces\Controller\Admin ) {
+					if ( $instance instanceof \WP_Framework_Admin\Interfaces\Controller\Admin ) {
 						$instance->set_relative_namespace( $class_setting[1] );
 					}
 

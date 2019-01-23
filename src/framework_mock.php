@@ -117,8 +117,8 @@ class WP_Framework {
 				$plugin_languages_rel_path = ltrim( str_replace( WP_PLUGIN_DIR, '', $this->plugin_dir . DS . $domain_path ), DS );
 			}
 
-			$lib_languages_rel_path = ltrim( str_replace( WP_PLUGIN_DIR, '', dirname( WP_FRAMEWORK_BOOTSTRAP ) . DS . 'languages' ), DS );
-			load_plugin_textdomain( WP_CONTENT_FRAMEWORK, false, $lib_languages_rel_path );
+			$framework_languages_rel_path = ltrim( str_replace( WP_PLUGIN_DIR, '', dirname( WP_FRAMEWORK_BOOTSTRAP ) . DS . 'languages' ), DS );
+			load_plugin_textdomain( WP_CONTENT_FRAMEWORK, false, $framework_languages_rel_path );
 			if ( ! empty( $this->textdomain ) ) {
 				load_plugin_textdomain( $this->textdomain, false, $plugin_languages_rel_path );
 			}

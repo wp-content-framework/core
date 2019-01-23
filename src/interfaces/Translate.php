@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Interfaces Controller
+ * WP_Framework_Core Interfaces Translate
  *
  * @version 0.0.1
  * @author technote-space
@@ -10,21 +10,23 @@
  * @link https://technote.space
  */
 
-namespace WP_Framework\Interfaces;
+namespace WP_Framework_Core\Interfaces;
 
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
 }
 
 /**
- * Interface Controller
- * @package WP_Framework\Interfaces
+ * Interface Translate
+ * @package WP_Framework_Core\Interfaces
  */
-interface Controller extends Singleton, Presenter {
+interface Translate {
 
 	/**
-	 * @return null|string|false
+	 * @param string $value
+	 *
+	 * @return string
 	 */
-	public function get_capability();
+	public function translate( $value );
 
 }
