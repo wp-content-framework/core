@@ -2,10 +2,12 @@
 /**
  * WP_Framework_Core Classes Main
  *
- * @version 0.0.2
+ * @version 0.0.4
  * @author technote-space
  * @since 0.0.1
- * @since 0.0.2 Added: send_mail method
+ * @since 0.0.2 Added: send_mail の追加 (#4)
+ * @since 0.0.4 Fixed: 複数プラグインでの利用への対応 (#8)
+ * @since 0.0.4 Changed: 利用できないプロパティへのアクセスの動作変更 (#9)
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -46,7 +48,10 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
  */
 class Main {
 
-	/** @var Main[] $_instances */
+	/**
+	 * @since 0.0.4 #8
+	 * @var Main[] $_instances
+	 */
 	private static $_instances = [];
 
 	/**
@@ -80,6 +85,8 @@ class Main {
 	private $_property_instances = [];
 
 	/**
+	 * @since 0.0.4 #8
+	 *
 	 * @param \WP_Framework $app
 	 *
 	 * @return Main
@@ -134,6 +141,8 @@ class Main {
 	}
 
 	/**
+	 * @since 0.0.4 #9
+	 *
 	 * @param string $name
 	 *
 	 * @return \WP_Framework_Core\Interfaces\Singleton
@@ -343,7 +352,7 @@ class Main {
 	}
 
 	/**
-	 * @since 0.0.2
+	 * @since 0.0.2 #4
 	 *
 	 * @param string $to
 	 * @param string $subject
