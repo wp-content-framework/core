@@ -137,7 +137,6 @@ class Main {
 	 * @param string $name
 	 *
 	 * @return \WP_Framework_Core\Interfaces\Singleton
-	 * @throws \OutOfRangeException
 	 */
 	public function get( $name ) {
 		if ( isset( $this->_properties[ $name ] ) ) {
@@ -153,7 +152,9 @@ class Main {
 
 			return $this->_property_instances[ $class ];
 		}
-		throw new \OutOfRangeException( $name . ' is undefined.' );
+		\WP_Framework::wp_die( $name . ' is undefined.', __FILE__, __LINE__ );
+
+		return null;
 	}
 
 	/**
