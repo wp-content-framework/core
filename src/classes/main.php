@@ -180,7 +180,7 @@ class Main {
 		$class = ltrim( $class, '\\' );
 		$dirs  = null;
 
-		if ( isset( $this->_property_instances['define'] ) && preg_match( "#\A{$this->define->plugin_namespace}#", $class ) ) {
+		if ( isset( $this->_property_instances[ $this->_properties['define'] ] ) && preg_match( "#\A{$this->define->plugin_namespace}#", $class ) ) {
 			$class = preg_replace( "#\A{$this->define->plugin_namespace}#", '', $class );
 			$dirs  = $this->define->plugin_src_dir;
 		} else {
