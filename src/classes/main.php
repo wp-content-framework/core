@@ -2,9 +2,10 @@
 /**
  * WP_Framework_Core Classes Main
  *
- * @version 0.0.1
+ * @version 0.0.2
  * @author technote-space
  * @since 0.0.1
+ * @since 0.0.2 Added: send_mail method
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -338,6 +339,24 @@ class Main {
 		} else {
 			$this->admin->add_message( $message, $group, $error, $escape );
 		}
+	}
+
+	/**
+	 * @since 0.0.2
+	 *
+	 * @param string $to
+	 * @param string $subject
+	 * @param string|array $body
+	 * @param string|false $text
+	 *
+	 * @return bool
+	 */
+	public function send_mail( $to, $subject, $body, $text = false ) {
+		if ( ! $this->app->is_valid_package( 'mail' ) ) {
+			return false;
+		}
+
+		return $this->mail->send( $to, $subject, $body, $text );
 	}
 
 	/**

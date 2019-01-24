@@ -2,9 +2,10 @@
 /**
  * WP_Framework
  *
- * @version 0.0.1
+ * @version 0.0.2
  * @author technote-space
  * @since 0.0.1
+ * @since 0.0.2 Added: send_mail method
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -65,6 +66,7 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  * @method bool isset_shared_object( string $key, string | null $target = null )
  * @method void delete_shared_object( string $key, string | null $target = null )
  * @method array|string get_plugin_data( string | null $key = null )
+ * @method bool send_mail( string $to, string $subject, string | array $body, string | false $text = false )
  */
 class WP_Framework {
 
