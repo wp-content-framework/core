@@ -85,6 +85,11 @@ class Main {
 	private $_property_instances = [];
 
 	/**
+	 * @var string $_namespace_prefix
+	 */
+	private $_namespace_prefix = WP_CONTENT_FRAMEWORK . '_';
+
+	/**
 	 * @since 0.0.4 #8
 	 *
 	 * @param \WP_Framework $app
@@ -179,9 +184,11 @@ class Main {
 			$class = preg_replace( "#\A{$this->define->plugin_namespace}#", '', $class );
 			$dirs  = $this->define->plugin_src_dir;
 		} else {
-			foreach ( $this->app->get_packages() as $package ) {
-				if ( $package->load_class( $class ) ) {
-					return true;
+			if ( preg_match( "#\A{$this->_namespace_prefix}#", $class ) ) {
+				foreach ( $this->app->get_packages() as $package ) {
+					if ( $package->load_class( $class ) ) {
+						return true;
+					}
 				}
 			}
 		}
