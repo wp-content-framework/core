@@ -34,7 +34,6 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  * @property \WP_Framework_Common\Classes\Models\Upgrade $upgrade
  * @property \WP_Framework_Common\Classes\Models\Option $option
  * @property \WP_Framework_Common\Classes\Models\User $user
- * @property \WP_Framework_Common\Classes\Models\Post $post
  * @property \WP_Framework_Common\Classes\Models\Input $input
  * @property \WP_Framework_Db\Classes\Models\Db $db
  * @property \WP_Framework_Log\Classes\Models\Log $log
@@ -48,6 +47,7 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  * @property \WP_Framework_Device\Classes\Models\Device $device
  * @property \WP_Framework_Session\Classes\Models\Session $session
  * @property \WP_Framework_Social\Classes\Models\Social $social
+ * @property \WP_Framework_Post\Classes\Models\Post $post
  *
  * @method void main_init()
  * @method bool has_initialized()
@@ -361,9 +361,11 @@ class WP_Framework {
 	 */
 	public static function wp_die( $message, $file, $line, $title = '' ) {
 		! is_array( $message ) and $message = [ '[wp content framework]', $message ];
-		$message[] = 'File: ' . $file;
-		$message[] = 'Line: ' . $line;
-		$message   = '<ul><li>' . implode( '</li><li>', $message ) . '</li></ul>';
+		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+			$message[] = 'File: ' . $file;
+			$message[] = 'Line: ' . $line;
+		}
+		$message = '<ul><li>' . implode( '</li><li>', $message ) . '</li></ul>';
 		wp_die( $message, $title );
 		exit;
 	}
@@ -458,8 +460,9 @@ class WP_Framework {
 				self::wp_die( sprintf( 'invalid package [%s]', $package ), __FILE__, __LINE__ );
 			}
 
+			$version = self::$_framework_package_versions[ $package ];
 			/** @var \WP_Framework\Package_Base $class */
-			$packages[ $package ] = $class::get_instance( $app, $package, $directory );
+			$packages[ $package ] = $class::get_instance( $app, $package, $directory, $version );
 			$priority[ $package ] = $packages[ $package ]->get_priority();
 		}
 		array_multisort( $priority, $packages );

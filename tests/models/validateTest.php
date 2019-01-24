@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Models Validate Test
+ * WP_Framework_Core Models Validate Test
  *
  * @version 0.0.1
  * @author technote-space
@@ -10,17 +10,17 @@
  * @link https://technote.space
  */
 
-namespace WP_Framework\Tests\Models;
+namespace WP_Framework_Core\Tests\Models;
 
 require_once __DIR__ . DS . 'misc' . DS . 'validate.php';
 
 /**
  * Class ValidateTest
- * @package WP_Framework\Tests\Models
+ * @package WP_Framework_Core\Tests\Models
  * @group technote
  * @group models
  */
-class ValidateTest extends \WP_Framework\Tests\TestCase {
+class ValidateTest extends \WP_Framework_Core\Tests\TestCase {
 
 	/**
 	 * @var Misc\Validate $_validate

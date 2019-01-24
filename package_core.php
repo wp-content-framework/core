@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework_Core Package Core
+ * WP_Framework Package Core
  *
  * @version 0.0.1
  * @author technote-space
@@ -41,8 +41,6 @@ class Package_Core extends Package_Base {
 	 */
 	public function get_configs() {
 		return [
-			'capability',
-			'db',
 			'setting',
 			'slug',
 		];

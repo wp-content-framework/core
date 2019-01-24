@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Models Define Test
+ * WP_Framework_Core Models Define Test
  *
  * @version 0.0.1
  * @author technote-space
@@ -10,11 +10,11 @@
  * @link https://technote.space
  */
 
-namespace WP_Framework\Tests;
+namespace WP_Framework_Core\Tests;
 
 /**
  * Class TestCase
- * @package WP_Framework\Tests
+ * @package WP_Framework_Core\Tests
  */
 class TestCase extends \PHPUnit\Framework\TestCase {
 
@@ -41,9 +41,9 @@ class TestCase extends \PHPUnit\Framework\TestCase {
 		static::$app->plugin_name = static::$plugin_name;
 		static::$app->plugin_file = static::$plugin_file;
 		static::$app->slug_name   = static::$plugin_name;
-		static::$app->define      = \WP_Framework\Classes\Models\Define::get_instance( static::$app );
-		static::$app->input       = \WP_Framework\Classes\Models\Input::get_instance( static::$app );
-		static::$app->utility     = \WP_Framework\Classes\Models\Utility::get_instance( static::$app );
-		static::$app->user        = \WP_Framework\Classes\Models\User::get_instance( static::$app );
+		static::$app->define      = \WP_Framework_Common\Classes\Models\Define::get_instance( static::$app );
+		static::$app->input       = \WP_Framework_Common\Classes\Models\Input::get_instance( static::$app );
+		static::$app->utility     = \WP_Framework_Common\Classes\Models\Utility::get_instance( static::$app );
+		static::$app->user        = \WP_Framework_Common\Classes\Models\User::get_instance( static::$app );
 	}
 }

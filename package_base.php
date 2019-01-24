@@ -46,6 +46,11 @@ abstract class Package_Base {
 	private $_dir;
 
 	/**
+	 * @var string $_version
+	 */
+	private $_version;
+
+	/**
 	 * @var string $_url
 	 */
 	private $_url;
@@ -59,11 +64,12 @@ abstract class Package_Base {
 	 * @param \WP_Framework $app
 	 * @param string $package
 	 * @param string $dir
+	 * @param string $version
 	 *
 	 * @return Package_Base
 	 */
-	public static function get_instance( \WP_Framework $app, $package, $dir ) {
-		! isset( self::$_instances[ $package ] ) and self::$_instances[ $package ] = new static( $app, $package, $dir );
+	public static function get_instance( \WP_Framework $app, $package, $dir, $version ) {
+		! isset( self::$_instances[ $package ] ) and self::$_instances[ $package ] = new static( $app, $package, $dir, $version );
 
 		return self::$_instances[ $package ];
 	}
@@ -74,11 +80,13 @@ abstract class Package_Base {
 	 * @param \WP_Framework $app
 	 * @param string $package
 	 * @param string $dir
+	 * @param string $version
 	 */
-	private function __construct( $app, $package, $dir ) {
+	private function __construct( $app, $package, $dir, $version ) {
 		$this->_app     = $app;
 		$this->_package = $package;
 		$this->_dir     = $dir;
+		$this->_version = $version;
 		$this->initialize();
 	}
 
@@ -192,6 +200,13 @@ abstract class Package_Base {
 	/**
 	 * @return string
 	 */
+	public function get_version() {
+		return $this->_version;
+	}
+
+	/**
+	 * @return string
+	 */
 	public function get_url() {
 		if ( ! isset( $this->_url ) ) {
 			$url        = $this->_app->is_theme ? get_template_directory_uri() : plugins_url( '', $this->_app->plugin_file );
@@ -266,19 +281,30 @@ abstract class Package_Base {
 	}
 
 	/**
+	 * @param bool $allow_multiple
+	 *
 	 * @return array
 	 */
-	public function get_assets_settings() {
-		if ( 'core' === $this->_package ) {
+	public function get_assets_settings( $allow_multiple = false ) {
+		if ( 'common' === $this->_package ) {
 			return [ $this->get_assets_dir() => $this->get_assets_url() ];
 		}
 
-		$core     = $this->_app->get_package_instance();
-		$settings = $core->get_assets_settings();
+		$common = $this->_app->get_package_instance( 'common' );
 		if ( ! $this->is_valid_assets() ) {
-			return $settings;
+			return $common->get_assets_settings();
 		}
-		$settings[ $this->get_assets_dir() ] = $this->get_assets_url();
+
+		if ( $allow_multiple ) {
+			$settings                            = $common->get_assets_settings();
+			$settings[ $this->get_assets_dir() ] = $this->get_assets_url();
+		} else {
+			$settings                            = [];
+			$settings[ $this->get_assets_dir() ] = $this->get_assets_url();
+			foreach ( $common->get_assets_settings() as $k => $v ) {
+				$settings[ $k ] = $v;
+			}
+		}
 
 		return $settings;
 	}
@@ -287,18 +313,18 @@ abstract class Package_Base {
 	 * @return array
 	 */
 	public function get_views_dirs() {
-		if ( 'core' === $this->_package ) {
+		if ( 'common' === $this->_package ) {
 			return [ $this->get_views_dir() ];
 		}
 
-		$core = $this->_app->get_package_instance();
+		$common = $this->_app->get_package_instance( 'common' );
 		if ( ! $this->is_valid_view() ) {
-			return $core->get_views_dirs();
+			return $common->get_views_dirs();
 		}
 
 		$dirs   = [];
 		$dirs[] = $this->get_views_dir();
-		foreach ( $core->get_views_dirs() as $dir ) {
+		foreach ( $common->get_views_dirs() as $dir ) {
 			$dirs[] = $dir;
 		}
 
@@ -309,18 +335,18 @@ abstract class Package_Base {
 	 * @return array
 	 */
 	public function get_translate_settings() {
-		if ( 'core' === $this->_package ) {
+		if ( 'common' === $this->_package ) {
 			return [ $this->get_textdomain() => $this->get_language_directory() ];
 		}
 
-		$core = $this->_app->get_package_instance();
+		$common = $this->_app->get_package_instance( 'common' );
 		if ( ! $this->is_valid_translate() ) {
-			return $core->get_translate_settings();
+			return $common->get_translate_settings();
 		}
 
 		$settings                            = [];
 		$settings[ $this->get_textdomain() ] = $this->get_language_directory();
-		foreach ( $core->get_translate_settings() as $k => $v ) {
+		foreach ( $common->get_translate_settings() as $k => $v ) {
 			$settings[ $k ] = $v;
 		}
 

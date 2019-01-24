@@ -16,46 +16,13 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 
 return [
 
-	// table prefix
-	'table_prefix'           => '',
-
-	// page prefix
-	'page_prefix'            => '',
-
 	// filter prefix
-	'filter_prefix'          => '',
-
-	// user prefix
-	'user_prefix'            => '',
-
-	// post prefix
-	'post_prefix'            => '',
-
-	// post field name prefix
-	'post_field_name_prefix' => '',
-
-	// option name
-	'option_name'            => '',
-
-	// session name
-	'session_name'           => '',
-
-	// api namespace
-	'api_namespace'          => '',
-
-	// api class
-	'api_class'              => '',
-
-	// modal class
-	'modal_class'            => '',
-
-	// color picker class
-	'color_picker_class'     => '',
+	'filter_prefix' => '',
 
 	// nonce key
-	'nonce_key'              => '',
+	'nonce_key'     => '',
 
 	// nonce action
-	'nonce_action'           => '',
+	'nonce_action'  => '',
 
 ];

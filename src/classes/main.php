@@ -28,7 +28,6 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
  * @property \WP_Framework_Common\Classes\Models\Upgrade $upgrade
  * @property \WP_Framework_Common\Classes\Models\Option $option
  * @property \WP_Framework_Common\Classes\Models\User $user
- * @property \WP_Framework_Common\Classes\Models\Post $post
  * @property \WP_Framework_Common\Classes\Models\Input $input
  * @property \WP_Framework_Db\Classes\Models\Db $db
  * @property \WP_Framework_Log\Classes\Models\Log $log
@@ -42,6 +41,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
  * @property \WP_Framework_Device\Classes\Models\Device $device
  * @property \WP_Framework_Session\Classes\Models\Session $session
  * @property \WP_Framework_Social\Classes\Models\Social $social
+ * @property \WP_Framework_Post\Classes\Models\Post $post
  */
 class Main {
 

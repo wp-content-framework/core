@@ -11,6 +11,11 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
+	/**
+	 * @param string $dir
+	 *
+	 * @return string
+	 */
 	function ___find_wp_blog_header( $dir ) {
 		foreach ( scandir( $dir ) as $item ) {
 			$path = $dir . DS . $item;

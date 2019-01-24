@@ -1,6 +1,6 @@
 <?php
 /**
- * WP_Framework Tests Models Misc Validate
+ * WP_Framework_Core Tests Models Misc Validate
  *
  * @version 0.0.1
  * @author technote-space
@@ -10,7 +10,7 @@
  * @link https://technote.space
  */
 
-namespace WP_Framework\Tests\Models\Misc;
+namespace WP_Framework_Core\Tests\Models\Misc;
 
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
@@ -18,11 +18,11 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 
 /**
  * Class Validate
- * @package WP_Framework\Tests\Models\Misc
+ * @package WP_Framework_Core\Tests\Models\Misc
  */
-class Validate implements \WP_Framework\Interfaces\Singleton, \WP_Framework\Interfaces\Helper\Validate {
+class Validate implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_Core\Interfaces\Helper\Validate {
 
-	use \WP_Framework\Traits\Singleton, \WP_Framework\Traits\Helper\Validate;
+	use \WP_Framework_Core\Traits\Singleton, \WP_Framework_Core\Traits\Helper\Validate, \WP_Framework_Common\Traits\Package;
 
 	/**
 	 * @param string $name
