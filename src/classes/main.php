@@ -8,6 +8,8 @@
  * @since 0.0.2 Added: send_mail の追加 (#4)
  * @since 0.0.4 Fixed: 複数プラグインでの利用への対応 (#8)
  * @since 0.0.4 Changed: 利用できないプロパティへのアクセスの動作変更 (#9)
+ * @since 0.0.5 Improved: クラス読み込みの改善 (#13)
+ * @since 0.0.5 Fixed: プラグインの名前空間のクラスが読みこまれない (#14)
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
@@ -85,6 +87,7 @@ class Main {
 	private $_property_instances = [];
 
 	/**
+	 * @since 0.0.5 #13
 	 * @var string $_namespace_prefix
 	 */
 	private $_namespace_prefix = WP_CONTENT_FRAMEWORK . '_';
@@ -172,6 +175,8 @@ class Main {
 	}
 
 	/**
+	 * @since 0.0.5 #13, #14
+	 *
 	 * @param string $class
 	 *
 	 * @return bool
