@@ -65,6 +65,7 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  * @method bool isset_shared_object( string $key, string | null $target = null )
  * @method void delete_shared_object( string $key, string | null $target = null )
  * @method array|string get_plugin_data( string | null $key = null )
+ * @method bool send_mail( string $to, string $subject, string | array $body, string | false $text = false )
  */
 class WP_Framework {
 

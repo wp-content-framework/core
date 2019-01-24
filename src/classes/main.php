@@ -341,6 +341,22 @@ class Main {
 	}
 
 	/**
+	 * @param string $to
+	 * @param string $subject
+	 * @param string|array $body
+	 * @param string|false $text
+	 *
+	 * @return bool
+	 */
+	public function send_mail( $to, $subject, $body, $text = false ) {
+		if ( ! $this->app->is_valid_package( 'mail' ) ) {
+			return false;
+		}
+
+		return $this->mail->send( $to, $subject, $body, $text );
+	}
+
+	/**
 	 * @param string $file
 	 *
 	 * @return string
