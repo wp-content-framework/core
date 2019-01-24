@@ -46,8 +46,8 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
  */
 class Main {
 
-	/** @var Main $_instance */
-	private static $_instance = null;
+	/** @var Main[] $_instances */
+	private static $_instances = [];
 
 	/**
 	 * @var array $_shared_object
@@ -85,9 +85,9 @@ class Main {
 	 * @return Main
 	 */
 	public static function get_instance( \WP_Framework $app ) {
-		! isset( self::$_instance ) and self::$_instance = new self( $app );
+		! isset( self::$_instances[ $app->plugin_name ] ) and self::$_instances[ $app->plugin_name ] = new self( $app );
 
-		return self::$_instance;
+		return self::$_instances[ $app->plugin_name ];
 	}
 
 	/**
