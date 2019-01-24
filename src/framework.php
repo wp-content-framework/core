@@ -231,14 +231,17 @@ class WP_Framework {
 
 	/**
 	 * @param string $plugin_name
-	 * @param string $plugin_file
+	 * @param string|null $plugin_file
 	 * @param string|null $slug_name
 	 * @param string|null $relative
 	 *
 	 * @return WP_Framework
 	 */
-	public static function get_instance( $plugin_name, $plugin_file, $slug_name = null, $relative = null ) {
+	public static function get_instance( $plugin_name, $plugin_file = null, $slug_name = null, $relative = null ) {
 		if ( ! isset( self::$_instances[ $plugin_name ] ) ) {
+			if ( empty( $plugin_file ) ) {
+				self::wp_die( '$plugin_file is required.', __FILE__, __LINE__ );
+			}
 			$instances                        = new static( $plugin_name, $plugin_file, $slug_name, $relative );
 			self::$_instances[ $plugin_name ] = $instances;
 			self::update_framework_packages( $instances );
