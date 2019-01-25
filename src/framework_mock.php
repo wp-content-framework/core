@@ -11,7 +11,7 @@
  */
 
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
-	return;
+	exit;
 }
 define( 'WP_FRAMEWORK_IS_MOCK', true );
 
