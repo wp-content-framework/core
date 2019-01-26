@@ -285,22 +285,22 @@ abstract class Package_Base {
 	 * @return array
 	 */
 	public function get_assets_settings( $allow_multiple = false ) {
-		if ( 'common' === $this->_package ) {
+		if ( 'presenter' === $this->_package ) {
 			return [ $this->get_assets_dir() => $this->get_assets_url() ];
 		}
 
-		$common = $this->_app->get_package_instance( 'common' );
+		$presenter = $this->_app->get_package_instance( 'presenter' );
 		if ( ! $this->is_valid_assets() ) {
-			return $common->get_assets_settings();
+			return $presenter->get_assets_settings();
 		}
 
 		if ( $allow_multiple ) {
-			$settings                            = $common->get_assets_settings();
+			$settings                            = $presenter->get_assets_settings();
 			$settings[ $this->get_assets_dir() ] = $this->get_assets_url();
 		} else {
 			$settings                            = [];
 			$settings[ $this->get_assets_dir() ] = $this->get_assets_url();
-			foreach ( $common->get_assets_settings() as $k => $v ) {
+			foreach ( $presenter->get_assets_settings() as $k => $v ) {
 				$settings[ $k ] = $v;
 			}
 		}
@@ -312,18 +312,18 @@ abstract class Package_Base {
 	 * @return array
 	 */
 	public function get_views_dirs() {
-		if ( 'common' === $this->_package ) {
+		if ( 'presenter' === $this->_package ) {
 			return [ $this->get_views_dir() ];
 		}
 
-		$common = $this->_app->get_package_instance( 'common' );
+		$presenter = $this->_app->get_package_instance( 'presenter' );
 		if ( ! $this->is_valid_view() ) {
-			return $common->get_views_dirs();
+			return $presenter->get_views_dirs();
 		}
 
 		$dirs   = [];
 		$dirs[] = $this->get_views_dir();
-		foreach ( $common->get_views_dirs() as $dir ) {
+		foreach ( $presenter->get_views_dirs() as $dir ) {
 			$dirs[] = $dir;
 		}
 

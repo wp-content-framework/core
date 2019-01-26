@@ -30,7 +30,6 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  * @property \WP_Framework_Common\Classes\Models\Filter $filter
  * @property \WP_Framework_Common\Classes\Models\Uninstall $uninstall
  * @property \WP_Framework_Common\Classes\Models\Utility $utility
- * @property \WP_Framework_Common\Classes\Models\Upgrade $upgrade
  * @property \WP_Framework_Common\Classes\Models\Option $option
  * @property \WP_Framework_Common\Classes\Models\User $user
  * @property \WP_Framework_Common\Classes\Models\Input $input
@@ -38,6 +37,7 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  * @property \WP_Framework_Log\Classes\Models\Log $log
  * @property \WP_Framework_Admin\Classes\Models\Admin $admin
  * @property \WP_Framework_Api\Classes\Models\Api $api
+ * @property \WP_Framework_Presenter\Classes\Models\Drawer $drawer
  * @property \WP_Framework_Presenter\Classes\Models\Minify $minify
  * @property \WP_Framework_Mail\Classes\Models\Mail $mail
  * @property \WP_Framework_Test\Classes\Models\Test $test
@@ -47,6 +47,7 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  * @property \WP_Framework_Session\Classes\Models\Session $session
  * @property \WP_Framework_Social\Classes\Models\Social $social
  * @property \WP_Framework_Post\Classes\Models\Post $post
+ * @property \WP_Framework_Upgrade\Classes\Models\Upgrade $upgrade
  *
  * @method void main_init()
  * @method bool has_initialized()
@@ -65,6 +66,12 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  * @method void delete_shared_object( string $key, string | null $target = null )
  * @method array|string get_plugin_data( string | null $key = null )
  * @method bool send_mail( string $to, string $subject, string | array $body, string | false $text = false )
+ * @method string get_view( \WP_Framework_Core\Interfaces\Package $instance, string $name, array $args = [], bool $echo = false, bool $error = true, bool $remove_nl = false )
+ * @method void add_script_view( \WP_Framework_Core\Interfaces\Package $instance, string $name, array $args = [], int $priority = 10 )
+ * @method void add_style_view( \WP_Framework_Core\Interfaces\Package $instance, string $name, array $args = [], int $priority = 10 )
+ * @method void enqueue_style( \WP_Framework_Core\Interfaces\Package $instance, string $handle, string $file, array $depends = [], string|bool|null $ver = false, string $media = 'all', string $dir = 'css' )
+ * @method void enqueue_script( \WP_Framework_Core\Interfaces\Package $instance, string $handle, string $file, array $depends = [], string|bool|null $ver = false, bool $in_footer = true, string $dir = 'js' )
+ * @method bool localize_script( \WP_Framework_Core\Interfaces\Package $instance, string $handle, string $name, array $data )
  */
 class WP_Framework {
 
