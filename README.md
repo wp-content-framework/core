@@ -14,11 +14,11 @@ WordPressのプラグインやテーマ開発用のフレームワークです�
 
 ## プラグインからの利用
 
-1. プラグインフォルダの作成
+1. プラグインフォルダの作成  
 wp-content/plugins フォルダに プラグイン用のフォルダを作成  
 例：wp-content/plugins/example
 
-2. プラグインファイルの作成
+2. プラグインファイルの作成  
 作成したプラグインフォルダに適当なPHPファイル　(例：autoload.php) を作成  
 [標準プラグイン情報](https://wpdocs.osdn.jp/%E3%83%97%E3%83%A9%E3%82%B0%E3%82%A4%E3%83%B3%E3%81%AE%E4%BD%9C%E6%88%90#.E6.A8.99.E6.BA.96.E3.83.97.E3.83.A9.E3.82.B0.E3.82.A4.E3.83.B3.E6.83.85.E5.A0.B1)  
 を参考にプラグインの情報を入力
@@ -28,7 +28,7 @@ composer を使用してインストールします。
 作成したプラグインフォルダで以下のコマンドを実行します。  
 ``` composer require wp-content-framework/core ```  
 
-4. ライブラリの使用
+4. ライブラリの使用  
 作成したプラグインファイルにライブラリを使用する記述を追記します。  
 プラグインファイルはおおよそ以下のようなものになります。
 
@@ -207,7 +207,10 @@ APIに関する機能を提供します。
 * [upgrade](https://github.com/wp-content-framework/upgrade)  
 更新に関する機能を提供します。
   * 依存モジュール
-    * presenter
+    * common
+  * 関連モジュール
+    * mail  
+    メールを送信する場合に必要です。
 * [mail](https://github.com/wp-content-framework/mail)  
 メール送信機能を提供します。
   * 依存モジュール
