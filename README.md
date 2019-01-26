@@ -209,8 +209,8 @@ APIに関する機能を提供します。
   * 依存モジュール
     * common
   * 関連モジュール
-    * mail  
-    メールを送信する場合に必要です。
+    * presenter  
+    更新情報を表示する場合に必要です。
 * [mail](https://github.com/wp-content-framework/mail)  
 メール送信機能を提供します。
   * 依存モジュール
