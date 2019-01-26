@@ -1,5 +1,9 @@
 # WP Content Framework
 
+[![License: GPL v2+](https://img.shields.io/badge/License-GPL%20v2%2B-blue.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
+[![PHP: >=5.6](https://img.shields.io/badge/PHP-%3E%3D5.6-orange.svg)](http://php.net/)
+[![WordPress: >=3.9.3](https://img.shields.io/badge/WordPress-%3E%3D3.9.3-brightgreen.svg)](https://wordpress.org/)
+
 WordPressのプラグインやテーマ開発用のフレームワークです。
 
 # 要件
@@ -8,28 +12,23 @@ WordPressのプラグインやテーマ開発用のフレームワークです�
 
 # 手順
 
-## プラグインフォルダの作成
+## プラグインからの利用
 
-wp-content/plugins フォルダに プラグイン用のフォルダを作成
+1. プラグインフォルダの作成
+wp-content/plugins フォルダに プラグイン用のフォルダを作成  
+例：wp-content/plugins/example
 
-## プラグインファイルの作成
-
-作成したプラグインフォルダに「プラグイン名.php」(例：example.php) を作成  
+2. プラグインファイルの作成
+作成したプラグインフォルダに適当なPHPファイル　(例：autoload.php) を作成  
 [標準プラグイン情報](https://wpdocs.osdn.jp/%E3%83%97%E3%83%A9%E3%82%B0%E3%82%A4%E3%83%B3%E3%81%AE%E4%BD%9C%E6%88%90#.E6.A8.99.E6.BA.96.E3.83.97.E3.83.A9.E3.82.B0.E3.82.A4.E3.83.B3.E6.83.85.E5.A0.B1)  
 を参考にプラグインの情報を入力
 
-## このライブラリのインストール
-
+3. このライブラリのインストール  
 composer を使用してインストールします。  
 作成したプラグインフォルダで以下のコマンドを実行します。  
+``` composer require wp-content-framework/core ```  
 
-```composer require technote/wordpress-plugin-base```
-
-　  
-複数のプラグインでこのライブラリを使用する場合、最新のものが自動的に使用されます。
-
-## このライブラリの使用
-
+4. ライブラリの使用
 作成したプラグインファイルにライブラリを使用する記述を追記します。  
 プラグインファイルはおおよそ以下のようなものになります。
 
@@ -50,22 +49,98 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 @require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
-WP_Framework::get_instance( 'Example', __FILE__ );
+define( 'EXAMPLE_PLUGIN', 'Example_Plugin' );
+
+WP_Framework::get_instance( EXAMPLE_PLUGIN, __FILE__ );
 ```
 
-このプラグインファイルと同じフォルダに「functions.php」を作成すると、いろいろな準備ができた後に自動的に読み込まれます。  
-プラグインの構成は以下のようなものになります。
+最終的なプラグインの構成は以下のようなものになります。
 
 ```
 example
     |
-    - example.php
+    - autoload.php
     |
     - functions.php
     |
+    - assets
+    |
+    - configs
+    |
+    - languages
+    |
+    - src
+       |
+        - classes
+       |     |
+       |     - controllers
+       |     |      |
+       |     |      - admin
+       |     |      |
+       |     |      - api 
+       |     |
+       |     - models
+       |     |
+       |     - tests
+       |
+       - views 
+           |
+           - admin
+               |
+               - help
+```
+
+## テーマからの利用
+
+1. テーマフォルダの作成  
+wp-content/themes フォルダに テーマ用のフォルダを作成  
+例：wp-content/themes/example
+
+2. テーマ用CSSの作成  
+作成したテーマフォルダに style.css を作成  
+[テーマスタイルシート](https://wpdocs.osdn.jp/%E3%83%86%E3%83%BC%E3%83%9E%E3%81%AE%E4%BD%9C%E6%88%90#.E3.83.86.E3.83.BC.E3.83.9E.E3.82.B9.E3.82.BF.E3.82.A4.E3.83.AB.E3.82.B7.E3.83.BC.E3.83.88)
+を参考にテーマの情報を入力
+
+3. このライブラリのインストール  
+composer を使用してインストールします。  
+作成したプラグインフォルダで以下のコマンドを実行します。  
+```composer require wp-content-framework/core```
+
+4. ライブラリの使用  
+テーマフォルダに functions.php を作成しライブラリを使用する記述を追記します。  
+functions.php はおおよそ以下のようなものになります。
+
+```
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+@require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+
+define( 'EXAMPLE_THEME', 'Example_Theme' );
+
+WP_Framework::get_instance( EXAMPLE_THEME, __FILE__ );
+```
+
+最終的なテーマの構成は以下のようなものになります。
+
+```
+example
+    |
+    - style.css
+    |
+    - functions.php
+    |
+    - assets
+    |
+    - configs
+    |
+    - languages
+    |
     - src
     |  |
-        - classes
+    |   - classes
     |  |     |
     |  |     - controllers
     |  |     |      |
@@ -83,128 +158,112 @@ example
     |          |
     |          - help
     |
-    - configs
+    - header.php
+    - footer.php
+    - index.php
+    - searchform.php
+    - sidebar.php
+    ...
 ```
 
+　  
+複数のプラグイン及びテーマでこのライブラリを使用する場合、モジュールも含めて最新のものが自動的に使用されます。
 
-## 基本設定
-- configs/config.php  
+## モジュール
+必要に応じてモジュールを追加します。  
+いくつかのモジュールは依存関係によって自動的にインストールされます。
+* core  
+最新のモジュールの読み込み機能などのコアの機能を提供します。  
+  * 依存モジュール
+    * common
+* [common](https://github.com/wp-content-framework/common)  
+共通で使用する機能を提供します。
+  * 依存モジュール
+    * core
+* [db](https://github.com/wp-content-framework/db)  
+データベースを扱う機能を提供します。
+  * 依存モジュール
+    * common
+* [presenter](https://github.com/wp-content-framework/presenter)  
+描画機能を提供します。
+  * 依存モジュール
+    * common  
+* [cron](https://github.com/wp-content-framework/cron)   
+cron機能を提供します。
+  * 依存モジュール
+    * common 
+* [controller](https://github.com/wp-content-framework/controller)  
+コントローラ機能を提供します。
+  * 依存モジュール
+    * presenter
+* [admin](https://github.com/wp-content-framework/admin)  
+管理画面に関する機能を提供します。
+  * 依存モジュール
+    * controller
+* [api](https://github.com/wp-content-framework/api)  
+APIに関する機能を提供します。
+  * 依存モジュール
+    * controller
+* [upgrade](https://github.com/wp-content-framework/upgrade)  
+更新に関する機能を提供します。
+  * 依存モジュール
+    * presenter
+* [mail](https://github.com/wp-content-framework/mail)  
+メール送信機能を提供します。
+  * 依存モジュール
+    * presenter
+* [log](https://github.com/wp-content-framework/log)  
+ログの機能を提供します。
+  * 依存モジュール
+    * db  
+    * cron  
+    * admin  
+  * 関連モジュール
+    * mail  
+    メールを送信する場合に必要です。
+* [post](https://github.com/wp-content-framework/post)  
+投稿を扱う機能を提供します。
+  * 依存モジュール
+    * common
+* [device](https://github.com/wp-content-framework/device)  
+User Agent の判定などの機能を提供します。
+  * 依存モジュール
+    * common
+* [social](https://github.com/wp-content-framework/social)  
+ソーシャルログイン機能を提供します。
+  * 依存モジュール
+    * common
+* [session](https://github.com/wp-content-framework/session)  
+セッション機能を提供します。
+  * 依存モジュール
+    * common
+* [custom_post](https://github.com/wp-content-framework/custom_post)  
+カスタム投稿タイプに関する機能を提供します。
+  * 依存モジュール
+    * presenter
+    * db
+* [test](https://github.com/wp-content-framework/test)  
+テスト機能を提供します。
+  * 依存モジュール
+    * admin
 
-|設定値|説明|
-|---|---|
-|main_menu_title|管理画面のメニュー名になります|
-|db_version|DBの設定を変更したら更新します|
-|twitter|ツイッターのアカウントを指定します（ダッシュボードでヘルプに表示されます。空で未使用）|
-|github|Githubのアカウントを指定します（ダッシュボードでヘルプに表示されます。空で未使用）|
-|contact_url|プラグインのお問い合わせ用のページのURLを指定します（ダッシュボードでヘルプに表示されます）|
-|menu_image|管理画面のメニューアイコンを指定します|
-|update_info_file_url|開発バージョンチェック情報用のURLを指定します|
+## 画面の追加
+[admin](https://github.com/wp-content-framework/admin)  
 
-- configs/db.php
+## API の追加
+[api](https://github.com/wp-content-framework/api)  
 
-設定例：
-```
-// テーブル名 => 設定
-'test' => array(
-    
-    // primary key 設定
-    'id'      => 'test_id',     // optional [default = $table_name . '_id']
-    
-    // カラム 設定
-    'columns' => array(
-    
-        // 論理名 => 設定
-        'name'   => array(
-            'name'     => 'name_test',     // optional (物理名)
-            'type'     => 'VARCHAR(32)',   // required
-            'unsigned' => false,          // optional [default = false]
-            'null'     => true,           // optional [default = true]
-            'default'  => null,           // optional [default = null]
-            'comment'  => '',             // optional
-        ),
-        'value1' => array(
-            'type'    => 'VARCHAR(32)',
-            'null'    => false,
-            'default' => 'test',
-        ),
-        'value2' => array(
-            'type'    => 'VARCHAR(32)',
-            'comment' => 'aaaa',
-        ),
-        'value3' => array(
-            'type'    => 'INT(11)',
-            'null'    => false,
-            'comment' => 'bbb',
-        ),
-    ),
-    
-    // index 設定
-    'index'   => array(
-        // key index
-        'key'    => array(
-            'name' => array( 'name' ),
-        ),
-        
-        // unique index
-        'unique' => array(
-            'value' => array( 'value1', 'value2' ),
-        ),
-    ),
-    
-    // 論理削除 or 物理削除
-    'delete'  => 'logical', // physical or logical [default = physical]
-),
-```
+## filter の追加
+今後ドキュメント追加予定
 
-設定を更新したら configs/config.php の db_version も更新します。  
-自動でテーブルの追加・更新が行われます。  
-データの取得・挿入・更新・削除は以下のように行います。
-```
-// 取得
-$this->app->db->select( 'test', array(
-	'id'         => array( 'in', array( 1, 2, 3 ) ),
-	'value1'     => array( 'like', 'tes%' ),
-	'created_at' => array( '<', '2018-06-03' ),
-	'value2'     => null,
-	'value3'     => 3,
-) );
+## cron の追加
+[cron](https://github.com/wp-content-framework/cron)  
 
-// 挿入
-$this->app->db->insert( 'test', array(
-    'name'   => 'aaa',
-    'value1' => 'bbb',
-    'value3' => 100,
-) );
+## カスタム投稿タイプの追加
+[custom_post](https://github.com/wp-content-framework/custom_post)  
 
-// 更新
-$this->app->db->update( 'test', array(
-    'value2' => 'ccc',
-), array(
-    'id' => 4,
-) );
-
-// 削除
-$this->app->db->delete( 'test', array(
-    'id' => 4,
-) );
-```
-select 以外は 内部でWordPress標準の関数を使用しているため、  
-条件の指定の仕方は 'key' => 'value' (key = value) のみ可能です。  
-select の条件指定はライブラリ側で構築しており、  
-key = value  
-```
-key' => 'value'
-```
-key in ( val1, val2, val3 )
-```
-'key' => array( 'in', array( val1, val2, val3 ) )  
-```
-key like '%value%'
-```
-'key' => array( 'like', '%value%' )
-```
-などが指定可能です。
-
+## コンフィグ
+### 設定
 - configs/setting.php
 
 設定例：
@@ -247,169 +306,27 @@ if ( $this->apply_filters( 'minify_js' ) ) {
 }
 ```
 
+### フィルタ
 - configs/filter.php  
-今後ドキュメント追加予定
+今後追加予定
 
-- configs/slug.php  
-今後ドキュメント追加予定
+### DB
+- configs/db.php  
+[db](https://github.com/wp-content-framework/db)  
 
+### 権限
 - configs/capability.php  
-今後ドキュメント追加予定
+今後追加予定
 
-## 画面の追加
+## 基本設定
+- configs/settings.php
 
-- src/classes/controllers/admin に PHP ファイル (例：test.php) を追加
-```
-<?php
-
-namespace Example\Classes\Controllers\Admin;
-
-if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
-	exit;
-}
-
-class Test extends \WP_Framework\Classes\Controllers\Admin\Base {
-
-	// タイトル
-	public function get_page_title() {
-		return 'Test';
-	}
-
-	// GET の時に行う動作
-	protected function get_action() {
-
-	}
-
-	// POST の時に行う動作
-	protected function post_action() {
-		$aaa = $this->app->input->post( 'aaa' );
-		// ... 
-	}
-
-    // GET, POST 共通で行う動作
-	protected function common_action() {
-        // wp_enqueue_script('media-upload');
-	}
-
-	// view に渡す変数設定
-	public function get_view_args() {
-	    return array(
-	        'test' => 'aaaa',
-	    );
-	}
-}
-```
-
-POST の時に行う動作は事前にnonce checkが行われます。
-
-- src/views/admin に PHP ファイル (例：test.php) を追加
-```
-<?php
-
-if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
-	return;
-}
-/** @var \WP_Framework\Interfaces\Presenter $instance */
-/** @var string $test */
-?>
-
-<?php $instance->form( 'open', $args ); ?>
-
-<?php $instance->h( $test ); ?>
-<?php $instance->form( 'input/submit', $args, array(
-	'name'  => 'update',
-	'value' => 'Update',
-	'class' => 'button-primary'
-) ); ?>
-
-<?php $instance->form( 'close', $args ); ?>
-```
-
-- $instance
-	- h：esc_html
-	- dump：var_dump
-	- id
-	- form
-	- url
-	- img
-
-- ヘルプの追加
-	- src/classes/controllers/admin に追加した上記 PHP ファイル に以下を追記
-```
-protected function get_help_contents() {
-    return array(
-        array(
-            'title' => 'Test',
-            'view'  => 'test',
-        )
-    );
-}
-```
-
--
-	- src/views/admin/help に PHP ファイル (例：test.php) を追加
-```
-<?php
-
-if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
-	return;
-}
-/** @var \WP_Framework\Interfaces\Presenter $instance */
-?>
-
-test
-```
-
-## API の追加
-今後ドキュメント追加予定
-
-## filter の追加
-今後ドキュメント追加予定
-
-## cron の追加
-今後ドキュメント追加予定
-
-## テストの追加
-
-- PHPUnitの追加  
-```composer require --dev phpunit/phpunit```
-
-- src/classes/tests に PHP ファイル (例：sample.php) を追加
-```
-<?php
-
-namespace Example\Classes\Tests;
-
-if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
-	exit;
-}
-
-/**
- * Class Sample
- * @package Example\Classes\Tests
- */
-class Sample extends \WP_Framework\Classes\Tests\Base {
-
-	public function test_sample1() {
-		$this->assertEquals( 2, 1 + 1 );
-	}
-
-	public function test_sample2() {
-		$this->assertEquals( 1, 1 + 1 );
-	}
-
-}
-```
-
-- 管理画面から実行
-
-![test1](https://raw.githubusercontent.com/technote-space/wordpress-plugin-base/images/test1.png)
-![test2](https://raw.githubusercontent.com/technote-space/wordpress-plugin-base/images/test2.png)
+|設定値|説明|
+|---|---|
+|admin_menu_position|管理画面のメニューの表示位置|
 
 ## サンプルプラグイン
-[関連記事提供用プラグイン](https://github.com/technote-space/wp-related-post-jp)  
-[Contact Form 7 拡張用プラグイン](https://github.com/technote-space/contact-form-7-huge-file-upload)  
-[Marker Animation プラグイン](https://github.com/technote-space/marker-animation) 
+[CSRF検知プラグイン](https://github.com/technote-space/csrf-detector)  
 
 # Author
 
