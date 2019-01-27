@@ -69,8 +69,8 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  * @method string get_view( \WP_Framework_Core\Interfaces\Package $instance, string $name, array $args = [], bool $echo = false, bool $error = true, bool $remove_nl = false )
  * @method void add_script_view( \WP_Framework_Core\Interfaces\Package $instance, string $name, array $args = [], int $priority = 10 )
  * @method void add_style_view( \WP_Framework_Core\Interfaces\Package $instance, string $name, array $args = [], int $priority = 10 )
- * @method void enqueue_style( \WP_Framework_Core\Interfaces\Package $instance, string $handle, string $file, array $depends = [], string|bool|null $ver = false, string $media = 'all', string $dir = 'css' )
- * @method void enqueue_script( \WP_Framework_Core\Interfaces\Package $instance, string $handle, string $file, array $depends = [], string|bool|null $ver = false, bool $in_footer = true, string $dir = 'js' )
+ * @method void enqueue_style( \WP_Framework_Core\Interfaces\Package $instance, string $handle, string $file, array $depends = [], string | bool | null $ver = false, string $media = 'all', string $dir = 'css' )
+ * @method void enqueue_script( \WP_Framework_Core\Interfaces\Package $instance, string $handle, string $file, array $depends = [], string | bool | null $ver = false, bool $in_footer = true, string $dir = 'js' )
  * @method bool localize_script( \WP_Framework_Core\Interfaces\Package $instance, string $handle, string $name, array $data )
  */
 class WP_Framework {
@@ -313,7 +313,7 @@ class WP_Framework {
 	 */
 	public function get_package_instance( $package = 'core' ) {
 		if ( ! isset( $this->_available_packages[ $package ] ) ) {
-			self::wp_die( 'package is not available.', __FILE__, __LINE__ );
+			self::wp_die( [ 'package is not available.', 'package name: ' . $package ], __FILE__, __LINE__ );
 		}
 
 		return $this->_available_packages[ $package ];
@@ -327,7 +327,7 @@ class WP_Framework {
 	public function get_package_directory( $package = 'core' ) {
 		$dirs = $this->get_package_directories();
 		if ( ! isset( $dirs[ $package ] ) ) {
-			self::wp_die( [ 'package is not included.', 'package name: ' . $package ], __FILE__, __LINE__ );
+			self::wp_die( [ 'package is not available.', 'package name: ' . $package ], __FILE__, __LINE__ );
 		}
 
 		return $dirs[ $package ];
@@ -343,7 +343,7 @@ class WP_Framework {
 			self::wp_die( 'framework is not ready.', __FILE__, __LINE__ );
 		}
 		if ( ! isset( $this->_package_versions[ $package ] ) ) {
-			self::wp_die( [ 'package is not included.', 'package name: ' . $package ], __FILE__, __LINE__ );
+			self::wp_die( [ 'package is not available.', 'package name: ' . $package ], __FILE__, __LINE__ );
 		}
 
 		return self::$_framework_package_versions[ $package ];
@@ -460,14 +460,14 @@ class WP_Framework {
 			$directory = $app->_framework_root_directory . DS . $package;
 			$path      = $directory . DS . 'package_' . $package . '.php';
 			if ( ! is_readable( $path ) ) {
-				self::wp_die( sprintf( 'invalid package [%s]', $package ), __FILE__, __LINE__ );
+				self::wp_die( [ 'invalid package', 'package name: ' . $package ], __FILE__, __LINE__ );
 			}
 			/** @noinspection PhpIncludeInspection */
 			require_once $path;
 
 			$class = '\WP_Framework\Package_' . ucwords( $package, '_' );
 			if ( ! class_exists( $class ) ) {
-				self::wp_die( sprintf( 'invalid package [%s]', $package ), __FILE__, __LINE__ );
+				self::wp_die( [ 'invalid package', 'package name: ' . $package ], __FILE__, __LINE__ );
 			}
 
 			$version = self::$_framework_package_versions[ $package ];
