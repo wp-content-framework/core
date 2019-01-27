@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Core Traits Translate
  *
- * @version 0.0.1
+ * @version 0.0.10
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -54,22 +54,22 @@ trait Translate {
 	 */
 	protected function get_textdomains() {
 		$package = $this->get_package();
-		if ( ! isset( self::$_textdomains[ $package ] ) ) {
+		if ( ! isset( self::$_textdomains[ $package ][ $this->app->plugin_name ] ) ) {
 			self::$_textdomains[ $package ] = [];
-			! empty( $this->app->define->plugin_textdomain ) and self::$_textdomains[ $package ][ $this->app->define->plugin_textdomain ] = $this->app->define->plugin_languages_dir;
+			! empty( $this->app->define->plugin_textdomain ) and self::$_textdomains[ $package ][ $this->app->plugin_name ][ $this->app->define->plugin_textdomain ] = $this->app->define->plugin_languages_dir;
 			$instance = $this->get_package_instance();
 			foreach ( $instance->get_translate_settings() as $textdomain => $path ) {
-				self::$_textdomains[ $package ][ $textdomain ] = $path;
+				self::$_textdomains[ $package ][ $this->app->plugin_name ][ $textdomain ] = $path;
 			}
 
-			foreach ( self::$_textdomains[ $package ] as $textdomain => $path ) {
+			foreach ( self::$_textdomains[ $package ][ $this->app->plugin_name ] as $textdomain => $path ) {
 				if ( ! $this->setup_textdomain( $textdomain, $path ) ) {
-					unset( self::$_textdomains[ $package ][ $textdomain ] );
+					unset( self::$_textdomains[ $package ][ $this->app->plugin_name ][ $textdomain ] );
 				}
 			}
 		}
 
-		return self::$_textdomains[ $package ];
+		return self::$_textdomains[ $package ][ $this->app->plugin_name ];
 	}
 
 	/**
