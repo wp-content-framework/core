@@ -57,11 +57,6 @@ class Main {
 	private static $_shared_object = [];
 
 	/**
-	 * @var array $_tried_load_class
-	 */
-	private static $_tried_load_class = [];
-
-	/**
 	 * @var \WP_Framework $app
 	 */
 	protected $app;
@@ -193,12 +188,8 @@ class Main {
 	 * @return bool
 	 */
 	public function load_class( $class ) {
-		if ( isset( self::$_tried_load_class[ $class ] ) ) {
-			return false;
-		}
-		self::$_tried_load_class[ $class ] = true;
-
-		$dirs = null;
+		$dirs  = null;
+		$class = ltrim( $class, '\\' );
 		if ( isset( $this->_property_instances[ $this->_properties['define'] ] ) && preg_match( "#\A{$this->define->plugin_namespace}#", $class ) ) {
 			$class = preg_replace( "#\A{$this->define->plugin_namespace}#", '', $class );
 			$dirs  = $this->define->plugin_src_dir;
