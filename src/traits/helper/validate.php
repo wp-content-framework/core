@@ -19,6 +19,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
  * Trait Validate
  * @package WP_Framework_Core\Traits\Helper
  * @property \WP_Framework $app
+ * @mixin \WP_Framework_Core\Traits\Translate
  */
 trait Validate {
 
@@ -264,6 +265,9 @@ trait Validate {
 	 * @return bool|\WP_Error
 	 */
 	protected function validate_exists( $var, $table, $id = 'id', $field = '*' ) {
+		if ( ! $this->app->is_valid_package( 'db' ) ) {
+			return new \WP_Error( 400, $this->translate( 'DB module is not available.' ) );
+		}
 		$validate = $this->validate_positive_int( $var );
 		if ( true === $validate ) {
 			if ( $this->app->db->select_count( $table, $field, [

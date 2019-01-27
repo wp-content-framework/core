@@ -206,7 +206,7 @@ trait Loader {
 				/** @var Singleton[] $class_setting */
 				$instance = $class_setting[0]::get_instance( $this->app );
 				if ( $instance instanceof $instanceof ) {
-					if ( $instance instanceof \WP_Framework_Admin\Interfaces\Controller\Admin ) {
+					if ( interface_exists( '\WP_Framework_Admin\Interfaces\Controller\Admin' ) && $instance instanceof \WP_Framework_Admin\Interfaces\Controller\Admin ) {
 						$instance->set_relative_namespace( $class_setting[1] );
 					}
 
