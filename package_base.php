@@ -108,7 +108,9 @@ abstract class Package_Base {
 	/**
 	 * initialize
 	 */
-	protected abstract function initialize();
+	protected function initialize() {
+
+	}
 
 	/**
 	 * @return int

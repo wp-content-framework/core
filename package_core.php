@@ -22,13 +22,6 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 class Package_Core extends Package_Base {
 
 	/**
-	 * initialize
-	 */
-	protected function initialize() {
-
-	}
-
-	/**
 	 * @return int
 	 */
 	public function get_priority() {
