@@ -136,6 +136,26 @@ class WP_Framework {
 	private $_is_uninstall = false;
 
 	/**
+	 * @var string $_required_php_version
+	 */
+	private $_required_php_version;
+
+	/**
+	 * @var string $_required_wordpress_version
+	 */
+	private $_required_wordpress_version;
+
+	/**
+	 * @var bool $_not_enough_php_version
+	 */
+	private $_not_enough_php_version = false;
+
+	/**
+	 * @var bool $_not_enough_wordpress_version
+	 */
+	private $_not_enough_wordpress_version = false;
+
+	/**
 	 * @var array $readonly_properties
 	 */
 	private $_readonly_properties = [
@@ -364,6 +384,13 @@ class WP_Framework {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function is_enough_version() {
+		return ! $this->_not_enough_php_version && ! $this->_not_enough_wordpress_version;
+	}
+
+	/**
 	 * @param string|array $message
 	 * @param string $file
 	 * @param int $line
@@ -494,8 +521,10 @@ class WP_Framework {
 
 			add_action( 'after_switch_theme', function () {
 				$this->plugins_loaded();
-				$this->main_init();
-				$this->filter->do_action( 'app_activated', $this );
+				if ( $this->is_enough_version() ) {
+					$this->main_init();
+					$this->filter->do_action( 'app_activated', $this );
+				}
 			} );
 
 			add_action( 'switch_theme', function () {
@@ -508,9 +537,11 @@ class WP_Framework {
 
 			add_action( 'activated_plugin', function ( $plugin ) {
 				$this->plugins_loaded();
-				$this->main_init();
-				if ( $this->define->plugin_base_name === $plugin ) {
-					$this->filter->do_action( 'app_activated', $this );
+				if ( $this->is_enough_version() ) {
+					$this->main_init();
+					if ( $this->define->plugin_base_name === $plugin ) {
+						$this->filter->do_action( 'app_activated', $this );
+					}
 				}
 			} );
 
@@ -522,7 +553,9 @@ class WP_Framework {
 		}
 
 		add_action( 'init', function () {
-			$this->main_init();
+			if ( $this->is_enough_version() ) {
+				$this->main_init();
+			}
 		}, 1 );
 	}
 
@@ -544,14 +577,29 @@ class WP_Framework {
 			return $this->get_main()->load_class( $class );
 		} );
 
+		$this->check_required_version();
 		$this->load_functions();
+	}
+
+	/**
+	 * check required version
+	 */
+	private function check_required_version() {
+		global $wp_version;
+		$this->_required_php_version         = $this->get_config( 'config', 'required_php_version' );
+		$this->_required_wordpress_version   = $this->get_config( 'config', 'required_wordpress_version' );
+		$this->_not_enough_php_version       = version_compare( phpversion(), $this->_required_php_version, '<' );
+		$this->_not_enough_wordpress_version = ! empty( $wp_version ) && version_compare( $wp_version, $this->_required_wordpress_version, '<' );
+		if ( ! $this->is_enough_version() ) {
+			$this->set_unsupported();
+		}
 	}
 
 	/**
 	 * load functions file
 	 */
 	private function load_functions() {
-		if ( $this->is_theme ) {
+		if ( ! $this->is_enough_version() || $this->is_theme ) {
 			return;
 		}
 		$functions = $this->define->plugin_dir . DS . 'functions.php';
@@ -559,6 +607,49 @@ class WP_Framework {
 			/** @noinspection PhpIncludeInspection */
 			require_once $functions;
 		}
+	}
+
+	/**
+	 * set unsupported
+	 */
+	private function set_unsupported() {
+		add_action( 'admin_notices', function () {
+			?>
+            <div class="notice error notice-error">
+				<?php if ( $this->_not_enough_php_version ): ?>
+                    <p><?php echo $this->get_unsupported_php_version_message(); ?></p>
+				<?php endif; ?>
+				<?php if ( $this->_not_enough_wordpress_version ): ?>
+                    <p><?php echo $this->get_unsupported_wp_version_message(); ?></p>
+				<?php endif; ?>
+            </div>
+			<?php
+		} );
+	}
+
+	/**
+	 * @return string
+	 */
+	private function get_unsupported_php_version_message() {
+		$messages   = [];
+		$messages[] = sprintf( $this->utility->translate( 'Your PHP version is %s.' ), phpversion() );
+		$messages[] = $this->utility->translate( 'Please update your PHP.' );
+		$messages[] = sprintf( $this->utility->translate( '<strong>%s</strong> requires PHP version %s or above.' ), $this->utility->translate( $this->original_plugin_name ), $this->_required_php_version );
+
+		return implode( '<br>', $messages );
+	}
+
+	/**
+	 * @return string
+	 */
+	private function get_unsupported_wp_version_message() {
+		global $wp_version;
+		$messages   = [];
+		$messages[] = sprintf( $this->utility->translate( 'Your WordPress version is %s.' ), $wp_version );
+		$messages[] = $this->utility->translate( 'Please update your WordPress.' );
+		$messages[] = sprintf( $this->utility->translate( '<strong>%s</strong> requires WordPress version %s or above.' ), $this->utility->translate( $this->original_plugin_name ), $this->_required_wordpress_version );
+
+		return implode( '<br>', $messages );
 	}
 
 	/**
@@ -572,8 +663,10 @@ class WP_Framework {
 
 		$app->_is_uninstall = true;
 		$app->plugins_loaded();
-		$app->main_init();
-		$app->uninstall->uninstall();
+		if ( $app->is_enough_version() ) {
+			$app->main_init();
+			$app->uninstall->uninstall();
+		}
 	}
 
 	/**
