@@ -395,10 +395,11 @@ class WP_Framework {
 	 * @param string $file
 	 * @param int $line
 	 * @param string $title
+	 * @param bool $output_file_info
 	 */
-	public static function wp_die( $message, $file, $line, $title = '' ) {
+	public static function wp_die( $message, $file, $line, $title = '', $output_file_info = true ) {
 		! is_array( $message ) and $message = [ '[wp content framework]', $message ];
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		if ( $output_file_info && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			$message[] = 'File: ' . $file;
 			$message[] = 'Line: ' . $line;
 		}
