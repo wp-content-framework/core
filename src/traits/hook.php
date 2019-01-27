@@ -44,7 +44,7 @@ trait Hook {
 	 * @return string
 	 */
 	protected function get_filter_prefix() {
-		return $this->get_slug( 'filter_prefix', '' ) . '-';
+		return $this->get_slug( 'filter_prefix', '' ) . '/';
 	}
 
 	/**
