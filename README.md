@@ -321,6 +321,9 @@ if ( $this->apply_filters( 'minify_js' ) ) {
 - configs/capability.php  
 今後追加予定
 
+## デフォルトの動作の上書き
+今後追加予定
+
 ## 基本設定
 - configs/config.php
 
