@@ -134,7 +134,7 @@ abstract class Package_Base {
 			if ( ! in_array( $name, $this->get_configs() ) ) {
 				$this->_configs[ $name ] = [];
 			} else {
-				$this->_configs[ $name ] = $this->load_config_file( $name );
+				$this->_configs[ $name ] = $this->load( $name );
 			}
 		}
 
@@ -245,8 +245,21 @@ abstract class Package_Base {
 	 *
 	 * @return array
 	 */
-	private function load_config_file( $name ) {
-		$path = $this->get_dir() . DS . 'configs' . DS . $name . '.php';
+	private function load( $name ) {
+		$package_config = $this->load_config_file( $this->get_dir() . DS . 'configs', $name );
+		$plugin_config  = $this->load_config_file( $this->_app->plugin_dir . DS . 'configs' . DS . 'packages' . DS . $this->get_package(), $name );
+
+		return apply_filters( 'wp_framework/load_config', array_replace_recursive( $package_config, $plugin_config ), $name, $package_config, $plugin_config );
+	}
+
+	/**
+	 * @param string $dir
+	 * @param string $name
+	 *
+	 * @return array
+	 */
+	private function load_config_file( $dir, $name ) {
+		$path = rtrim( $dir, DS ) . DS . $name . '.php';
 		if ( ! file_exists( $path ) ) {
 			return [];
 		}
