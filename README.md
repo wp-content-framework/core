@@ -322,6 +322,13 @@ if ( $this->apply_filters( 'minify_js' ) ) {
 今後追加予定
 
 ## 基本設定
+- configs/config.php
+
+|設定値|説明|
+|---|---|
+|required_php_version|動作に必要なPHPの要求バージョン \[default = 5.6]|
+|required_wordpress_version|動作に必要なWordPressの要求バージョン \[default = 3.9.3]|
+
 - configs/settings.php
 
 |設定値|説明|

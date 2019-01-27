@@ -144,7 +144,7 @@ class Main {
 		$this->_properties     = [];
 		$this->_target_package = [];
 		foreach ( $this->app->get_packages() as $package ) {
-			$map               = $package->get_config( 'map' );
+			$map               = $package->get_config( 'map', $this->app );
 			$this->_properties = array_merge( $this->_properties, $map );
 			foreach ( $map as $name => $class ) {
 				$class = ltrim( $class, '\\' );

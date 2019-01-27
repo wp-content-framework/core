@@ -126,19 +126,20 @@ abstract class Package_Base {
 
 	/**
 	 * @param $name
+	 * @param \WP_Framework $app
 	 *
 	 * @return array
 	 */
-	public function get_config( $name ) {
+	public function get_config( $name, $app ) {
 		if ( ! isset( $this->_configs[ $name ] ) ) {
 			if ( ! in_array( $name, $this->get_configs() ) ) {
 				$this->_configs[ $name ] = [];
 			} else {
-				$this->_configs[ $name ] = $this->load( $name );
+				$this->_configs[ $name ] = $this->load_package_config( $name );
 			}
 		}
 
-		return $this->_configs[ $name ];
+		return array_replace_recursive( $this->_configs[ $name ], $this->load_plugin_config( $name, $app ) );
 	}
 
 	/**
@@ -245,11 +246,22 @@ abstract class Package_Base {
 	 *
 	 * @return array
 	 */
-	private function load( $name ) {
+	private function load_package_config( $name ) {
 		$package_config = $this->load_config_file( $this->get_dir() . DS . 'configs', $name );
-		$plugin_config  = $this->load_config_file( $this->_app->plugin_dir . DS . 'configs' . DS . 'packages' . DS . $this->get_package(), $name );
 
-		return apply_filters( 'wp_framework/load_config', array_replace_recursive( $package_config, $plugin_config ), $name, $package_config, $plugin_config );
+		return apply_filters( 'wp_framework/load_config', $package_config, $name, $package_config );
+	}
+
+	/**
+	 * @param string $name
+	 * @param \WP_Framework $app
+	 *
+	 * @return array
+	 */
+	private function load_plugin_config( $name, $app ) {
+		$plugin_config = $this->load_config_file( $app->plugin_dir . DS . 'configs' . DS . 'packages' . DS . $this->get_package(), $name );
+
+		return apply_filters( 'wp_framework/load_config', $plugin_config, $name, $plugin_config, $app );
 	}
 
 	/**
