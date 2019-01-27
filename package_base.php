@@ -130,7 +130,7 @@ abstract class Package_Base {
 	 *
 	 * @return array
 	 */
-	public function get_config( $name, $app ) {
+	public function get_config( $name, $app = null ) {
 		if ( ! isset( $this->_configs[ $name ] ) ) {
 			if ( ! in_array( $name, $this->get_configs() ) ) {
 				$this->_configs[ $name ] = [];
@@ -139,7 +139,12 @@ abstract class Package_Base {
 			}
 		}
 
-		return array_replace_recursive( $this->_configs[ $name ], $this->load_plugin_config( $name, $app ) );
+		$config = $this->_configs[ $name ];
+		if ( $app ) {
+			$config = array_replace_recursive( $config, $this->load_plugin_config( $name, $app ) );
+		}
+
+		return $config;
 	}
 
 	/**
@@ -259,7 +264,7 @@ abstract class Package_Base {
 	 * @return array
 	 */
 	private function load_plugin_config( $name, $app ) {
-		$plugin_config = $this->load_config_file( $app->plugin_dir . DS . 'configs' . DS . 'packages' . DS . $this->get_package(), $name );
+		$plugin_config = $this->load_config_file( $app->plugin_dir . DS . 'configs' . DS . $name, $this->get_package() );
 
 		return apply_filters( 'wp_framework/load_config', $plugin_config, $name, $plugin_config, $app );
 	}
