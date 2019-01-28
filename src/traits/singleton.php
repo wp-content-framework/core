@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Core Traits Singleton
  *
- * @version 0.0.1
+ * @version 0.0.13
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -69,7 +69,13 @@ trait Singleton {
 		if ( false === $class ) {
 			$class = get_class();
 		}
-		$key = static::is_shared_class() ? '' : $app->plugin_name;
+
+		list( $mapped, $class ) = $app->get_mapped_class( $class );
+		if ( $mapped ) {
+			$key = $app->plugin_name;
+		} else {
+			$key = static::is_shared_class() ? '' : $app->plugin_name;
+		}
 		if ( empty( self::$_instances[ $key ] ) || ! array_key_exists( $class, self::$_instances[ $key ] ) ) {
 			try {
 				$reflection = new \ReflectionClass( $class );
@@ -80,12 +86,18 @@ trait Singleton {
 			if ( $reflection->isAbstract() ) {
 				self::$_instances[ $key ][ $class ] = null;
 			} else {
-				$instance = new static( $app, $reflection );
-				if ( $app->is_uninstall() && $instance instanceof \WP_Framework_Common\Interfaces\Uninstall ) {
-					$app->uninstall->add_uninstall( [ $instance, 'uninstall' ], $instance->get_uninstall_priority() );
+				if ( $mapped ) {
+					/** @var \WP_Framework_Core\Traits\Singleton $class */
+					$instance                           = $class::get_instance( $app );
+					self::$_instances[ $key ][ $class ] = $instance;
+				} else {
+					$instance = new static( $app, $reflection );
+					if ( $app->is_uninstall() && $instance instanceof \WP_Framework_Common\Interfaces\Uninstall ) {
+						$app->uninstall->add_uninstall( [ $instance, 'uninstall' ], $instance->get_uninstall_priority() );
+					}
+					self::$_instances[ $key ][ $class ] = $instance;
+					$instance->call_initialize();
 				}
-				self::$_instances[ $key ][ $class ] = $instance;
-				$instance->call_initialize();
 			}
 		}
 

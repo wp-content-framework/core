@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Core Classes Main
  *
- * @version 0.0.8
+ * @version 0.0.13
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -77,6 +77,11 @@ class Main {
 	private $_properties;
 
 	/**
+	 * @var array $_class_map
+	 */
+	private $_class_map;
+
+	/**
 	 * @var array $_target_package
 	 */
 	private $_target_package;
@@ -143,15 +148,22 @@ class Main {
 		$this->_plugin_data    = $this->app->is_theme ? wp_get_theme() : get_plugin_data( $this->app->plugin_file, false, false );
 		$this->_properties     = [];
 		$this->_target_package = [];
+		$this->_class_map      = [];
 		foreach ( $this->app->get_packages() as $package ) {
-			$map               = $package->get_config( 'map', $this->app );
-			$this->_properties = array_merge( $this->_properties, $map );
+			$map = $package->get_config( 'map', $this->app );
 			foreach ( $map as $name => $class ) {
-				$class = ltrim( $class, '\\' );
-				if ( ! is_int( $name ) ) {
-					$this->_properties[ $name ] = $class;
+				if ( is_array( $class ) ) {
+					foreach ( $class as $k => $v ) {
+						$k                           = ltrim( $k, '\\' );
+						$v                           = ltrim( $v, '\\' );
+						$this->_class_map [ $k ]     = $v;
+						$this->_target_package[ $v ] = $package->get_package();
+					}
+				} else {
+					$class                           = ltrim( $class, '\\' );
+					$this->_properties[ $name ]      = $class;
+					$this->_target_package[ $class ] = $package->get_package();
 				}
-				$this->_target_package[ $class ] = $package->get_package();
 			}
 		}
 	}
@@ -255,6 +267,15 @@ class Main {
 	 */
 	public function has_initialized() {
 		return $this->_initialized;
+	}
+
+	/**
+	 * @param string $class
+	 *
+	 * @return array
+	 */
+	public function get_mapped_class( $class ) {
+		return isset( $this->_class_map[ $class ] ) ? [ true, $this->_class_map[ $class ] ] : [ false, $class ];
 	}
 
 	/**

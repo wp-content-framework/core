@@ -2,7 +2,7 @@
 /**
  * WP_Framework Package Base
  *
- * @version 0.0.1
+ * @version 0.0.13
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -35,29 +35,29 @@ abstract class Package_Base {
 	private $_configs = [];
 
 	/**
-	 * @var string $_package
-	 */
-	private $_package;
-
-	/**
-	 * @var string $_dir
-	 */
-	private $_dir;
-
-	/**
 	 * @var string $_version
 	 */
 	private $_version;
 
 	/**
+	 * @var string $_package
+	 */
+	protected $_package;
+
+	/**
+	 * @var string $_dir
+	 */
+	protected $_dir;
+
+	/**
 	 * @var string $_url
 	 */
-	private $_url;
+	protected $_url;
 
 	/**
 	 * @var string $_namespace
 	 */
-	private $_namespace;
+	protected $_namespace;
 
 	/**
 	 * @param \WP_Framework $app
@@ -187,7 +187,7 @@ abstract class Package_Base {
 	 *
 	 * @return string|false
 	 */
-	private function trim_namespace( $string ) {
+	protected function trim_namespace( $string ) {
 		$namespace = $this->get_namespace();
 		$string    = ltrim( $string, '\\' );
 		if ( preg_match( "#\A{$namespace}\\\\#", $string ) ) {
@@ -251,7 +251,7 @@ abstract class Package_Base {
 	 *
 	 * @return array
 	 */
-	private function load_package_config( $name ) {
+	protected function load_package_config( $name ) {
 		$package_config = $this->load_config_file( $this->get_dir() . DS . 'configs', $name );
 
 		return apply_filters( 'wp_framework/load_config', $package_config, $name, $package_config );
@@ -263,7 +263,7 @@ abstract class Package_Base {
 	 *
 	 * @return array
 	 */
-	private function load_plugin_config( $name, $app ) {
+	protected function load_plugin_config( $name, $app ) {
 		$plugin_config = $this->load_config_file( $app->plugin_dir . DS . 'configs' . DS . $name, $this->get_package() );
 
 		return apply_filters( 'wp_framework/load_config', $plugin_config, $name, $plugin_config, $app );
@@ -275,7 +275,7 @@ abstract class Package_Base {
 	 *
 	 * @return array
 	 */
-	private function load_config_file( $dir, $name ) {
+	protected function load_config_file( $dir, $name ) {
 		$path = rtrim( $dir, DS ) . DS . $name . '.php';
 		if ( ! file_exists( $path ) ) {
 			return [];

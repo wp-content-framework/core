@@ -2,7 +2,7 @@
 /**
  * WP_Framework
  *
- * @version 0.0.11
+ * @version 0.0.13
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -23,6 +23,7 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  * @property string $plugin_file
  * @property string $plugin_dir
  * @property string $relative_path
+ * @property string $package_file
  *
  * @property \WP_Framework_Common\Classes\Models\Define $define
  * @property \WP_Framework_Common\Classes\Models\Config $config
@@ -51,6 +52,7 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  *
  * @method void main_init()
  * @method bool has_initialized()
+ * @method array get_mapped_class( string $class )
  * @method string get_plugin_version()
  * @method mixed get_config( string $name, string $key, mixed $default = null )
  * @method mixed get_option( string $key, mixed $default = '' )
@@ -166,6 +168,7 @@ class WP_Framework {
 		'plugin_file'          => '',
 		'plugin_dir'           => '',
 		'relative_path'        => '',
+		'package_file'         => '',
 	];
 
 	/** @var bool $_is_allowed_access */
@@ -178,8 +181,9 @@ class WP_Framework {
 	 * @param string $plugin_file
 	 * @param string|null $slug_name
 	 * @param string|null $relative
+	 * @param string|null $package
 	 */
-	private function __construct( $plugin_name, $plugin_file, $slug_name, $relative ) {
+	private function __construct( $plugin_name, $plugin_file, $slug_name, $relative, $package ) {
 		$this->_is_allowed_access   = true;
 		$theme_dir                  = str_replace( '/', DS, WP_CONTENT_DIR . DS . 'theme' );
 		$relative                   = ! empty( $relative ) ? trim( $relative ) : null;
@@ -188,6 +192,7 @@ class WP_Framework {
 		$this->plugin_file          = $plugin_file;
 		$this->plugin_dir           = dirname( $plugin_file );
 		$this->relative_path        = empty( $relative ) ? '' : ( trim( str_replace( '/', DS, $relative ), DS ) . DS );
+		$this->package_file         = is_string( $package ) && ! empty( $package ) ? $package : null;
 		$this->plugin_name          = strtolower( $this->original_plugin_name );
 		$this->slug_name            = ! empty( $slug_name ) ? strtolower( $slug_name ) : $this->plugin_name;
 		$this->_is_allowed_access   = false;
@@ -203,7 +208,7 @@ class WP_Framework {
 	 * @throws \OutOfRangeException
 	 */
 	public function __get( $name ) {
-		if ( isset( $this->_readonly_properties[ $name ] ) ) {
+		if ( array_key_exists( $name, $this->_readonly_properties ) ) {
 			return $this->_readonly_properties[ $name ];
 		}
 
@@ -230,6 +235,10 @@ class WP_Framework {
 	 * @return bool
 	 */
 	public function __isset( $name ) {
+		if ( array_key_exists( $name, $this->_readonly_properties ) ) {
+			return ! is_null( $this->_readonly_properties[ $name ] );
+		}
+
 		return $this->get_main()->__isset( $name );
 	}
 
@@ -259,15 +268,16 @@ class WP_Framework {
 	 * @param string|null $plugin_file
 	 * @param string|null $slug_name
 	 * @param string|null $relative
+	 * @param string|null $package
 	 *
 	 * @return WP_Framework
 	 */
-	public static function get_instance( $plugin_name, $plugin_file = null, $slug_name = null, $relative = null ) {
+	public static function get_instance( $plugin_name, $plugin_file = null, $slug_name = null, $relative = null, $package = null ) {
 		if ( ! isset( self::$_instances[ $plugin_name ] ) ) {
 			if ( empty( $plugin_file ) ) {
 				self::wp_die( '$plugin_file is required.', __FILE__, __LINE__ );
 			}
-			$instances                        = new static( $plugin_name, $plugin_file, $slug_name, $relative );
+			$instances                        = new static( $plugin_name, $plugin_file, $slug_name, $relative, $package );
 			self::$_instances[ $plugin_name ] = $instances;
 			self::update_framework_packages( $instances );
 		}
@@ -446,16 +456,38 @@ class WP_Framework {
 			self::wp_die( 'composer.lock is invalid.', __FILE__, __LINE__ );
 		}
 
+		$additional = false;
+		if ( ! empty( $this->package_file ) ) {
+			$additional_package = $this->plugin_dir . DS . $this->package_file;
+			if ( file_exists( $additional_package ) && is_readable( $additional_package ) ) {
+				$additional = @json_decode( file_get_contents( $additional_package ), true );
+				if ( isset( $additional['packages'] ) && is_array( $additional['packages'] ) && ! empty( $additional['packages'] ) ) {
+					$additional = $additional['packages'];
+				} else {
+					$additional = false;
+				}
+			}
+		}
+
 		$versions = [];
 		foreach ( $json['packages'] as $package ) {
 			$name     = $package['name'];
 			$exploded = explode( '/', $name );
-			if ( count( $exploded ) !== 2 || WP_FRAMEWORK_VENDOR_NAME !== $exploded[0] ) {
+
+			if ( count( $exploded ) === 2 ) {
+				if ( WP_FRAMEWORK_VENDOR_NAME === $exploded[0] ) {
+					$package_name = strtolower( $exploded[1] );
+				} elseif ( is_array( $additional ) && in_array( $name, $additional ) ) {
+					$package_name = strtolower( $name );
+				} else {
+					continue;
+				}
+			} else {
 				continue;
 			}
 
-			$version                                = ltrim( $package['version'], 'v.' );
-			$versions[ strtolower( $exploded[1] ) ] = $version;
+			$version                   = ltrim( $package['version'], 'v.' );
+			$versions[ $package_name ] = $version;
 		}
 		if ( ! isset( $versions['core'] ) ) {
 			self::wp_die( 'composer.lock is invalid.', __FILE__, __LINE__ );
@@ -483,25 +515,34 @@ class WP_Framework {
 		require_once dirname( WP_FRAMEWORK_BOOTSTRAP ) . DS . 'package_base.php';
 		$priority = [];
 		$packages = [];
-		foreach ( self::$_framework_package_plugin_names as $package => $plugin_name ) {
-			$app       = self::$_instances[ $plugin_name ];
-			$directory = $app->_framework_root_directory . DS . $package;
-			$path      = $directory . DS . 'package_' . $package . '.php';
+		foreach ( self::$_framework_package_plugin_names as $key => $plugin_name ) {
+			$app = self::$_instances[ $plugin_name ];
+			if ( strpos( $key, '/' ) !== false ) {
+				$directory = dirname( $app->_framework_root_directory ) . DS . $key;
+				$exploded  = explode( '/', $key );
+				$namespace = ucwords( str_replace( '-', '_', $exploded[0] ), '_' );
+				$package   = $exploded[1];
+			} else {
+				$package   = $key;
+				$directory = $app->_framework_root_directory . DS . $package;
+				$namespace = 'WP_Framework';
+			}
+			$path = $directory . DS . 'package_' . $package . '.php';
 			if ( ! is_readable( $path ) ) {
-				self::wp_die( [ 'invalid package', 'package name: ' . $package ], __FILE__, __LINE__ );
+				self::wp_die( [ 'invalid package', 'package name: ' . $key ], __FILE__, __LINE__ );
 			}
 			/** @noinspection PhpIncludeInspection */
 			require_once $path;
 
-			$class = '\WP_Framework\Package_' . ucwords( $package, '_' );
+			$class = "\\{$namespace}\Package_" . ucwords( $package, '_' );
 			if ( ! class_exists( $class ) ) {
-				self::wp_die( [ 'invalid package', 'package name: ' . $package ], __FILE__, __LINE__ );
+				self::wp_die( [ 'invalid package', 'package name: ' . $key, 'class name: ' . $class ], __FILE__, __LINE__ );
 			}
 
-			$version = self::$_framework_package_versions[ $package ];
+			$version = self::$_framework_package_versions[ $key ];
 			/** @var \WP_Framework\Package_Base $class */
-			$packages[ $package ] = $class::get_instance( $app, $package, $directory, $version );
-			$priority[ $package ] = $packages[ $package ]->get_priority();
+			$packages[ $key ] = $class::get_instance( $app, $key, $directory, $version );
+			$priority[ $key ] = $packages[ $key ]->get_priority();
 		}
 		array_multisort( $priority, $packages );
 		self::$_packages = [];
