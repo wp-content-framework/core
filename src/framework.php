@@ -419,6 +419,17 @@ class WP_Framework {
 	}
 
 	/**
+	 * @return WP_Framework[]
+	 */
+	public function get_instances() {
+		if ( ! $this->_plugins_loaded ) {
+			self::wp_die( 'framework is not ready.', __FILE__, __LINE__ );
+		}
+
+		return self::$_instances;
+	}
+
+	/**
 	 * @return \WP_Framework_Core\Classes\Main|\WP_Framework_Core\Interfaces\Singleton
 	 */
 	private function get_main() {
