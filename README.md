@@ -188,6 +188,10 @@ example
 描画機能を提供します。
   * 依存モジュール
     * common  
+* [view](https://github.com/wp-content-framework/view)  
+共通の描画テンプレートを提供します。
+  * 依存モジュール
+    * presenter  
 * [cron](https://github.com/wp-content-framework/cron)   
 cron機能を提供します。
   * 依存モジュール
@@ -200,6 +204,7 @@ cron機能を提供します。
 管理画面に関する機能を提供します。
   * 依存モジュール
     * controller
+    * view
 * [api](https://github.com/wp-content-framework/api)  
 APIに関する機能を提供します。
   * 依存モジュール
@@ -207,10 +212,7 @@ APIに関する機能を提供します。
 * [upgrade](https://github.com/wp-content-framework/upgrade)  
 更新に関する機能を提供します。
   * 依存モジュール
-    * common
-  * 関連モジュール
-    * presenter  
-    更新情報を表示する場合に必要です。
+    * presenter
 * [mail](https://github.com/wp-content-framework/mail)  
 メール送信機能を提供します。
   * 依存モジュール
@@ -243,7 +245,7 @@ User Agent の判定などの機能を提供します。
 * [custom_post](https://github.com/wp-content-framework/custom_post)  
 カスタム投稿タイプに関する機能を提供します。
   * 依存モジュール
-    * presenter
+    * view
     * db
 * [test](https://github.com/wp-content-framework/test)  
 テスト機能を提供します。
