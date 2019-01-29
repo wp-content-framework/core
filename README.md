@@ -341,6 +341,7 @@ if ( $this->apply_filters( 'minify_js' ) ) {
 |admin_menu_position|管理画面のメニューの表示位置|
 
 ## サンプルプラグイン
+[関連記事提供用プラグイン](https://github.com/technote-space/wp-related-post-jp)  
 [CSRF検知プラグイン](https://github.com/technote-space/csrf-detector)  
 
 # Author
