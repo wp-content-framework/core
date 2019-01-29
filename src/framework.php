@@ -426,7 +426,10 @@ class WP_Framework {
 			self::wp_die( 'framework is not ready.', __FILE__, __LINE__ );
 		}
 
-		return self::$_instances;
+		return array_filter( self::$_instances, function ( $instance ) {
+			/** @var \WP_Framework $instance */
+			return $instance->_plugins_loaded;
+		} );
 	}
 
 	/**
