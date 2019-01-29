@@ -2,7 +2,7 @@
 /**
  * WP_Framework
  *
- * @version 0.0.17
+ * @version 0.0.18
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -426,7 +426,10 @@ class WP_Framework {
 			self::wp_die( 'framework is not ready.', __FILE__, __LINE__ );
 		}
 
-		return self::$_instances;
+		return array_filter( self::$_instances, function ( $instance ) {
+			/** @var \WP_Framework $instance */
+			return $instance->_plugins_loaded;
+		} );
 	}
 
 	/**
