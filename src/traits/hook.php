@@ -62,7 +62,7 @@ trait Hook {
 	 */
 	protected function delete_hook_cache( $key ) {
 		$cache = $this->app->get_shared_object( '_hook_cache' );
-		if ( ! empty( $cache ) && isset( $cache[ $key ] ) ) {
+		if ( ! empty( $cache ) && array_key_exists( $key, $cache ) ) {
 			unset( $cache[ $key ] );
 			$this->app->set_shared_object( '_hook_cache', $cache );
 		}
