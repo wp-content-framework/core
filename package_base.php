@@ -2,7 +2,7 @@
 /**
  * WP_Framework Package Base
  *
- * @version 0.0.13
+ * @version 0.0.16
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -321,18 +321,22 @@ abstract class Package_Base {
 			return [ $this->get_assets_dir() => $this->get_assets_url() ];
 		}
 
-		$view = $this->_app->get_package_instance( 'view' );
+		if ( $this->_app->is_valid_package( 'view' ) ) {
+			$view = $this->_app->get_package_instance( 'view' )->get_assets_settings();
+		} else {
+			$view = [];
+		}
 		if ( ! $this->is_valid_assets() ) {
-			return $view->get_assets_settings();
+			return $view;
 		}
 
 		if ( $allow_multiple ) {
-			$settings                            = $view->get_assets_settings();
+			$settings                            = $view;
 			$settings[ $this->get_assets_dir() ] = $this->get_assets_url();
 		} else {
 			$settings                            = [];
 			$settings[ $this->get_assets_dir() ] = $this->get_assets_url();
-			foreach ( $view->get_assets_settings() as $k => $v ) {
+			foreach ( $view as $k => $v ) {
 				$settings[ $k ] = $v;
 			}
 		}
@@ -348,14 +352,18 @@ abstract class Package_Base {
 			return [ $this->get_views_dir() ];
 		}
 
-		$view = $this->_app->get_package_instance( 'view' );
+		if ( $this->_app->is_valid_package( 'view' ) ) {
+			$view = $this->_app->get_package_instance( 'view' )->get_views_dirs();
+		} else {
+			$view = [];
+		}
 		if ( ! $this->is_valid_view() ) {
-			return $view->get_views_dirs();
+			return $view;
 		}
 
 		$dirs   = [];
 		$dirs[] = $this->get_views_dir();
-		foreach ( $view->get_views_dirs() as $dir ) {
+		foreach ( $view as $dir ) {
 			$dirs[] = $dir;
 		}
 
