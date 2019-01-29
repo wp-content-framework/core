@@ -2,7 +2,7 @@
 /**
  * WP_Framework Package Base
  *
- * @version 0.0.16
+ * @version 0.0.19
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -290,28 +290,6 @@ abstract class Package_Base {
 	}
 
 	/**
-	 * @return string|false
-	 */
-	public function get_assets_dir() {
-		if ( ! $this->is_valid_assets() ) {
-			return false;
-		}
-
-		return $this->get_dir() . DS . 'assets';
-	}
-
-	/**
-	 * @return string|false
-	 */
-	public function get_assets_url() {
-		if ( ! $this->is_valid_assets() ) {
-			return false;
-		}
-
-		return $this->get_url() . '/assets';
-	}
-
-	/**
 	 * @param bool $allow_multiple
 	 *
 	 * @return array
@@ -397,6 +375,20 @@ abstract class Package_Base {
 	 */
 	protected function get_textdomain() {
 		return 'wp_framework-' . $this->_package;
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function get_assets_dir() {
+		return $this->get_dir() . DS . 'assets';
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function get_assets_url() {
+		return $this->get_url() . '/assets';
 	}
 
 	/**
