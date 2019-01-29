@@ -253,19 +253,22 @@ User Agent の判定などの機能を提供します。
     * admin
 
 ## 画面の追加
-[admin](https://github.com/wp-content-framework/admin)  
+[admin](https://github.com/wp-content-framework/admin#%E7%94%BB%E9%9D%A2%E3%81%AE%E8%BF%BD%E5%8A%A0)  
 
 ## API の追加
-[api](https://github.com/wp-content-framework/api)  
+[api](https://github.com/wp-content-framework/api#api-%E3%81%AE%E8%BF%BD%E5%8A%A0)  
 
 ## filter の追加
 今後ドキュメント追加予定
 
 ## cron の追加
-[cron](https://github.com/wp-content-framework/cron)  
+[cron](https://github.com/wp-content-framework/cron#cron-%E3%81%AE%E8%BF%BD%E5%8A%A0)  
 
 ## カスタム投稿タイプの追加
-[custom_post](https://github.com/wp-content-framework/custom_post)  
+[custom_post](https://github.com/wp-content-framework/custom_post#%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E6%8A%95%E7%A8%BF%E3%82%BF%E3%82%A4%E3%83%97%E3%81%AE%E8%BF%BD%E5%8A%A0)  
+
+## テストの追加
+[test](https://github.com/wp-content-framework/test#%E3%83%86%E3%82%B9%E3%83%88%E3%81%AE%E8%BF%BD%E5%8A%A0)  
 
 ## コンフィグ
 ### 設定
