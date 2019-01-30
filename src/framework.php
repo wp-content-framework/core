@@ -2,7 +2,7 @@
 /**
  * WP_Framework
  *
- * @version 0.0.18
+ * @version 0.0.20
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -440,17 +440,9 @@ class WP_Framework {
 			self::wp_die( 'framework is not ready.', __FILE__, __LINE__ );
 		}
 		if ( ! isset( $this->_main ) ) {
-			$required = [
-				'Classes\Main',
-			];
-			$dir      = $this->get_package_directory() . DS . 'src';
-			foreach ( $required as $item ) {
-				$path = $dir . DS . str_replace( '\\', DS, strtolower( $item ) ) . '.php';
-				if ( is_readable( $path ) ) {
-					/** @noinspection PhpIncludeInspection */
-					require_once $path;
-				}
-			}
+			$path = $this->get_package_directory() . DS . 'src' . DS . 'classes' . DS . 'main.php';
+			/** @noinspection PhpIncludeInspection */
+			require_once $path;
 			$this->_main = \WP_Framework_Core\Classes\Main::get_instance( $this );
 		}
 
@@ -525,7 +517,8 @@ class WP_Framework {
 	 * initialize framework
 	 */
 	private static function initialize_framework() {
-		require_once dirname( WP_FRAMEWORK_BOOTSTRAP ) . DS . 'package_base.php';
+		/** @noinspection PhpIncludeInspection */
+		require_once self::$_instances[self::$_framework_package_plugin_names['core']]->_framework_root_directory . DS . 'core' . DS . 'package_base.php';
 		$priority = [];
 		$packages = [];
 		foreach ( self::$_framework_package_plugin_names as $key => $plugin_name ) {
