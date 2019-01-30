@@ -123,7 +123,7 @@ trait Nonce {
 		// Nonce generated 0-12 hours ago
 		$expected = substr( wp_hash( $i . '|' . $action . '|' . $uid . '|' . $token, 'nonce' ), - 12, 10 );
 		if ( hash_equals( $expected, $nonce ) ) {
-			$this->do_action( 'verified_nonce', 1 );
+			$this->do_framework_action( 'verified_nonce', 1 );
 
 			return 1;
 		}
@@ -131,12 +131,12 @@ trait Nonce {
 		// Nonce generated 12-24 hours ago
 		$expected = substr( wp_hash( ( $i - 1 ) . '|' . $action . '|' . $uid . '|' . $token, 'nonce' ), - 12, 10 );
 		if ( hash_equals( $expected, $nonce ) ) {
-			$this->do_action( 'verified_nonce', 2 );
+			$this->do_framework_action( 'verified_nonce', 2 );
 
 			return 2;
 		}
 
-		$this->do_action( 'verify_nonce_failed', $nonce, $action, $check_user, $uid, $token );
+		$this->do_framework_action( 'verify_nonce_failed', $nonce, $action, $check_user, $uid, $token );
 
 		return false;
 	}
