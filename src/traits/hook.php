@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Core Traits Hook
  *
- * @version 0.0.1
+ * @version 0.0.21
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -45,6 +45,13 @@ trait Hook {
 	 */
 	protected function get_filter_prefix() {
 		return $this->get_slug( 'filter_prefix', '' ) . '/';
+	}
+
+	/**
+	 * @return string
+	 */
+	private function get_framework_filter_prefix() {
+		return WP_FRAMEWORK_VENDOR_NAME . '/';
 	}
 
 	/**
@@ -93,15 +100,31 @@ trait Hook {
 	 * @return mixed
 	 */
 	public function apply_filters() {
-		$args = func_get_args();
-		$key  = $args[0];
+		return $this->_apply_filters( $this->get_filter_prefix(), func_get_args() );
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function apply_framework_filters() {
+		return $this->_apply_filters( $this->get_framework_filter_prefix(), func_get_args() );
+	}
+
+	/**
+	 * @param string $prefix
+	 * @param array $args
+	 *
+	 * @return mixed
+	 */
+	private function _apply_filters( $prefix, $args ) {
+		$key = $args[0];
 
 		list( $cache_is_valid, $cache, $is_valid_cache ) = $this->get_hook_cache( $key );
 		if ( $cache_is_valid ) {
 			return $cache;
 		}
 
-		$args[0] = $this->get_filter_prefix() . $key;
+		$args[0] = $prefix . $key;
 		if ( count( $args ) < 2 ) {
 			$args[] = null;
 		} elseif ( ! is_string( $args[1] ) && is_callable( $args[1] ) ) {
@@ -231,8 +254,24 @@ trait Hook {
 	 * do action
 	 */
 	public function do_action() {
-		$args    = func_get_args();
-		$args[0] = $this->get_filter_prefix() . $args[0];
+		$this->_do_action( $this->get_filter_prefix(), func_get_args() );
+	}
+
+	/**
+	 * do framework action
+	 */
+	public function do_framework_action() {
+		$args = func_get_args();
+		$this->_do_action( $this->get_framework_filter_prefix(), $args );
+		$this->_do_action( $this->get_filter_prefix(), $args );
+	}
+
+	/**
+	 * @param string $prefix
+	 * @param array $args
+	 */
+	private function _do_action( $prefix, $args ) {
+		$args[0] = $prefix . $args[0];
 		call_user_func_array( 'do_action', $args );
 	}
 }
