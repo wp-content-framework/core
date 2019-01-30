@@ -49,28 +49,96 @@ trait Nonce {
 	}
 
 	/**
+	 * @param bool $check_user
+	 *
 	 * @return string
 	 */
-	protected function create_nonce() {
-		return wp_create_nonce( $this->get_nonce_action() );
+	protected function create_nonce( $check_user = true ) {
+		return $this->wp_create_nonce( $this->get_nonce_action(), $check_user );
 	}
 
 	/**
+	 * @param string $action
+	 * @param bool $check_user
+	 *
+	 * @return string
+	 */
+	private function wp_create_nonce( $action, $check_user = true ) {
+		if ( $check_user ) {
+			$user = wp_get_current_user();
+			$uid  = (int) $user->ID;
+		} else {
+			$uid = - 1;
+		}
+
+		$token = wp_get_session_token();
+		$i     = wp_nonce_tick();
+
+		return substr( wp_hash( $i . '|' . $action . '|' . $uid . '|' . $token, 'nonce' ), - 12, 10 );
+	}
+
+	/**
+	 * @param bool $check_user
+	 *
 	 * @return bool
 	 */
-	private function nonce_check() {
+	private function nonce_check( $check_user = true ) {
 		$nonce_key = $this->get_nonce_key();
 
-		return ! $this->need_nonce_check( $nonce_key ) || $this->verify_nonce( $this->app->input->request( $nonce_key, '' ) );
+		return ! $this->need_nonce_check( $nonce_key ) || $this->verify_nonce( $this->app->input->request( $nonce_key, '' ), $check_user );
 	}
 
 	/**
 	 * @param string $nonce
+	 * @param bool $check_user
 	 *
 	 * @return false|int
 	 */
-	public function verify_nonce( $nonce ) {
-		return $nonce && wp_verify_nonce( $nonce, $this->get_nonce_action() );
+	public function verify_nonce( $nonce, $check_user = true ) {
+		return $nonce && $this->wp_verify_nonce( $nonce, $this->get_nonce_action(), $check_user );
+	}
+
+	/**
+	 * @param string $nonce
+	 * @param string $action
+	 * @param bool $check_user
+	 *
+	 * @return bool|int
+	 */
+	private function wp_verify_nonce( $nonce, $action, $check_user = true ) {
+		if ( empty( $nonce ) ) {
+			return false;
+		}
+
+		if ( $check_user ) {
+			$user = wp_get_current_user();
+			$uid  = (int) $user->ID;
+		} else {
+			$uid = - 1;
+		}
+
+		$token = wp_get_session_token();
+		$i     = wp_nonce_tick();
+
+		// Nonce generated 0-12 hours ago
+		$expected = substr( wp_hash( $i . '|' . $action . '|' . $uid . '|' . $token, 'nonce' ), - 12, 10 );
+		if ( hash_equals( $expected, $nonce ) ) {
+			$this->do_action( 'verified_nonce', 1 );
+
+			return 1;
+		}
+
+		// Nonce generated 12-24 hours ago
+		$expected = substr( wp_hash( ( $i - 1 ) . '|' . $action . '|' . $uid . '|' . $token, 'nonce' ), - 12, 10 );
+		if ( hash_equals( $expected, $nonce ) ) {
+			$this->do_action( 'verified_nonce', 2 );
+
+			return 2;
+		}
+
+		$this->do_action( 'verify_nonce_failed', $nonce, $action, $check_user, $uid, $token );
+
+		return false;
 	}
 
 	/**
