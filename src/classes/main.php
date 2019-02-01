@@ -46,7 +46,6 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 class Main {
 
 	/**
-	 * @since 0.0.4 #8
 	 * @var Main[] $_instances
 	 */
 	private static $_instances = [];
@@ -82,9 +81,14 @@ class Main {
 	private $_class_map;
 
 	/**
-	 * @var array $_target_package
+	 * @var array $_class_target_package
 	 */
-	private $_target_package;
+	private $_class_target_package;
+
+	/**
+	 * @var array $_namespace_target_package
+	 */
+	private $_namespace_target_package;
 
 	/**
 	 * @var array $_property_instances
@@ -92,13 +96,6 @@ class Main {
 	private $_property_instances = [];
 
 	/**
-	 * @var string $_namespace_prefix
-	 */
-	private $_namespace_prefix = WP_CONTENT_FRAMEWORK . '_';
-
-	/**
-	 * @since 0.0.4 #8
-	 *
 	 * @param \WP_Framework $app
 	 *
 	 * @return Main
@@ -145,26 +142,28 @@ class Main {
 		if ( ! function_exists( 'get_plugin_data' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
-		$this->_plugin_data    = $this->app->is_theme ? wp_get_theme() : get_plugin_data( $this->app->plugin_file, false, false );
-		$this->_properties     = [];
-		$this->_target_package = [];
-		$this->_class_map      = [];
+		$this->_plugin_data              = $this->app->is_theme ? wp_get_theme() : get_plugin_data( $this->app->plugin_file, false, false );
+		$this->_properties               = [];
+		$this->_class_target_package     = [];
+		$this->_namespace_target_package = [];
+		$this->_class_map                = [];
 		foreach ( $this->app->get_packages() as $package ) {
 			$map = $package->get_config( 'map', $this->app );
 			foreach ( $map as $name => $class ) {
 				if ( is_array( $class ) ) {
 					foreach ( $class as $k => $v ) {
-						$k                           = ltrim( $k, '\\' );
-						$v                           = ltrim( $v, '\\' );
-						$this->_class_map [ $k ]     = $v;
-						$this->_target_package[ $v ] = $package->get_package();
+						$k                                 = ltrim( $k, '\\' );
+						$v                                 = ltrim( $v, '\\' );
+						$this->_class_map [ $k ]           = $v;
+						$this->_class_target_package[ $v ] = $package->get_package();
 					}
 				} else {
-					$class                           = ltrim( $class, '\\' );
-					$this->_properties[ $name ]      = $class;
-					$this->_target_package[ $class ] = $package->get_package();
+					$class                                 = ltrim( $class, '\\' );
+					$this->_properties[ $name ]            = $class;
+					$this->_class_target_package[ $class ] = $package->get_package();
 				}
 			}
+			$this->_namespace_target_package[ $package->get_namespace() ] = $package->get_package();
 		}
 	}
 
@@ -193,8 +192,6 @@ class Main {
 	}
 
 	/**
-	 * @since 0.0.5 #13, #14
-	 *
 	 * @param string $class
 	 *
 	 * @return bool
@@ -205,13 +202,13 @@ class Main {
 		if ( isset( $this->_property_instances[ $this->_properties['define'] ] ) && preg_match( "#\A{$this->define->plugin_namespace}#", $class ) ) {
 			$class = preg_replace( "#\A{$this->define->plugin_namespace}#", '', $class );
 			$dirs  = $this->define->plugin_src_dir;
-		} elseif ( isset( $this->_target_package[ $class ] ) ) {
-			$this->app->get_package_instance( $this->_target_package[ $class ] )->load_class( $class );
-		} elseif ( preg_match( "#\A{$this->_namespace_prefix}#", $class ) ) {
-			foreach ( $this->app->get_packages() as $package ) {
-				if ( $package->load_class( $class ) ) {
-					return true;
-				}
+		} elseif ( isset( $this->_class_target_package[ $class ] ) ) {
+			if ( $this->app->get_package_instance( $this->_class_target_package[ $class ] )->load_class( $class ) ) {
+				return true;
+			}
+		} elseif ( preg_match( '#\A(\w+)\\\\#', $class, $matches ) && isset( $this->_namespace_target_package[ $matches[1] ] ) ) {
+			if ( $this->app->get_package_instance( $this->_namespace_target_package[ $matches[1] ] )->load_class( $class ) ) {
+				return true;
 			}
 		}
 
