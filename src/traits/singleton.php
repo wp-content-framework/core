@@ -229,31 +229,6 @@ trait Singleton {
 	}
 
 	/**
-	 * @param string $name
-	 * @param callable $func
-	 *
-	 * @return bool
-	 */
-	protected function lock_process( $name, callable $func ) {
-		$name .= '__LOCK_PROCESS__';
-		$this->app->option->reload_options();
-		$check = $this->app->option->get( $name );
-		if ( ! empty( $check ) ) {
-			return false;
-		}
-		$rand = md5( uniqid() );
-		$this->app->option->set( $name, $rand );
-		$this->app->option->reload_options();
-		if ( $this->app->option->get( $name ) != $rand ) {
-			return false;
-		}
-		$func();
-		$this->app->option->delete( $name );
-
-		return true;
-	}
-
-	/**
 	 * @return string
 	 */
 	public function get_class_name() {
