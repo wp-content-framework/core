@@ -2,7 +2,7 @@
 /**
  * WP_Framework Package Base
  *
- * @version 0.0.19
+ * @version 0.0.22
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -100,7 +100,7 @@ abstract class Package_Base {
 	 * @return string
 	 */
 	public function get_namespace() {
-		! isset( $this->_namespace ) and $this->_namespace = "WP_Framework_" . ucwords( $this->_package, '_' );
+		! isset( $this->_namespace ) and $this->_namespace = 'WP_Framework_' . ucwords( $this->_package, '_' );
 
 		return $this->_namespace;
 	}
