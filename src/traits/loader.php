@@ -195,12 +195,12 @@ trait Loader {
 	}
 
 	/**
-	 * @param array $class_setting
+	 * @param array|false $class_setting
 	 * @param string $instanceof
 	 *
 	 * @return bool|Singleton
 	 */
-	protected function get_class_instance( array $class_setting, $instanceof ) {
+	protected function get_class_instance( $class_setting, $instanceof ) {
 		if ( false !== $class_setting && class_exists( $class_setting[0] ) && is_subclass_of( $class_setting[0], '\WP_Framework_Core\Interfaces\Singleton' ) ) {
 			try {
 				/** @var Singleton[] $class_setting */
