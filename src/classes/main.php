@@ -380,13 +380,7 @@ class Main {
 		if ( ! $this->app->is_valid_package( 'admin' ) ) {
 			return;
 		}
-		if ( ! isset( $this->admin ) ) {
-			add_action( 'admin_notices', function () use ( $message, $group, $error, $escape ) {
-				$this->admin->add_message( $message, $group, $error, $escape );
-			}, 9 );
-		} else {
-			$this->admin->add_message( $message, $group, $error, $escape );
-		}
+		$this->admin->add_message( $message, $group, $error, $escape );
 	}
 
 	/**

@@ -100,7 +100,7 @@ abstract class Package_Base {
 	 * @return string
 	 */
 	public function get_namespace() {
-		! isset( $this->_namespace ) and $this->_namespace = "WP_Framework_" . ucwords( $this->_package, '_' );
+		! isset( $this->_namespace ) and $this->_namespace = 'WP_Framework_' . ucwords( $this->_package, '_' );
 
 		return $this->_namespace;
 	}
