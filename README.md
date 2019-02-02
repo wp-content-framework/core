@@ -178,16 +178,14 @@ example
     * common
 * [common](https://github.com/wp-content-framework/common)  
 共通で使用する機能を提供します。
-  * 依存モジュール
-    * core
 * [db](https://github.com/wp-content-framework/db)  
 データベースを扱う機能を提供します。
   * 依存モジュール
-    * common
+    * core
 * [presenter](https://github.com/wp-content-framework/presenter)  
 描画機能を提供します。
   * 依存モジュール
-    * common  
+    * core  
 * [view](https://github.com/wp-content-framework/view)  
 共通の描画テンプレートを提供します。
   * 依存モジュール
@@ -195,7 +193,7 @@ example
 * [cron](https://github.com/wp-content-framework/cron)   
 cron機能を提供します。
   * 依存モジュール
-    * common 
+    * core 
 * [controller](https://github.com/wp-content-framework/controller)  
 コントローラ機能を提供します。
   * 依存モジュール
@@ -229,19 +227,19 @@ APIに関する機能を提供します。
 * [post](https://github.com/wp-content-framework/post)  
 投稿を扱う機能を提供します。
   * 依存モジュール
-    * common
+    * core
 * [device](https://github.com/wp-content-framework/device)  
 User Agent の判定などの機能を提供します。
   * 依存モジュール
-    * common
+    * core
 * [social](https://github.com/wp-content-framework/social)  
 ソーシャルログイン機能を提供します。
   * 依存モジュール
-    * common
+    * core
 * [session](https://github.com/wp-content-framework/session)  
 セッション機能を提供します。
   * 依存モジュール
-    * common
+    * core
 * [custom_post](https://github.com/wp-content-framework/custom_post)  
 カスタム投稿タイプに関する機能を提供します。
   * 依存モジュール
