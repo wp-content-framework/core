@@ -2,7 +2,7 @@
 /**
  * WP_Framework Test Bootstrap
  *
- * @version 0.0.1
+ * @version 0.0.24
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -10,6 +10,10 @@
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
+	if ( ! defined( 'DS' ) ) {
+		define( 'DS', DIRECTORY_SEPARATOR );
+	}
+
 	/**
 	 * @param string $dir
 	 *
@@ -53,10 +57,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	$_SERVER['REMOTE_ADDR']     = '127.0.0.1';
 	$_SERVER['REQUEST_URI']     = '/';
 	$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36';
-
-	// to use add_action
-	/** @noinspection PhpIncludeInspection */
-	require_once dirname( $wp_blog_header ) . DS . 'wp-includes' . DS . 'plugin.php';
 
 	// load wordpress
 	/** @noinspection PhpIncludeInspection */
