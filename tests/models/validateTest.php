@@ -28,6 +28,9 @@ class ValidateTest extends \WP_Framework_Core\Tests\TestCase {
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
+		$package = \Phake::mock( '\WP_Framework\Package_Core' );
+		\Phake::when( $package )->get_translate_settings()->thenReturn( [] );
+		\Phake::when( static::$app )->get_package_instance( 'common' )->thenReturn( $package );
 		static::$_validate = Misc\Validate::get_instance( static::$app );
 	}
 

@@ -55,7 +55,7 @@ trait Translate {
 	protected function get_textdomains() {
 		$package = $this->get_package();
 		if ( ! isset( self::$_textdomains[ $package ][ $this->app->plugin_name ] ) ) {
-			self::$_textdomains[ $package ] = [];
+			self::$_textdomains[ $package ][ $this->app->plugin_name ] = [];
 			! empty( $this->app->define->plugin_textdomain ) and self::$_textdomains[ $package ][ $this->app->plugin_name ][ $this->app->define->plugin_textdomain ] = $this->app->define->plugin_languages_dir;
 			$instance = $this->get_package_instance();
 			foreach ( $instance->get_translate_settings() as $textdomain => $path ) {
