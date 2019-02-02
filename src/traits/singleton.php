@@ -65,17 +65,18 @@ trait Singleton {
 	 * @return \WP_Framework_Core\Traits\Singleton
 	 */
 	public static function get_instance( \WP_Framework $app ) {
-		$class = get_called_class();
-		if ( false === $class ) {
-			$class = get_class();
+		$_class = get_called_class();
+		if ( false === $_class ) {
+			$_class = get_class();
 		}
 
-		list( $mapped, $class ) = $app->get_mapped_class( $class );
+		list( $mapped, $class ) = $app->get_mapped_class( $_class );
 		if ( $mapped ) {
 			$key = $app->plugin_name;
 		} else {
 			$key = static::is_shared_class() ? '' : $app->plugin_name;
 		}
+		empty( $class ) and $class = $_class;
 		if ( empty( self::$_instances[ $key ] ) || ! array_key_exists( $class, self::$_instances[ $key ] ) ) {
 			try {
 				$reflection = new \ReflectionClass( $class );
