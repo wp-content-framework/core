@@ -81,7 +81,7 @@ trait Singleton {
 			try {
 				$reflection = new \ReflectionClass( $class );
 			} catch ( \Exception $e ) {
-				$app->wp_die( 'unexpected error has occurred.', __FILE__, __LINE__ );
+				\WP_Framework::wp_die( [ 'unexpected error has occurred.', $e->getMessage(), $class, $_class ], __FILE__, __LINE__ );
 				exit;
 			}
 			if ( $reflection->isAbstract() ) {
