@@ -250,7 +250,7 @@ class Main {
 	private function setup_property() {
 		if ( $this->app->is_uninstall() ) {
 			foreach ( $this->_properties as $name => $class ) {
-				if ( $this->app->is_valid_package( $name ) ) {
+				if ( ! $this->app->is_valid_package( $name ) ) {
 					continue;
 				}
 				$this->$name;
