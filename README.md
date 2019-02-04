@@ -47,9 +47,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-@require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+if ( defined( 'EXAMPLE_PLUGIN' ) ) {
+	return;
+}
 
 define( 'EXAMPLE_PLUGIN', 'Example_Plugin' );
+
+@require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 WP_Framework::get_instance( EXAMPLE_PLUGIN, __FILE__ );
 ```
@@ -116,9 +120,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-@require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+if ( defined( 'EXAMPLE_THEME' ) ) {
+	return;
+}
 
 define( 'EXAMPLE_THEME', 'Example_Theme' );
+
+@require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 WP_Framework::get_instance( EXAMPLE_THEME, __FILE__ );
 ```
