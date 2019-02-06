@@ -272,7 +272,7 @@ abstract class Package_Base {
 	protected function load_package_config( $name ) {
 		$package_config = $this->load_config_file( $this->get_dir() . DS . 'configs', $name );
 
-		return apply_filters( 'wp_framework/load_config', $package_config, $name, $package_config );
+		return apply_filters( 'wp_framework/load_package_config', $package_config, $name, $package_config );
 	}
 
 	/**
@@ -284,7 +284,7 @@ abstract class Package_Base {
 	protected function load_plugin_config( $name, $app ) {
 		$plugin_config = $this->load_config_file( $app->plugin_dir . DS . 'configs' . DS . $name, $this->get_package() );
 
-		return apply_filters( 'wp_framework/load_config', $plugin_config, $name, $plugin_config, $app );
+		return apply_filters( 'wp_framework/load_plugin_config', $plugin_config, $name, $plugin_config, $app );
 	}
 
 	/**
