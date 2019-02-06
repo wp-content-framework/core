@@ -568,7 +568,7 @@ class WP_Framework {
 			} );
 
 			add_action( 'after_switch_theme', function () {
-				$this->plugins_loaded();
+				$this->plugins_loaded( true );
 				if ( $this->is_enough_version() ) {
 					$this->main_init();
 					$this->filter->do_action( 'app_activated', $this );
