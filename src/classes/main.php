@@ -242,6 +242,10 @@ class Main {
 		$this->filter->do_action( 'app_initialize', $this );
 		$this->setup_property();
 		$this->filter->do_action( 'app_initialized', $this );
+
+		if ( ! $this->option->is_app_activated() ) {
+			$this->filter->do_action( 'app_activated' );
+		}
 	}
 
 	/**
