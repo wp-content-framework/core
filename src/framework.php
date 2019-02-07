@@ -743,7 +743,6 @@ class WP_Framework {
 		}
 
 		$app->_is_uninstall = true;
-		$app->initialize_framework( true );
 		if ( $app->is_enough_version() ) {
 			$app->main_init();
 			$app->uninstall->uninstall();
