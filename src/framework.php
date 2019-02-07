@@ -2,7 +2,7 @@
 /**
  * WP_Framework
  *
- * @version 0.0.29
+ * @version 0.0.30
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -74,6 +74,7 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  * @method void enqueue_style( \WP_Framework_Core\Interfaces\Package $instance, string $handle, string $file, array $depends = [], string | bool | null $ver = false, string $media = 'all', string $dir = 'css' )
  * @method void enqueue_script( \WP_Framework_Core\Interfaces\Package $instance, string $handle, string $file, array $depends = [], string | bool | null $ver = false, bool $in_footer = true, string $dir = 'js' )
  * @method bool localize_script( \WP_Framework_Core\Interfaces\Package $instance, string $handle, string $name, array $data )
+ * @method bool lock_process( string $name, callable $func, int $timeout = 60 )
  */
 class WP_Framework {
 
