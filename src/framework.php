@@ -572,16 +572,6 @@ class WP_Framework {
 	}
 
 	/**
-	 * load setup file
-	 */
-	private function load_setup() {
-		if ( ! $this->is_enough_version() ) {
-			return;
-		}
-		$this->load_plugin_file( 'setup' );
-	}
-
-	/**
 	 * setup actions
 	 */
 	private function setup_actions() {
@@ -674,6 +664,16 @@ class WP_Framework {
 			return;
 		}
 		$this->load_plugin_file( 'functions' );
+	}
+
+	/**
+	 * load setup file
+	 */
+	private function load_setup() {
+		if ( ! $this->is_enough_version() ) {
+			return;
+		}
+		$this->load_plugin_file( 'setup' );
 	}
 
 	/**
