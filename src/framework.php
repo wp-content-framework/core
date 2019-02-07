@@ -2,7 +2,7 @@
 /**
  * WP_Framework
  *
- * @version 0.0.29
+ * @version 0.0.30
  * @author technote-space
  * @copyright technote-space All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
