@@ -555,4 +555,15 @@ class Main {
 		! isset( $target ) and $target = $this->app->plugin_name;
 		unset( self::$_shared_object[ $target ][ $key ] );
 	}
+
+	/**
+	 * @param string $name
+	 * @param callable $func
+	 * @param int $timeout
+	 *
+	 * @return bool
+	 */
+	public function lock_process( $name, callable $func, $timeout = 60 ) {
+		return $this->utility->lock_process( $this->app, $name, $func, $timeout );
+	}
 }
