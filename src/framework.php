@@ -93,9 +93,9 @@ class WP_Framework {
 	private static $_framework_package_plugin_names = [];
 
 	/**
-	 * @var bool $_is_framework_initialized
+	 * @var bool $_packages_loaded
 	 */
-	private static $_is_framework_initialized = false;
+	private static $_packages_loaded = false;
 
 	/**
 	 * @var \WP_Framework\Package_Base[]
@@ -622,8 +622,8 @@ class WP_Framework {
 		}
 		$this->_framework_initialized = true;
 
-		if ( ! self::$_is_framework_initialized || $load_packages ) {
-			self::$_is_framework_initialized = true;
+		if ( ! self::$_packages_loaded || $load_packages ) {
+			self::$_packages_loaded = true;
 			self::load_packages();
 		}
 
