@@ -714,9 +714,9 @@ class WP_Framework {
 	 */
 	private function get_unsupported_php_version_message() {
 		$messages   = [];
-		$messages[] = sprintf( $this->utility->translate( 'Your PHP version is %s.' ), phpversion() );
-		$messages[] = $this->utility->translate( 'Please update your PHP.' );
-		$messages[] = sprintf( $this->utility->translate( '<strong>%s</strong> requires PHP version %s or above.' ), $this->utility->translate( $this->original_plugin_name ), $this->_required_php_version );
+		$messages[] = sprintf( $this->filter->translate( 'Your PHP version is %s.' ), phpversion() );
+		$messages[] = $this->filter->translate( 'Please update your PHP.' );
+		$messages[] = sprintf( $this->filter->translate( '<strong>%s</strong> requires PHP version %s or above.' ), $this->filter->translate( $this->original_plugin_name ), $this->_required_php_version );
 
 		return implode( '<br>', $messages );
 	}
@@ -727,9 +727,9 @@ class WP_Framework {
 	private function get_unsupported_wp_version_message() {
 		global $wp_version;
 		$messages   = [];
-		$messages[] = sprintf( $this->utility->translate( 'Your WordPress version is %s.' ), $wp_version );
-		$messages[] = $this->utility->translate( 'Please update your WordPress.' );
-		$messages[] = sprintf( $this->utility->translate( '<strong>%s</strong> requires WordPress version %s or above.' ), $this->utility->translate( $this->original_plugin_name ), $this->_required_wordpress_version );
+		$messages[] = sprintf( $this->filter->translate( 'Your WordPress version is %s.' ), $wp_version );
+		$messages[] = $this->filter->translate( 'Please update your WordPress.' );
+		$messages[] = sprintf( $this->filter->translate( '<strong>%s</strong> requires WordPress version %s or above.' ), $this->filter->translate( $this->original_plugin_name ), $this->_required_wordpress_version );
 
 		return implode( '<br>', $messages );
 	}
