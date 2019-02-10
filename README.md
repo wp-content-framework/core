@@ -251,9 +251,9 @@ User Agent の判定などの機能を提供します。
 * [custom_post](https://github.com/wp-content-framework/custom_post)  
 カスタム投稿タイプに関する機能を提供します。
   * 依存モジュール
-    * view
     * db
     * session
+    * admin
 * [test](https://github.com/wp-content-framework/test)  
 テスト機能を提供します。
   * 依存モジュール
