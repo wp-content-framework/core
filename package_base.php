@@ -368,10 +368,10 @@ abstract class Package_Base {
 	 */
 	public function get_translate_settings() {
 		return $this->get_settings_common( 'common', 'translate', function () {
-			return [ $this->get_textdomain() => $this->get_language_directory() ];
+			return [ $this->get_textdomain() => $this->get_language_dir() ];
 		}, 'get_translate_settings', 'is_valid_translate', function ( $default ) {
 			$settings                            = [];
-			$settings[ $this->get_textdomain() ] = $this->get_language_directory();
+			$settings[ $this->get_textdomain() ] = $this->get_language_dir();
 			foreach ( $default as $k => $v ) {
 				$settings[ $k ] = $v;
 			}
@@ -442,7 +442,7 @@ abstract class Package_Base {
 	/**
 	 * @return string
 	 */
-	protected function get_language_directory() {
+	protected function get_language_dir() {
 		return $this->get_dir() . DS . 'languages';
 	}
 }
