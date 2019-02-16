@@ -282,6 +282,13 @@ abstract class Package_Base {
 	/**
 	 * @return bool
 	 */
+	protected function is_valid_admin() {
+		return false;
+	}
+
+	/**
+	 * @return bool
+	 */
 	protected function is_valid_api() {
 		return false;
 	}
@@ -390,6 +397,23 @@ abstract class Package_Base {
 	/**
 	 * @return array
 	 */
+	public function get_admin_namespaces() {
+		return $this->get_settings_common( '', 'admin_namespace', function () {
+			return [ $this->get_admin_namespace() ];
+		}, 'get_admin_namespaces', 'is_valid_admin', function ( $default ) {
+			$namespaces   = [];
+			$namespaces[] = $this->get_admin_namespace();
+			foreach ( $default as $namespace ) {
+				$namespaces[] = $namespace;
+			}
+
+			return $namespaces;
+		} );
+	}
+
+	/**
+	 * @return array
+	 */
 	public function get_api_namespaces() {
 		return $this->get_settings_common( '', 'api_namespace', function () {
 			return [ $this->get_api_namespace() ];
@@ -468,6 +492,13 @@ abstract class Package_Base {
 	 */
 	protected function get_language_dir() {
 		return $this->get_dir() . DS . 'languages';
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function get_admin_namespace() {
+		return $this->get_namespace() . '\\Classes\\Controllers\\Admin\\';
 	}
 
 	/**
