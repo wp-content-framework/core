@@ -80,7 +80,11 @@ trait Translate {
 	 */
 	private function setup_textdomain( $textdomain, $dir ) {
 		if ( ! isset( self::$_loaded_languages[ $textdomain ] ) ) {
-			$locale = apply_filters( 'plugin_locale', determine_locale(), $textdomain );
+			if ( function_exists( 'determine_locale' ) ) {
+				$locale = apply_filters( 'plugin_locale', determine_locale(), $textdomain );
+			} else {
+				$locale = apply_filters( 'plugin_locale', get_locale(), $textdomain );
+			}
 			$mofile = $textdomain . '-' . $locale . '.mo';
 			$path   = $dir . DS . $mofile;
 
