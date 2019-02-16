@@ -280,6 +280,13 @@ abstract class Package_Base {
 	}
 
 	/**
+	 * @return bool
+	 */
+	protected function is_valid_api() {
+		return false;
+	}
+
+	/**
 	 * @param string $name
 	 *
 	 * @return array
@@ -381,6 +388,23 @@ abstract class Package_Base {
 	}
 
 	/**
+	 * @return array
+	 */
+	public function get_api_namespaces() {
+		return $this->get_settings_common( '', 'api_namespace', function () {
+			return [ $this->get_api_namespace() ];
+		}, 'get_api_namespaces', 'is_valid_api', function ( $default ) {
+			$namespaces   = [];
+			$namespaces[] = $this->get_api_namespace();
+			foreach ( $default as $dir ) {
+				$namespaces[] = $dir;
+			}
+
+			return $namespaces;
+		} );
+	}
+
+	/**
 	 * @param string $default_package
 	 * @param string $cache_key
 	 * @param callable $get_default
@@ -444,5 +468,12 @@ abstract class Package_Base {
 	 */
 	protected function get_language_directory() {
 		return $this->get_dir() . DS . 'languages';
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function get_api_namespace() {
+		return $this->get_namespace() . '\\Classes\\Controllers\\Api\\';
 	}
 }
