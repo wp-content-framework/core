@@ -61,7 +61,7 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  * @method mixed get_session( string $key, mixed $default = '' )
  * @method mixed set_session( string $key, mixed $value, int | null $duration = null )
  * @method bool user_can( null | string | false $capability = null )
- * @method void log( string $message, mixed $context = null, string $level = '' )
+ * @method void log( mixed $message, mixed $context = null, string $level = '' )
  * @method void add_message( string $message, string $group = '', bool $error = false, bool $escape = true )
  * @method string get_page_slug( string $file )
  * @method mixed get_shared_object( string $key, string | null $target = null )
