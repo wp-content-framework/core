@@ -215,10 +215,21 @@ cron機能を提供します。
 APIに関する機能を提供します。
   * 依存モジュール
     * controller
-* [upgrade](https://github.com/wp-content-framework/upgrade)  
-更新に関する機能を提供します。
+* [update](https://github.com/wp-content-framework/update)  
+更新情報を表示する機能を提供します。
   * 依存モジュール
-    * presenter
+    * presenter  
+* [update_check](https://github.com/wp-content-framework/update_check)  
+公式ディレクトリ以外で更新を行う機能を提供します。
+  * 依存モジュール
+    * core  
+* [upgrade](https://github.com/wp-content-framework/upgrade)  
+アップグレードに関する機能を提供します。
+  * 依存モジュール
+    * core
+  * 関連モジュール
+    * log  
+    アップグレード履歴を保存する場合に必要です。
 * [mail](https://github.com/wp-content-framework/mail)  
 メール送信機能を提供します。
   * 依存モジュール
