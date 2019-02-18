@@ -308,12 +308,12 @@ class Main {
 
 	/**
 	 * @param string $name
-	 * @param string $key
+	 * @param string|null $key
 	 * @param mixed $default
 	 *
 	 * @return mixed
 	 */
-	public function get_config( $name, $key, $default = null ) {
+	public function get_config( $name, $key = null, $default = null ) {
 		return $this->config->get( $name, $key, $default );
 	}
 

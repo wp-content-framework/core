@@ -56,7 +56,7 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  * @method bool has_initialized()
  * @method array get_mapped_class( string $class )
  * @method string get_plugin_version()
- * @method mixed get_config( string $name, string $key, mixed $default = null )
+ * @method mixed get_config( string $name, string | null $key = null, mixed $default = null )
  * @method mixed get_option( string $key, mixed $default = '' )
  * @method mixed get_session( string $key, mixed $default = '' )
  * @method mixed set_session( string $key, mixed $value, int | null $duration = null )
