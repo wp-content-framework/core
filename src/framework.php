@@ -418,18 +418,19 @@ class WP_Framework {
 	 */
 	public static function wp_die( $message, $file, $line, $title = '', $output_file_info = true ) {
 		! is_array( $message ) and $message = [ '[wp content framework]', $message ];
-		if ( $output_file_info && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+		if ( $output_file_info ) {
 			$message[] = 'File: ' . $file;
 			$message[] = 'Line: ' . $line;
 		}
-		if ( ! is_admin() ) {
+
+		if ( is_admin() || ( defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'WP_DEBUG_DISPLAY' ) && WP_DEBUG_DISPLAY ) ) {
+			$message = '<ul><li>' . implode( '</li><li>', $message ) . '</li></ul>';
+			wp_die( $message, $title );
+		} else {
 			if ( $title ) {
 				error_log( $title );
 			}
 			error_log( print_r( $message, true ) );
-		} else {
-			$message = '<ul><li>' . implode( '</li><li>', $message ) . '</li></ul>';
-			wp_die( $message, $title );
 		}
 		exit;
 	}
