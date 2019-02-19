@@ -422,8 +422,15 @@ class WP_Framework {
 			$message[] = 'File: ' . $file;
 			$message[] = 'Line: ' . $line;
 		}
-		$message = '<ul><li>' . implode( '</li><li>', $message ) . '</li></ul>';
-		wp_die( $message, $title );
+		if ( ! is_admin() ) {
+			if ( $title ) {
+				error_log( $title );
+			}
+			error_log( print_r( $message, true ) );
+		} else {
+			$message = '<ul><li>' . implode( '</li><li>', $message ) . '</li></ul>';
+			wp_die( $message, $title );
+		}
 		exit;
 	}
 
