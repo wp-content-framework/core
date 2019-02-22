@@ -394,12 +394,13 @@ class Main {
 	 * @param string $group
 	 * @param bool $error
 	 * @param bool $escape
+	 * @param null|array $override_allowed_html
 	 */
-	public function add_message( $message, $group = '', $error = false, $escape = true ) {
+	public function add_message( $message, $group = '', $error = false, $escape = true, $override_allowed_html = null ) {
 		if ( ! $this->app->is_valid_package( 'admin' ) ) {
 			return;
 		}
-		$this->admin->add_message( $message, $group, $error, $escape );
+		$this->admin->add_message( $message, $group, $error, $escape, $override_allowed_html );
 	}
 
 	/**
