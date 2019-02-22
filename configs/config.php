@@ -21,7 +21,7 @@ return [
 	// required wordpress version
 	'required_wordpress_version' => WP_FRAMEWORK_REQUIRED_WP_VERSION,
 
-	// filter prefix suffix
-	'filter_prefix_suffix'       => '/',
+	// filter separator
+	'filter_separator'           => '/',
 
 ];

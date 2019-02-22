@@ -46,7 +46,7 @@ trait Hook {
 	 * @return string
 	 */
 	protected function get_filter_prefix() {
-		! isset( $this->_filter_prefix ) and $this->_filter_prefix = $this->get_slug( 'filter_prefix', '' ) . $this->app->get_config( 'config', 'filter_prefix_suffix' );
+		! isset( $this->_filter_prefix ) and $this->_filter_prefix = $this->get_slug( 'filter_prefix', '' ) . $this->app->get_config( 'config', 'filter_separator' );
 
 		return $this->_filter_prefix;
 	}
