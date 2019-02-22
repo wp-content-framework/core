@@ -22,6 +22,8 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
  */
 trait Hook {
 
+	private $_filter_prefix;
+
 	/**
 	 * load cache settings
 	 */
@@ -44,7 +46,9 @@ trait Hook {
 	 * @return string
 	 */
 	protected function get_filter_prefix() {
-		return $this->get_slug( 'filter_prefix', '' ) . '/';
+		! isset( $this->_filter_prefix ) and $this->_filter_prefix = $this->get_slug( 'filter_prefix', '' ) . $this->app->get_config( 'config', 'filter_prefix_suffix' );
+
+		return $this->_filter_prefix;
 	}
 
 	/**
