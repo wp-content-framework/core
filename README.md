@@ -354,6 +354,7 @@ if ( $this->apply_filters( 'minify_js' ) ) {
 |---|---|
 |required_php_version|動作に必要なPHPの要求バージョン \[default = 5.6]|
 |required_wordpress_version|動作に必要なWordPressの要求バージョン \[default = 3.9.3]|
+|filter_separator|filter prefix の separator \[default = '/']|
 
 - configs/settings.php
 
