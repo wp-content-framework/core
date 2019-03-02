@@ -265,6 +265,7 @@ User Agent の判定などの機能を提供します。
     * db
     * session
     * admin
+    * api
 * [test](https://github.com/wp-content-framework/test)  
 テスト機能を提供します。
   * 依存モジュール
