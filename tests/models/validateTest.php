@@ -3,8 +3,8 @@
  * WP_Framework_Core Models Validate Test
  *
  * @version 0.0.25
- * @author technote-space
- * @copyright technote-space All Rights Reserved
+ * @author Technote
+ * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
  */
@@ -16,7 +16,7 @@ require_once __DIR__ . DS . 'misc' . DS . 'validate.php';
 /**
  * Class ValidateTest
  * @package WP_Framework_Core\Tests\Models
- * @group technote
+ * @group wp_framework
  * @group models
  */
 class ValidateTest extends \WP_Framework_Core\Tests\TestCase {

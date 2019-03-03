@@ -372,5 +372,5 @@ if ( $this->apply_filters( 'minify_js' ) ) {
 
 # Author
 
-[GitHub (technote-space)](https://github.com/technote-space)  
-[homepage](https://technote.space)
+[GitHub (Technote)](https://github.com/technote-space)  
+[Blog](https://technote.space)
