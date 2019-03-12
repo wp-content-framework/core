@@ -31,6 +31,9 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  * @property \WP_Framework_Common\Classes\Models\Filter $filter
  * @property \WP_Framework_Common\Classes\Models\Uninstall $uninstall
  * @property \WP_Framework_Common\Classes\Models\Utility $utility
+ * @property \WP_Framework_Common\Classes\Models\Array_Utility $array
+ * @property \WP_Framework_Common\Classes\Models\String_Utility $string
+ * @property \WP_Framework_Common\Classes\Models\File_Utility $file
  * @property \WP_Framework_Common\Classes\Models\Option $option
  * @property \WP_Framework_Common\Classes\Models\User $user
  * @property \WP_Framework_Common\Classes\Models\Input $input
