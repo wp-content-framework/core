@@ -44,6 +44,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
  * @property \WP_Framework_Update\Classes\Models\Update $update
  * @property \WP_Framework_Update_Check\Classes\Models\Update_Check $update_check
  * @property \WP_Framework_Upgrade\Classes\Models\Upgrade $upgrade
+ * @property \WP_Framework_Cache\Classes\Models\Cache $cache
  */
 class Main {
 
