@@ -55,6 +55,7 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  * @property \WP_Framework_Update\Classes\Models\Update $update
  * @property \WP_Framework_Update_Check\Classes\Models\Update_Check $update_check
  * @property \WP_Framework_Upgrade\Classes\Models\Upgrade $upgrade
+ * @property \WP_Framework_Cache\Classes\Models\Cache $cache
  *
  * @method void main_init()
  * @method bool has_initialized()

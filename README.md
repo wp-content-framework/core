@@ -184,8 +184,11 @@ example
 最新のモジュールの読み込み機能などのコアの機能を提供します。  
   * 依存モジュール
     * common
+    * cache
 * [common](https://github.com/wp-content-framework/common)  
 共通で使用する機能を提供します。
+* [cache](https://github.com/wp-content-framework/cache)  
+キャッシュ機能を提供します。
 * [db](https://github.com/wp-content-framework/db)  
 データベースを扱う機能を提供します。
   * 依存モジュール
