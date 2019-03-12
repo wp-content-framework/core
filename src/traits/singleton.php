@@ -242,4 +242,14 @@ trait Singleton {
 	public function get_reflection() {
 		return $this->_reflection;
 	}
+
+	/**
+	 * @param string $name
+	 * @param array $args
+	 *
+	 * @return mixed
+	 */
+	public function __call( $name, array $args ) {
+		return $this->app->deprecated->call( static::class, $this, $name, $args );
+	}
 }
