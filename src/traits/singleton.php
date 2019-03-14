@@ -22,7 +22,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
  */
 trait Singleton {
 
-	use Readonly, Translate, Package;
+	use Readonly, Translate, Utility, Package;
 
 	/**
 	 * @var Singleton[] $_instances
@@ -53,6 +53,11 @@ trait Singleton {
 	 * @var string $_class_name
 	 */
 	private $_class_name;
+
+	/**
+	 * @var string $_class_name_slug
+	 */
+	private $_class_name_slug;
 
 	/**
 	 * @var \ReflectionClass $_reflection
@@ -234,6 +239,15 @@ trait Singleton {
 	 */
 	public function get_class_name() {
 		return $this->_class_name;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function get_class_name_slug() {
+		! isset( $this->_class_name_slug ) and $this->_class_name_slug = strtolower( str_replace( [ '_', '\\' ], [ '-', '_' ], $this->get_class_name() ) );
+
+		return $this->_class_name_slug;
 	}
 
 	/**

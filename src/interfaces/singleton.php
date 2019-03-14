@@ -19,7 +19,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
  * Interface Singleton
  * @package WP_Framework_Core\Interfaces
  */
-interface Singleton extends Readonly, Translate, Package {
+interface Singleton extends Readonly, Translate, Utility, Package {
 
 	/**
 	 * @param \WP_Framework $app
