@@ -210,7 +210,7 @@ trait Singleton {
 	 * @return bool
 	 */
 	public function is_filter_callable( $method ) {
-		return method_exists( $this, $method ) && is_callable( [ $this, $method ] );
+		return $this->is_method_callable( $method );
 	}
 
 	/**
