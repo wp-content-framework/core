@@ -22,7 +22,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
  */
 trait Singleton {
 
-	use Readonly, Translate, Package;
+	use Readonly, Translate, Utility, Package;
 
 	/**
 	 * @var Singleton[] $_instances
