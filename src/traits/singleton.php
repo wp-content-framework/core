@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Core Traits Singleton
  *
- * @version 0.0.40
+ * @version 0.0.41
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -210,7 +210,7 @@ trait Singleton {
 	 * @return bool
 	 */
 	public function is_filter_callable( $method ) {
-		return method_exists( $this, $method ) && is_callable( [ $this, $method ] );
+		return $this->is_method_callable( $method );
 	}
 
 	/**
