@@ -392,7 +392,7 @@ class WP_Framework {
 	 */
 	public function get_package_names() {
 		if ( ! $this->_framework_initialized ) {
-			self::wp_die( 'framework is not ready.', __FILE__, __LINE__ );
+			self::wp_die( [ 'framework is not ready.', '<pre>' . wp_debug_backtrace_summary() . '</pre>' ], __FILE__, __LINE__ );
 		}
 
 		return array_keys( $this->_package_versions );
@@ -455,7 +455,7 @@ class WP_Framework {
 	 */
 	public function get_package_version( $package = 'core' ) {
 		if ( ! $this->_framework_initialized ) {
-			self::wp_die( 'framework is not ready.', __FILE__, __LINE__ );
+			self::wp_die( [ 'framework is not ready.', '<pre>' . wp_debug_backtrace_summary() . '</pre>' ], __FILE__, __LINE__ );
 		}
 		if ( ! isset( $this->_package_versions[ $package ] ) ) {
 			self::wp_die( [ 'package is not available.', 'package name: ' . $package ], __FILE__, __LINE__ );
@@ -516,7 +516,7 @@ class WP_Framework {
 	 */
 	public function get_instances() {
 		if ( ! $this->_framework_initialized ) {
-			self::wp_die( 'framework is not ready.', __FILE__, __LINE__ );
+			self::wp_die( [ 'framework is not ready.', '<pre>' . wp_debug_backtrace_summary() . '</pre>' ], __FILE__, __LINE__ );
 		}
 
 		return array_filter( self::$_instances, function ( $instance ) {
@@ -530,7 +530,7 @@ class WP_Framework {
 	 */
 	private function get_main() {
 		if ( ! $this->_framework_initialized ) {
-			self::wp_die( 'framework is not ready.', __FILE__, __LINE__ );
+			self::wp_die( [ 'framework is not ready.', '<pre>' . wp_debug_backtrace_summary() . '</pre>' ], __FILE__, __LINE__ );
 		}
 		if ( ! isset( $this->_main ) ) {
 			if ( ! class_exists( '\WP_Framework_Core\Classes\Main' ) ) {
