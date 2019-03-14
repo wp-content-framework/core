@@ -111,6 +111,18 @@ class WP_Framework {
 	private static $_packages = [];
 
 	/**
+	 * for debug
+	 * @var float $_started
+	 */
+	private static $_started_at;
+
+	/**
+	 * for debug
+	 * @var float $_elapsed
+	 */
+	private static $_elapsed = 0.0;
+
+	/**
 	 * @var array $_package_versions (package => version)
 	 */
 	private $_package_versions;
@@ -287,6 +299,7 @@ class WP_Framework {
 	 * @return WP_Framework
 	 */
 	public static function get_instance( $plugin_name, $plugin_file = null, $slug_name = null, $relative = null, $package = null ) {
+		self::report_performance();
 		if ( ! isset( self::$_instances[ $plugin_name ] ) ) {
 			if ( empty( $plugin_file ) ) {
 				self::wp_die( '$plugin_file is required.', __FILE__, __LINE__ );
@@ -297,6 +310,58 @@ class WP_Framework {
 		}
 
 		return self::$_instances[ $plugin_name ];
+	}
+
+	/**
+	 * for debug
+	 */
+	private static function report_performance() {
+		if ( ! isset( self::$_started_at ) ) {
+			self::$_started_at = false;
+			if ( defined( 'WP_FRAMEWORK_PERFORMANCE_REPORT' ) && ! defined( 'PHPUNIT_COMPOSER_INSTALL' ) ) {
+				self::$_started_at = microtime( true ) * 1000;
+
+				add_action( 'shutdown', function () {
+					if ( ! did_action( 'wp_loaded' ) ) {
+						return;
+					}
+					if ( defined( 'WP_FRAMEWORK_PERFORMANCE_REPORT_EXCLUDE_AJAX' ) ) {
+						if ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
+							return;
+						}
+						if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+							return;
+						}
+					}
+					if ( defined( 'WP_FRAMEWORK_PERFORMANCE_REPORT_EXCLUDE_CRON' ) && defined( 'DOING_CRON' ) && DOING_CRON ) {
+						return;
+					}
+
+					error_log( '' );
+					error_log( '' );
+					$total = 0;
+					foreach ( self::$_instances as $instance ) {
+						$total += $instance->filter->get_elapsed();
+					}
+					$total  += self::$_elapsed;
+					$global = microtime( true ) * 1000 - self::$_started_at;
+					error_log( sprintf( 'shutdown framework: %12.8fms (%12.8fms) / %12.8fms (%.2f%%)', $total, self::$_elapsed, $global, ( $total / $global ) * 100 ) );
+
+					foreach ( self::$_instances as $instance ) {
+						$elapsed = $instance->filter->get_elapsed();
+						error_log( sprintf( '  %12.8fms (%5.2f%% / %5.2f%%) : %s', $elapsed, ( $elapsed / $global ) * 100, ( $elapsed / $total ) * 100, $instance->plugin_name ) );
+						if ( defined( 'WP_FRAMEWORK_DETAIL_REPORT' ) ) {
+							foreach ( $instance->filter->get_elapsed_details() as $detail ) {
+								error_log( '     - ' . $detail );
+							}
+						}
+						if ( $instance->is_valid_package( 'db' ) ) {
+							$instance->db->performance_report();
+						}
+					}
+				}, 1 );
+			}
+		}
 	}
 
 	/**
@@ -588,11 +653,25 @@ class WP_Framework {
 	}
 
 	/**
+	 * for debug
+	 *
+	 * @param callable $callback
+	 */
+	private function run( $callback ) {
+		$start = microtime( true ) * 1000;
+		$callback();
+		$elapsed          = microtime( true ) * 1000 - $start;
+		static::$_elapsed += $elapsed;
+	}
+
+	/**
 	 * setup actions
 	 */
 	private function setup_actions() {
 		add_action( 'after_setup_theme', function () {
-			$this->initialize_framework();
+			self::run( function () {
+				$this->initialize_framework();
+			} );
 		} );
 
 		if ( $this->is_theme ) {
