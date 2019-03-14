@@ -341,6 +341,9 @@ class WP_Framework {
 					error_log( '' );
 					$total = 0;
 					foreach ( self::$_instances as $instance ) {
+						if ( ! $instance->framework_initialized() ) {
+							continue;
+						}
 						$total += $instance->filter->get_elapsed();
 					}
 					$total  += self::$_elapsed;
@@ -348,6 +351,9 @@ class WP_Framework {
 					error_log( sprintf( 'shutdown framework: %12.8fms (%12.8fms) / %12.8fms (%.2f%%)', $total, self::$_elapsed, $global, ( $total / $global ) * 100 ) );
 
 					foreach ( self::$_instances as $instance ) {
+						if ( ! $instance->framework_initialized() ) {
+							continue;
+						}
 						$elapsed = $instance->filter->get_elapsed();
 						error_log( sprintf( '  %12.8fms (%5.2f%% / %5.2f%%) : %s', $elapsed, ( $elapsed / $global ) * 100, ( $elapsed / $total ) * 100, $instance->plugin_name ) );
 						if ( defined( 'WP_FRAMEWORK_DETAIL_REPORT' ) ) {
@@ -728,6 +734,13 @@ class WP_Framework {
 
 		$this->check_required_version();
 		$this->load_setup();
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function framework_initialized() {
+		return $this->_framework_initialized;
 	}
 
 	/**
