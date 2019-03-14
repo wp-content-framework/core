@@ -1,8 +1,8 @@
 <?php
 /**
- * WP_Framework_Core Models Define Test
+ * WP_Framework_Core TestCase
  *
- * @version 0.0.30
+ * @version 0.0.41
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -54,6 +54,11 @@ class TestCase extends \PHPUnit\Framework\TestCase {
 		\Phake::when( static::$app )->__get( 'define' )->thenReturn( \WP_Framework_Common\Classes\Models\Define::get_instance( static::$app ) );
 		\Phake::when( static::$app )->__get( 'input' )->thenReturn( \WP_Framework_Common\Classes\Models\Input::get_instance( static::$app ) );
 		\Phake::when( static::$app )->__get( 'utility' )->thenReturn( \WP_Framework_Common\Classes\Models\Utility::get_instance( static::$app ) );
+		\Phake::when( static::$app )->__get( 'array' )->thenReturn( \WP_Framework_Common\Classes\Models\Array_Utility::get_instance( static::$app ) );
 		\Phake::when( static::$app )->__get( 'user' )->thenReturn( \WP_Framework_Common\Classes\Models\User::get_instance( static::$app ) );
+	}
+
+	public static function tearDownAfterClass() {
+		static::$app->user->uninstall();
 	}
 }
