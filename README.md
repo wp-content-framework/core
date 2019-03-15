@@ -180,7 +180,7 @@ example
 ## モジュール
 必要に応じてモジュールを追加します。  
 いくつかのモジュールは依存関係によって自動的にインストールされます。
-* core  
+* [core](https://github.com/wp-content-framework/core)    
 最新のモジュールの読み込み機能などのコアの機能を提供します。  
   * 依存モジュール
     * common
@@ -191,20 +191,14 @@ example
 キャッシュ機能を提供します。
 * [db](https://github.com/wp-content-framework/db)  
 データベースを扱う機能を提供します。
-  * 依存モジュール
-    * core
 * [presenter](https://github.com/wp-content-framework/presenter)  
 描画機能を提供します。
-  * 依存モジュール
-    * core  
 * [view](https://github.com/wp-content-framework/view)  
 共通の描画テンプレートを提供します。
   * 依存モジュール
     * presenter  
 * [cron](https://github.com/wp-content-framework/cron)   
 cron機能を提供します。
-  * 依存モジュール
-    * core 
 * [controller](https://github.com/wp-content-framework/controller)  
 コントローラ機能を提供します。
   * 依存モジュール
@@ -224,12 +218,8 @@ APIに関する機能を提供します。
     * presenter  
 * [update_check](https://github.com/wp-content-framework/update_check)  
 公式ディレクトリ以外で更新を行う機能を提供します。
-  * 依存モジュール
-    * core  
 * [upgrade](https://github.com/wp-content-framework/upgrade)  
 アップグレードに関する機能を提供します。
-  * 依存モジュール
-    * core
   * 関連モジュール
     * log  
     アップグレード履歴を保存する場合に必要です。
@@ -248,20 +238,14 @@ APIに関する機能を提供します。
     メールを送信する場合に必要です。
 * [post](https://github.com/wp-content-framework/post)  
 投稿を扱う機能を提供します。
-  * 依存モジュール
-    * core
 * [device](https://github.com/wp-content-framework/device)  
 User Agent の判定などの機能を提供します。
-  * 依存モジュール
-    * core
 * [social](https://github.com/wp-content-framework/social)  
 ソーシャルログイン機能を提供します。
   * 依存モジュール
-    * core
+    * session
 * [session](https://github.com/wp-content-framework/session)  
 セッション機能を提供します。
-  * 依存モジュール
-    * core
 * [custom_post](https://github.com/wp-content-framework/custom_post)  
 カスタム投稿タイプに関する機能を提供します。
   * 依存モジュール
