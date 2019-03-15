@@ -2,7 +2,7 @@
 /**
  * WP_Framework
  *
- * @version 0.0.41
+ * @version 0.0.42
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -325,6 +325,9 @@ class WP_Framework {
 					if ( ! did_action( 'wp_loaded' ) ) {
 						return;
 					}
+					if ( defined( 'WP_UNINSTALL_PLUGIN' ) && WP_UNINSTALL_PLUGIN ) {
+						return;
+					}
 					if ( defined( 'WP_FRAMEWORK_PERFORMANCE_REPORT_EXCLUDE_AJAX' ) ) {
 						if ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) ) {
 							return;
@@ -334,6 +337,9 @@ class WP_Framework {
 						}
 					}
 					if ( defined( 'WP_FRAMEWORK_PERFORMANCE_REPORT_EXCLUDE_CRON' ) && defined( 'DOING_CRON' ) && DOING_CRON ) {
+						return;
+					}
+					if ( defined( 'WP_FRAMEWORK_SUSPEND_PERFORMANCE_REPORT' ) ) {
 						return;
 					}
 

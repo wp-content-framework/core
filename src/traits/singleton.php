@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Core Traits Singleton
  *
- * @version 0.0.41
+ * @version 0.0.42
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -99,7 +99,9 @@ trait Singleton {
 				} else {
 					$instance = new static( $app, $reflection );
 					if ( $app->is_uninstall() && $instance instanceof \WP_Framework_Common\Interfaces\Uninstall ) {
-						$app->uninstall->add_uninstall( [ $instance, 'uninstall' ], $instance->get_uninstall_priority() );
+						$app->uninstall->add_uninstall( function () use ( $instance ) {
+							$instance->uninstall();
+						}, $instance->get_uninstall_priority() );
 					}
 					self::$_instances[ $key ][ $class ] = $instance;
 					$instance->call_initialize();
