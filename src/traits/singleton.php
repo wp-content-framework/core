@@ -99,7 +99,9 @@ trait Singleton {
 				} else {
 					$instance = new static( $app, $reflection );
 					if ( $app->is_uninstall() && $instance instanceof \WP_Framework_Common\Interfaces\Uninstall ) {
-						$app->uninstall->add_uninstall( [ $instance, 'uninstall' ], $instance->get_uninstall_priority() );
+						$app->uninstall->add_uninstall( function () use ( $instance ) {
+							$instance->uninstall();
+						}, $instance->get_uninstall_priority() );
 					}
 					self::$_instances[ $key ][ $class ] = $instance;
 					$instance->call_initialize();

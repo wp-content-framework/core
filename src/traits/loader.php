@@ -150,8 +150,10 @@ trait Loader {
 	 */
 	protected function get_class_settings( $dir ) {
 		foreach ( $this->app->utility->scan_dir_namespace_class( $dir, true ) as list( $namespace, $class, $path ) ) {
-			$setting   = $this->get_class_setting( $class, $namespace );
-			$setting[] = $path;
+			$setting = $this->get_class_setting( $class, $namespace );
+			if ( is_array( $setting ) ) {
+				$setting[] = $path;
+			}
 			yield $setting;
 		}
 	}
