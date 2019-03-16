@@ -245,6 +245,9 @@ class Main {
 			if ( array_key_exists( $class, $this->_alternative_instances ) ) {
 				if ( ! isset( $this->_alternative_instances[ $class ] ) ) {
 					$this->_alternative_instances[ $class ] = $this->get_alternative_instance( $this->_class_target_package[ $class ] );
+					if ( ! isset( $this->_alternative_instances[ $class ] ) ) {
+						$this->_alternative_instances[ $class ] = $this->app;
+					}
 				}
 				$instance = $this->_alternative_instances[ $class ];
 			} else {
