@@ -175,7 +175,7 @@ trait Utility {
 					$this->app->get_framework_version(),
 					$this->app->get_plugin_version(),
 					$this->app->get_config( 'config', 'db_version', '0.0.0' ),
-					$this->app->utility->get_active_plugins_hash(),
+					$this->app->utility->get_framework_plugins_hash(),
 				];
 				$cache    = $this->app->string->implode( $versions, '/' );
 				$this->app->set_shared_object( '_cache_version', $cache );
