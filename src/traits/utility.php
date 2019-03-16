@@ -167,7 +167,21 @@ trait Utility {
 	 * @return string
 	 */
 	private function get_cache_version() {
-		! isset( $this->_cache_version ) and $this->_cache_version = $this->wp_version() . '/' . $this->app->get_framework_version() . '/' . $this->app->get_plugin_version() . '/' . $this->app->get_config( 'config', 'db_version', '0.0.0' );
+		if ( ! isset( $this->_cache_version ) ) {
+			$cache = $this->app->get_shared_object( '_cache_version' );
+			if ( ! isset( $cache ) ) {
+				$versions = [
+					$this->wp_version(),
+					$this->app->get_framework_version(),
+					$this->app->get_plugin_version(),
+					$this->app->get_config( 'config', 'db_version', '0.0.0' ),
+					$this->app->utility->get_active_plugins_hash(),
+				];
+				$cache    = $this->app->string->implode( $versions, '/' );
+				$this->app->set_shared_object( '_cache_version', $cache );
+			}
+			$this->_cache_version = $cache;
+		}
 
 		return $this->_cache_version;
 	}
