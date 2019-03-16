@@ -34,6 +34,7 @@ class Package_Core extends Package_Base {
 	public function get_configs() {
 		return [
 			'config',
+			'map',
 			'setting',
 			'slug',
 		];
