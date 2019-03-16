@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Core Traits Utility
  *
- * @version 0.0.41
+ * @version 0.0.43
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -23,9 +23,9 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 trait Utility {
 
 	/**
-	 * @var string $_plugin_version
+	 * @var string $_cache_version
 	 */
-	private $_plugin_version;
+	private $_cache_version;
 
 	/**
 	 * @return \wpdb
@@ -96,6 +96,25 @@ trait Utility {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function wp_version() {
+		global $wp_version;
+
+		return $wp_version;
+	}
+
+	/**
+	 * @param string $version
+	 * @param string $operator
+	 *
+	 * @return bool
+	 */
+	public function compare_wp_version( $version, $operator ) {
+		return version_compare( $this->wp_version(), $version, $operator );
+	}
+
+	/**
 	 * @param string|mixed $method
 	 *
 	 * @return bool
@@ -147,20 +166,20 @@ trait Utility {
 	/**
 	 * @return string
 	 */
-	private function get_plugin_version() {
-		! isset( $this->_plugin_version ) and $this->_plugin_version = $this->app->get_plugin_version();
+	private function get_cache_version() {
+		! isset( $this->_cache_version ) and $this->_cache_version = $this->wp_version() . '/' . $this->app->get_framework_version() . '/' . $this->app->get_plugin_version() . '/' . $this->app->get_config( 'config', 'db_version', '0.0.0' );
 
-		return $this->_plugin_version;
+		return $this->_cache_version;
 	}
 
 	/**
 	 * @param string $key
-	 * @param false|null|string $check_version
 	 * @param mixed $default
+	 * @param false|null|string $check_version
 	 *
 	 * @return mixed
 	 */
-	public function cache_get( $key, $check_version = false, $default = null ) {
+	public function cache_get( $key, $default = null, $check_version = false ) {
 		$cache = $this->app->cache->get( $key, $this->get_class_name_slug() );
 		if ( ! is_array( $cache ) || count( $cache ) !== 2 ) {
 			return $default;
@@ -168,7 +187,7 @@ trait Utility {
 
 		list( $data, $version ) = $cache;
 		if ( isset( $check_version ) ) {
-			false === $check_version and $check_version = $this->get_plugin_version();
+			false === $check_version and $check_version = $this->get_cache_version();
 			if ( $version !== $check_version ) {
 				$this->app->cache->delete( $key, $this->get_class_name_slug() );
 
@@ -188,7 +207,7 @@ trait Utility {
 	 * @return bool
 	 */
 	public function cache_set( $key, $value, $check_version = false, $expire = null ) {
-		false === $check_version and $check_version = $this->get_plugin_version();
+		false === $check_version and $check_version = $this->get_cache_version();
 
 		return $this->app->cache->set( $key, [
 			$value,
