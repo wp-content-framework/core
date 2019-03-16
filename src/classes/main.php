@@ -98,6 +98,11 @@ class Main {
 	private $_namespace_target_package;
 
 	/**
+	 * @var \WP_Framework|null[] $_alternative_instances
+	 */
+	private $_alternative_instances;
+
+	/**
 	 * @var array $_property_instances
 	 */
 	private $_property_instances = [];
@@ -153,6 +158,7 @@ class Main {
 		$this->_properties               = [];
 		$this->_class_target_package     = [];
 		$this->_namespace_target_package = [];
+		$this->_alternative_instances    = [];
 		$this->_class_map                = [];
 		foreach ( $this->app->get_packages() as $package ) {
 			$map = $package->get_config( 'map', $this->app );
@@ -162,6 +168,9 @@ class Main {
 						$class                                 = ltrim( $v, '\\' );
 						$this->_properties[ $k ]               = $class;
 						$this->_class_target_package[ $class ] = $name;
+						if ( ! $this->app->is_valid_package( $name ) ) {
+							$this->_alternative_instances[ $class ] = $this->get_alternative_instance( $name );
+						}
 					}
 				} else {
 					$class                                 = ltrim( $class, '\\' );
@@ -180,6 +189,21 @@ class Main {
 			}
 			$this->_namespace_target_package[ $package->get_namespace() ] = $package->get_package();
 		}
+	}
+
+	/**
+	 * @param string $package
+	 *
+	 * @return \WP_Framework|null
+	 */
+	private function get_alternative_instance( $package ) {
+		foreach ( $this->app->get_instances() as $instance ) {
+			if ( $instance->is_valid_package( $package ) ) {
+				return $instance;
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -218,7 +242,15 @@ class Main {
 			$class = preg_replace( "#\A{$this->define->plugin_namespace}#", '', $class );
 			$dirs  = $this->define->plugin_src_dir;
 		} elseif ( isset( $this->_class_target_package[ $class ] ) ) {
-			if ( $this->app->get_package_instance( $this->_class_target_package[ $class ] )->load_class( $class ) ) {
+			if ( array_key_exists( $class, $this->_alternative_instances ) ) {
+				if ( ! isset( $this->_alternative_instances[ $class ] ) ) {
+					$this->_alternative_instances[ $class ] = $this->get_alternative_instance( $this->_class_target_package[ $class ] );
+				}
+				$instance = $this->_alternative_instances[ $class ];
+			} else {
+				$instance = $this->app;
+			}
+			if ( $instance->get_package_instance( $this->_class_target_package[ $class ] )->load_class( $class ) ) {
 				return true;
 			}
 		} elseif ( preg_match( '#\A(\w+)\\\\#', $class, $matches ) && isset( $this->_namespace_target_package[ $matches[1] ] ) ) {
