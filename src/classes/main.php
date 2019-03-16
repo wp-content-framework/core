@@ -159,15 +159,23 @@ class Main {
 			foreach ( $map as $name => $class ) {
 				if ( is_array( $class ) ) {
 					foreach ( $class as $k => $v ) {
-						$k                                 = ltrim( $k, '\\' );
-						$v                                 = ltrim( $v, '\\' );
-						$this->_class_map [ $k ]           = $v;
-						$this->_class_target_package[ $v ] = $package->get_package();
+						$class                                 = ltrim( $v, '\\' );
+						$this->_properties[ $k ]               = $class;
+						$this->_class_target_package[ $class ] = $name;
 					}
 				} else {
 					$class                                 = ltrim( $class, '\\' );
 					$this->_properties[ $name ]            = $class;
 					$this->_class_target_package[ $class ] = $package->get_package();
+				}
+			}
+			$map = $package->get_config( 'class_map', $this->app );
+			foreach ( $map as $class_map ) {
+				foreach ( $class_map as $from => $to ) {
+					$from                               = ltrim( $from, '\\' );
+					$to                                 = ltrim( $to, '\\' );
+					$this->_class_map [ $from ]         = $to;
+					$this->_class_target_package[ $to ] = $package->get_package();
 				}
 			}
 			$this->_namespace_target_package[ $package->get_namespace() ] = $package->get_package();
