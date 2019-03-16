@@ -96,6 +96,25 @@ trait Utility {
 	}
 
 	/**
+	 * @return string
+	 */
+	public function wp_version() {
+		global $wp_version;
+
+		return $wp_version;
+	}
+
+	/**
+	 * @param string $version
+	 * @param string $operator
+	 *
+	 * @return bool
+	 */
+	public function compare_wp_version( $version, $operator ) {
+		return version_compare( $this->wp_version(), $version, $operator );
+	}
+
+	/**
 	 * @param string|mixed $method
 	 *
 	 * @return bool
