@@ -299,14 +299,16 @@ class WP_Framework {
 	 * @return WP_Framework
 	 */
 	public static function get_instance( $plugin_name, $plugin_file = null, $slug_name = null, $relative = null, $package = null ) {
-		self::report_performance();
 		if ( ! isset( self::$_instances[ $plugin_name ] ) ) {
 			if ( empty( $plugin_file ) ) {
 				self::wp_die( '$plugin_file is required.', __FILE__, __LINE__ );
 			}
+			self::report_performance();
+			self::run( function () use ( $plugin_name, $plugin_file, $slug_name, $relative, $package ) {
 			$instances                        = new static( $plugin_name, $plugin_file, $slug_name, $relative, $package );
 			self::$_instances[ $plugin_name ] = $instances;
 			self::update_framework_packages( $instances );
+			} );
 		}
 
 		return self::$_instances[ $plugin_name ];
@@ -669,7 +671,7 @@ class WP_Framework {
 	 *
 	 * @param callable $callback
 	 */
-	private function run( $callback ) {
+	private static function run( $callback ) {
 		$start = microtime( true ) * 1000;
 		$callback();
 		$elapsed          = microtime( true ) * 1000 - $start;
