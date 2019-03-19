@@ -2,7 +2,7 @@
 /**
  * WP_Framework
  *
- * @version 0.0.42
+ * @version 0.0.48
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -318,9 +318,9 @@ class WP_Framework {
 			}
 			self::report_performance();
 			self::run( function () use ( $plugin_name, $plugin_file, $slug_name, $relative, $package ) {
-			$instances                        = new static( $plugin_name, $plugin_file, $slug_name, $relative, $package );
-			self::$_instances[ $plugin_name ] = $instances;
-			self::update_framework_packages( $instances );
+				$instances                        = new static( $plugin_name, $plugin_file, $slug_name, $relative, $package );
+				self::$_instances[ $plugin_name ] = $instances;
+				self::update_framework_packages( $instances );
 			} );
 		}
 
@@ -639,52 +639,52 @@ class WP_Framework {
 			$this->_framework_root_directory = $root_directory;
 			$this->_package_versions         = $versions;
 		} else {
-		$vendor_root = $this->plugin_dir . DS . $this->relative_path . 'vendor';
-		$installed   = $vendor_root . DS . 'composer' . DS . 'installed.json';
-		if ( ! file_exists( $installed ) || ! is_readable( $installed ) ) {
-			self::wp_die( 'installed.json not found.', __FILE__, __LINE__ );
-		}
-		$json = json_decode( file_get_contents( $installed ), true );
-		if ( empty( $json ) ) {
-			self::wp_die( 'installed.json is invalid.', __FILE__, __LINE__ );
-		}
+			$vendor_root = $this->plugin_dir . DS . $this->relative_path . 'vendor';
+			$installed   = $vendor_root . DS . 'composer' . DS . 'installed.json';
+			if ( ! file_exists( $installed ) || ! is_readable( $installed ) ) {
+				self::wp_die( 'installed.json not found.', __FILE__, __LINE__ );
+			}
+			$json = json_decode( file_get_contents( $installed ), true );
+			if ( empty( $json ) ) {
+				self::wp_die( 'installed.json is invalid.', __FILE__, __LINE__ );
+			}
 
-		$additional = false;
-		if ( ! empty( $this->package_file ) ) {
-			$additional_package = $this->plugin_dir . DS . $this->package_file;
-			if ( file_exists( $additional_package ) && is_readable( $additional_package ) ) {
-				$additional = @json_decode( file_get_contents( $additional_package ), true );
-				if ( ! is_array( $additional ) || empty( $additional ) ) {
-					$additional = false;
+			$additional = false;
+			if ( ! empty( $this->package_file ) ) {
+				$additional_package = $this->plugin_dir . DS . $this->package_file;
+				if ( file_exists( $additional_package ) && is_readable( $additional_package ) ) {
+					$additional = @json_decode( file_get_contents( $additional_package ), true );
+					if ( ! is_array( $additional ) || empty( $additional ) ) {
+						$additional = false;
+					}
 				}
 			}
-		}
 
-		$versions = [];
-		foreach ( $json as $package ) {
-			$name     = $package['name'];
-			$exploded = explode( '/', $name );
+			$versions = [];
+			foreach ( $json as $package ) {
+				$name     = $package['name'];
+				$exploded = explode( '/', $name );
 
-			if ( count( $exploded ) === 2 ) {
-				if ( WP_FRAMEWORK_VENDOR_NAME === $exploded[0] ) {
-					$package_name = strtolower( $exploded[1] );
-				} elseif ( is_array( $additional ) && in_array( $name, $additional ) ) {
-					$package_name = strtolower( $name );
+				if ( count( $exploded ) === 2 ) {
+					if ( WP_FRAMEWORK_VENDOR_NAME === $exploded[0] ) {
+						$package_name = strtolower( $exploded[1] );
+					} elseif ( is_array( $additional ) && in_array( $name, $additional ) ) {
+						$package_name = strtolower( $name );
+					} else {
+						continue;
+					}
 				} else {
 					continue;
 				}
-			} else {
-				continue;
-			}
 
-			$version                   = $package['version_normalized'];
-			$versions[ $package_name ] = $version;
-		}
-		if ( ! isset( $versions['core'] ) ) {
-			self::wp_die( 'installed.json is invalid.', __FILE__, __LINE__ );
-		}
-		$this->_framework_root_directory = $vendor_root . DS . WP_FRAMEWORK_VENDOR_NAME;
-		$this->_package_versions         = $versions;
+				$version                   = $package['version_normalized'];
+				$versions[ $package_name ] = $version;
+			}
+			if ( ! isset( $versions['core'] ) ) {
+				self::wp_die( 'installed.json is invalid.', __FILE__, __LINE__ );
+			}
+			$this->_framework_root_directory = $vendor_root . DS . WP_FRAMEWORK_VENDOR_NAME;
+			$this->_package_versions         = $versions;
 			$this->set_plugin_cache();
 		}
 	}
