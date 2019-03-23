@@ -420,6 +420,17 @@ class WP_Framework {
 	}
 
 	/**
+	 * @return array
+	 */
+	public function get_package_versions() {
+		if ( ! $this->_framework_initialized ) {
+			self::wp_die( [ 'framework is not ready.', '<pre>' . wp_debug_backtrace_summary() . '</pre>' ], __FILE__, __LINE__ );
+		}
+
+		return $this->_package_versions;
+	}
+
+	/**
 	 * @return string[]
 	 */
 	public function get_package_directories() {

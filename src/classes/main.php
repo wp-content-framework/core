@@ -338,6 +338,20 @@ class Main {
 	}
 
 	/**
+	 * @deprecated
+	 * @return array
+	 */
+	public function get_package_versions() {
+		return $this->app->array->combine( array_map( function ( $package ) {
+			/** @var \WP_Framework\Package_Base $package */
+			return [
+				'version' => $package->get_version(),
+				'package' => $package->get_package(),
+			];
+		}, $this->app->get_packages() ), 'package', 'version' );
+	}
+
+	/**
 	 * @param string $name
 	 * @param string|null $key
 	 * @param mixed $default
