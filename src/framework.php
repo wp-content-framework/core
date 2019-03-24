@@ -606,7 +606,7 @@ class WP_Framework {
 		if ( ! defined( 'WP_FRAMEWORK_FORCE_CACHE' ) && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 			return [ false, null, null ];
 		}
-		! isset( self::$_framework_cache ) and self::$_framework_cache = get_option( WP_FRAMEWORK_VENDOR_NAME );
+		! isset( self::$_framework_cache ) and self::$_framework_cache = get_site_option( WP_FRAMEWORK_VENDOR_NAME );
 		if ( ! is_array( self::$_framework_cache ) || ! isset( self::$_framework_cache[ $this->plugin_name ] ) ) {
 			return [ false, null, null ];
 		}
@@ -631,14 +631,26 @@ class WP_Framework {
 			],
 		];
 
-		return update_option( WP_FRAMEWORK_VENDOR_NAME, self::$_framework_cache );
+		return update_site_option( WP_FRAMEWORK_VENDOR_NAME, self::$_framework_cache );
 	}
 
 	/**
 	 * @return bool
 	 */
 	private function delete_plugin_cache() {
-		return delete_option( WP_FRAMEWORK_VENDOR_NAME );
+		if ( is_multisite() ) {
+			// 途中でマルチサイトにした場合のために削除
+			global $wpdb;
+			$current_blog_id = get_current_blog_id();
+			$blog_ids        = $wpdb->get_col( "SELECT blog_id FROM {$wpdb->blogs}" );
+			foreach ( $blog_ids as $blog_id ) {
+				switch_to_blog( $blog_id );
+				delete_option( WP_FRAMEWORK_VENDOR_NAME );
+			}
+			switch_to_blog( $current_blog_id );
+		}
+
+		return delete_site_option( WP_FRAMEWORK_VENDOR_NAME );
 	}
 
 	/**
