@@ -2,7 +2,7 @@
 /**
  * WP_Framework Test Bootstrap
  *
- * @version 0.0.24
+ * @version 0.0.49
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -48,7 +48,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	// to prevent error
 	$_SERVER['SERVER_PROTOCOL'] = 'HTTP/1.1';
 	$_SERVER['SERVER_PORT']     = '80';
-	$_SERVER['HTTP_HOST']       = 'localhost ';
+	$_SERVER['HTTP_HOST']       = '';
 	$_SERVER['QUERY_STRING']    = '';
 	$_SERVER['REQUEST_METHOD']  = 'GET';
 	$_SERVER['SERVER_ADDR']     = '127.0.0.1';

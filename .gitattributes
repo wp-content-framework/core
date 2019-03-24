@@ -10,3 +10,4 @@
 /phpunit.xml export-ignore
 /README.md export-ignore
 /_config.yml export-ignore
+/composer.json export-ignore
