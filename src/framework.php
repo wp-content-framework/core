@@ -2,7 +2,7 @@
 /**
  * WP_Framework
  *
- * @version 0.0.48
+ * @version 0.0.49
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -642,7 +642,8 @@ class WP_Framework {
 			// 途中でマルチサイトにした場合のために削除
 			global $wpdb;
 			$current_blog_id = get_current_blog_id();
-			$blog_ids        = $wpdb->get_col( "SELECT blog_id FROM {$wpdb->blogs}" );
+			/** @noinspection SqlResolve */
+			$blog_ids = $wpdb->get_col( "SELECT blog_id FROM {$wpdb->blogs}" );
 			foreach ( $blog_ids as $blog_id ) {
 				switch_to_blog( $blog_id );
 				delete_option( WP_FRAMEWORK_VENDOR_NAME );
