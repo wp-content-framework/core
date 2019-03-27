@@ -2,7 +2,7 @@
 /**
  * WP_Framework
  *
- * @version 0.0.49
+ * @version 0.0.50
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -665,10 +665,10 @@ class WP_Framework {
 		} else {
 			$vendor_root = $this->plugin_dir . DS . $this->relative_path . 'vendor';
 			$installed   = $vendor_root . DS . 'composer' . DS . 'installed.json';
-			if ( ! file_exists( $installed ) || ! is_readable( $installed ) ) {
+			if ( ! @file_exists( $installed ) || ! @is_readable( $installed ) ) {
 				self::wp_die( 'installed.json not found.', __FILE__, __LINE__ );
 			}
-			$json = json_decode( file_get_contents( $installed ), true );
+			$json = @json_decode( @file_get_contents( $installed ), true );
 			if ( empty( $json ) ) {
 				self::wp_die( 'installed.json is invalid.', __FILE__, __LINE__ );
 			}
@@ -676,8 +676,8 @@ class WP_Framework {
 			$additional = false;
 			if ( ! empty( $this->package_file ) ) {
 				$additional_package = $this->plugin_dir . DS . $this->package_file;
-				if ( file_exists( $additional_package ) && is_readable( $additional_package ) ) {
-					$additional = @json_decode( file_get_contents( $additional_package ), true );
+				if ( @file_exists( $additional_package ) && @is_readable( $additional_package ) ) {
+					$additional = @json_decode( @file_get_contents( $additional_package ), true );
 					if ( ! is_array( $additional ) || empty( $additional ) ) {
 						$additional = false;
 					}
@@ -751,7 +751,7 @@ class WP_Framework {
 			$class = "\\{$namespace}\Package_" . ucwords( $package, '_' );
 			if ( ! class_exists( $class ) ) {
 				$path = $directory . DS . 'package_' . $package . '.php';
-				if ( ! is_readable( $path ) ) {
+				if ( ! @is_readable( $path ) ) {
 					self::wp_die( [ 'invalid package', 'package name: ' . $key ], __FILE__, __LINE__ );
 				}
 				/** @noinspection PhpIncludeInspection */

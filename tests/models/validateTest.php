@@ -2,7 +2,7 @@
 /**
  * WP_Framework_Core Models Validate Test
  *
- * @version 0.0.25
+ * @version 0.0.50
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -232,6 +232,65 @@ class ValidateTest extends \WP_Framework_Core\Tests\TestCase {
 			[ 'validate_negative_float', - 1, true ],
 			[ 'validate_negative_float', '-1', true ],
 			[ 'validate_negative_float', '- 1', false ],
+
+			[ 'validate_string', null, false ],
+			[ 'validate_string', '', true ],
+			[ 'validate_string', [], false ],
+			[ 'validate_string', 'test', true ],
+			[ 'validate_string', - 0.1, false ],
+			[ 'validate_string', '0.1', true ],
+			[ 'validate_string', '- 1', true ],
+
+			[ 'validate_alpha', null, false ],
+			[ 'validate_alpha', '', false ],
+			[ 'validate_alpha', [], false ],
+			[ 'validate_alpha', 'test', true ],
+			[ 'validate_alpha', 'te_st', false ],
+			[ 'validate_alpha', 'te-st', false ],
+			[ 'validate_alpha', 'test123', false ],
+			[ 'validate_alpha', - 0.1, false ],
+			[ 'validate_alpha', '0.1', false ],
+			[ 'validate_alpha', '- 1', false ],
+
+			[ 'validate_alpha_dash', null, false ],
+			[ 'validate_alpha_dash', '', false ],
+			[ 'validate_alpha_dash', [], false ],
+			[ 'validate_alpha_dash', 'test', true ],
+			[ 'validate_alpha_dash', 'te_st', true ],
+			[ 'validate_alpha_dash', 'te-st', true ],
+			[ 'validate_alpha_dash', 'test123', true ],
+			[ 'validate_alpha_dash', - 0.1, false ],
+			[ 'validate_alpha_dash', '0.1', false ],
+			[ 'validate_alpha_dash', '- 1', false ],
+			[ 'validate_alpha_dash', '- 1', false ],
+
+			[ 'validate_alpha_num', null, false ],
+			[ 'validate_alpha_num', '', false ],
+			[ 'validate_alpha_num', [], false ],
+			[ 'validate_alpha_num', 'test', true ],
+			[ 'validate_alpha_num', 'te_st', false ],
+			[ 'validate_alpha_num', 'te-st', false ],
+			[ 'validate_alpha_num', 'test123', true ],
+			[ 'validate_alpha_num', - 0.1, false ],
+			[ 'validate_alpha_num', '0.1', false ],
+			[ 'validate_alpha_num', '- 1', false ],
+			[ 'validate_alpha_num', '- 1', false ],
+
+			[ 'validate_url', null, false ],
+			[ 'validate_url', '', false ],
+			[ 'validate_url', [], false ],
+			[ 'validate_url', 'test', false ],
+			[ 'validate_url', 'te_st', false ],
+			[ 'validate_url', 'te-st', false ],
+			[ 'validate_url', 'test123', false ],
+			[ 'validate_url', - 0.1, false ],
+			[ 'validate_url', '0.1', false ],
+			[ 'validate_url', '- 1', false ],
+			[ 'validate_url', '- 1', false ],
+			[ 'validate_url', 'http://test.example.com', true ],
+			[ 'validate_url', 'https://test.example.com', true ],
+			[ 'validate_url', '//test.example.com', true ],
+			[ 'validate_url', 'ftp://test.example.com', false ],
 		];
 	}
 
