@@ -266,6 +266,25 @@ trait Utility {
 	}
 
 	/**
+	 * @param string|null $key
+	 *
+	 * @return bool
+	 */
+	public function cache_clear( $key ) {
+		return $this->cache_clear_common( $key, false );
+	}
+
+	/**
+	 * @param string|null $key
+	 * @param bool $common
+	 *
+	 * @return bool
+	 */
+	public function cache_clear_common( $key, $common = true ) {
+		return isset( $key ) ? $this->app->cache->delete( $key, $this->get_class_name_slug(), $common ) : $this->app->cache->delete_group( $this->get_class_name_slug(), $common );
+	}
+
+	/**
 	 * @param bool $check_user
 	 *
 	 * @return string
