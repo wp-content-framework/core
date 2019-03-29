@@ -116,7 +116,7 @@ class WP_Framework {
 
 			if ( ! self::$_framework_textdomain_loaded ) {
 				self::$_framework_textdomain_loaded = true;
-				$framework_languages_rel_path       = ltrim( str_replace( WP_PLUGIN_DIR, '', dirname( WP_FRAMEWORK_BOOTSTRAP, 2 ) . DS . 'common' . DS . 'languages' ), DS );
+				$framework_languages_rel_path       = ltrim( str_replace( WP_PLUGIN_DIR, '', dirname( dirname( WP_FRAMEWORK_BOOTSTRAP ) ) . DS . 'common' . DS . 'languages' ), DS );
 				load_plugin_textdomain( 'wp_framework-common', false, $framework_languages_rel_path );
 			}
 			if ( ! empty( $this->textdomain ) ) {
