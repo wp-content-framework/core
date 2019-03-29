@@ -29,6 +29,7 @@ return [
 		'string'     => '\WP_Framework_Common\Classes\Models\String_Utility',
 		'file'       => '\WP_Framework_Common\Classes\Models\File_Utility',
 		'deprecated' => '\WP_Framework_Common\Classes\Models\Deprecated',
+		'system'     => '\WP_Framework_Common\Classes\Models\System',
 	],
 	'cache'  => [
 		'cache' => '\WP_Framework_Cache\Classes\Models\Cache',
