@@ -363,6 +363,23 @@ trait Utility {
 	}
 
 	/**
+	 * @return int
+	 */
+	protected function timestamp() {
+		return current_time( 'timestamp' );
+	}
+
+	/**
+	 * @param string|null $format
+	 * @param int|float $adjust
+	 *
+	 * @return string
+	 */
+	protected function date( $format = null, $adjust = 0 ) {
+		return date_i18n( isset( $format ) ? $format : 'Y-m-d H:i:s', 0 !== $adjust ? $this->timestamp() + (int) $adjust : false );
+	}
+
+	/**
 	 * for debug
 	 *
 	 * @param mixed $value
