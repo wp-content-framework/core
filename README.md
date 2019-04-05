@@ -189,8 +189,9 @@ example
 共通で使用する機能を提供します。
 * [cache](https://github.com/wp-content-framework/cache)  
 キャッシュ機能を提供します。
-  * 依存モジュール
+  * 関連モジュール
     * cron  
+    期限切れのキャッシュを定期的に削除する場合に必要です。
 * [db](https://github.com/wp-content-framework/db)  
 データベースを扱う機能を提供します。
 * [presenter](https://github.com/wp-content-framework/presenter)  
