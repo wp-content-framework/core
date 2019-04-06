@@ -216,7 +216,7 @@ trait Loader {
 			return false;
 		}
 
-		if ( count( $setting ) >= 3 ) {
+		if ( count( $setting ) >= 3 && ! class_exists( $setting[0] ) ) {
 			/** @noinspection PhpIncludeInspection */
 			require_once $setting[2];
 		}
