@@ -223,8 +223,8 @@ abstract class Package_Base {
 	protected function trim_namespace( $string ) {
 		$namespace = $this->get_namespace();
 		$string    = ltrim( $string, '\\' );
-		if ( preg_match( "#\A{$namespace}\\\\#", $string ) ) {
-			return preg_replace( "#\A{$namespace}\\\\#", '', $string );
+		if ( preg_match( "#\A{$namespace}\\\\(.+)\z#", $string, $matches ) ) {
+			return $matches[1];
 		}
 
 		return false;

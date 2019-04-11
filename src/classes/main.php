@@ -230,8 +230,8 @@ class Main {
 	public function load_class( $class ) {
 		$dirs  = null;
 		$class = ltrim( $class, '\\' );
-		if ( isset( $this->_property_instances[ $this->_properties['define'] ] ) && preg_match( "#\A{$this->define->plugin_namespace}#", $class ) ) {
-			$class = preg_replace( "#\A{$this->define->plugin_namespace}#", '', $class );
+		if ( isset( $this->_property_instances[ $this->_properties['define'] ] ) && preg_match( "#\A{$this->define->plugin_namespace}(.+)\z#", $class, $matches ) ) {
+			$class = $matches[1];
 			$dirs  = $this->define->plugin_src_dir;
 		} elseif ( isset( $this->_class_target_package[ $class ] ) ) {
 			if ( array_key_exists( $class, $this->_alternative_instances ) ) {
