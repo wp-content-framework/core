@@ -355,9 +355,10 @@ if ( $this->apply_filters( 'minify_js' ) ) {
 
 ## サンプルプラグイン
 [関連記事提供用プラグイン](https://github.com/technote-space/wp-related-post-jp)  
-[CSRF検知プラグイン](https://github.com/technote-space/csrf-detector)  
 [Gutenberg用文字修飾 プラグイン](https://github.com/technote-space/add-richtext-toolbar-button)  
 [Marker Animation プラグイン](https://github.com/technote-space/marker-animation)  
+[Yahoo! API を使用した校正支援プラグイン](https://github.com/technote-space/y-proofreading)  
+[CSRF検知プラグイン](https://github.com/technote-space/csrf-detector)  
 [Contact Form 7 拡張用プラグイン](https://github.com/technote-space/contact-form-7-huge-file-upload)  
 
 # Author
