@@ -25,43 +25,43 @@ class WP_Framework {
 	private static $_instances = array();
 
 	/**
-     * @var bool $_framework_textdomain_loaded
-     */
+	 * @var bool $_framework_textdomain_loaded
+	 */
 	private static $_framework_textdomain_loaded = false;
 
 	/**
-     * @var string $original_plugin_name
-     */
+	 * @var string $original_plugin_name
+	 */
 	private $original_plugin_name;
 
 	/**
-     * @var string $plugin_name
-     */
+	 * @var string $plugin_name
+	 */
 	private $plugin_name;
 
 	/**
-     * @var string $plugin_file
-     */
+	 * @var string $plugin_file
+	 */
 	private $plugin_file;
 
 	/**
-     * @var string $plugin_dir
-     */
+	 * @var string $plugin_dir
+	 */
 	private $plugin_dir;
 
 	/**
-     * @var string $plugin_configs_dir
-     */
+	 * @var string $plugin_configs_dir
+	 */
 	private $plugin_configs_dir;
 
-	/** 
-     * @var string $textdomain
-     */
+	/**
+	 * @var string $textdomain
+	 */
 	private $textdomain;
 
-	/** 
-     * @var array $plugin_data
-     */
+	/**
+	 * @var array $plugin_data
+	 */
 	private $plugin_data;
 
 	/**
