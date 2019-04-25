@@ -174,7 +174,7 @@ class WP_Framework {
 	private $_plugin_data;
 
 	/**
-	 * @var array $readonly_properties
+	 * @var array $_readonly_properties
 	 */
 	private $_readonly_properties = [
 		'is_theme'             => false,
