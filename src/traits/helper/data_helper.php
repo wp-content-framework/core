@@ -11,6 +11,8 @@
 
 namespace WP_Framework_Core\Traits\Helper;
 
+use WP_Framework;
+
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
 }
@@ -18,7 +20,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 /**
  * Trait Data_Helper
  * @package WP_Framework_Core\Traits\Helper
- * @property \WP_Framework $app
+ * @property WP_Framework $app
  */
 trait Data_Helper {
 
