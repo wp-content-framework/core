@@ -35,7 +35,6 @@ use WP_Framework_Db\Classes\Models\Db;
 use WP_Framework_Device\Classes\Models\Device;
 use WP_Framework_Log\Classes\Models\Log;
 use WP_Framework_Mail\Classes\Models\Mail;
-use WP_Framework_Test\Classes\Models\Test;
 use WP_Framework_Post\Classes\Models\Post;
 use WP_Framework_Presenter\Classes\Models\Drawer;
 use WP_Framework_Presenter\Classes\Models\Minify;
@@ -82,7 +81,7 @@ define( 'WP_FRAMEWORK_IS_MOCK', false );
  * @property Drawer $drawer
  * @property Minify $minify
  * @property Mail $mail
- * @property Test $test
+ * @property \WP_Framework_Test\Classes\Models\Test $test
  * @property Cron $cron
  * @property Custom_Post $custom_post
  * @property Device $device
