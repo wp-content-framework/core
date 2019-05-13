@@ -48,14 +48,14 @@ class TestCase extends \PHPUnit\Framework\TestCase {
 
 	public static function setUpBeforeClass() {
 		static::$app = Phake::mock( '\WP_Framework' );
-		Phake::when( static::$app )->get_package_directory()->thenReturn( dirname( dirname( __FILE__ ) ) );
+		Phake::when( static::$app )->get_package_directory()->thenReturn( dirname( __DIR__ ) );
 		Phake::when( static::$app )->get_mapped_class()->thenReturn( [ false, null ] );
 		Phake::when( static::$app )->has_initialized()->thenReturn( true );
 		Phake::when( static::$app )->is_enough_version()->thenReturn( true );
 		Phake::when( static::$app )->get_packages()->thenReturn( [] );
 		static::$plugin_name = md5( uniqid() );
 		static::$plugin_file = __FILE__;
-		static::$plugin_dir  = dirname( __FILE__ );
+		static::$plugin_dir  = __DIR__;
 		Phake::when( static::$app )->__get( 'plugin_name' )->thenReturn( static::$plugin_name );
 		Phake::when( static::$app )->__get( 'plugin_file' )->thenReturn( static::$plugin_file );
 		Phake::when( static::$app )->__get( 'plugin_dir' )->thenReturn( static::$plugin_dir );

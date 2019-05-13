@@ -53,7 +53,7 @@ if ( defined( 'EXAMPLE_PLUGIN' ) ) {
 
 define( 'EXAMPLE_PLUGIN', 'Example_Plugin' );
 
-@require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+@require_once __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 WP_Framework::get_instance( EXAMPLE_PLUGIN, __FILE__ );
 ```
@@ -126,7 +126,7 @@ if ( defined( 'EXAMPLE_THEME' ) ) {
 
 define( 'EXAMPLE_THEME', 'Example_Theme' );
 
-@require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+@require_once __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 WP_Framework::get_instance( EXAMPLE_THEME, __FILE__ );
 ```
