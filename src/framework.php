@@ -249,6 +249,7 @@ class WP_Framework {
 		$this->_is_allowed_access   = false;
 
 		if ( ! function_exists( 'get_plugin_data' ) ) {
+			/** @noinspection PhpIncludeInspection */
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 		$this->_plugin_data = $this->is_theme ? wp_get_theme() : get_plugin_data( $this->plugin_file, false, false );
