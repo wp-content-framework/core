@@ -47,10 +47,11 @@ trait Data_Helper {
 	 * @param mixed $param
 	 * @param string $type
 	 * @param bool $check_null
+	 * @param bool $nullable
 	 *
 	 * @return mixed
 	 */
-	protected function sanitize_input( $param, $type, $check_null = false ) {
+	protected function sanitize_input( $param, $type, $check_null = false, $nullable = false ) {
 		if ( $check_null && is_null( $param ) ) {
 			return null;
 		}
@@ -71,17 +72,17 @@ trait Data_Helper {
 				$param -= 0;
 				break;
 			case 'bool':
-				// bool 以外は $param = null は null
-				// bool は !nullable (checkboxにチェックを入れたか入れてないかの二値しか取れない想定のため)
-				// したがって is_null のチェックはしない(null は false)
+				if ( $nullable && ( is_null( $param ) || $param === '' ) ) {
+					return null;
+				}
 				if ( is_string( $param ) ) {
 					$param = strtolower( trim( $param ) );
 					if ( $param === 'true' ) {
-						$param = 1;
+						$param = true;
 					} elseif ( $param === 'false' ) {
-						$param = 0;
+						$param = false;
 					} elseif ( $param === '0' ) {
-						$param = 0;
+						$param = false;
 					} else {
 						$param = ! empty( $param );
 					}
