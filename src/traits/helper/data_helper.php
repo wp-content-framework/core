@@ -78,16 +78,16 @@ trait Data_Helper {
 				if ( is_string( $param ) ) {
 					$param = strtolower( trim( $param ) );
 					if ( $param === 'true' ) {
-						$param = true;
+						$param = 1;
 					} elseif ( $param === 'false' ) {
-						$param = false;
+						$param = 0;
 					} elseif ( $param === '0' ) {
-						$param = false;
+						$param = 0;
 					} else {
-						$param = ! empty( $param );
+						$param = ! empty( $param ) ? 1 : 0;
 					}
 				} else {
-					$param = ! empty( $param );
+					$param = ! empty( $param ) ? 1 : 0;
 				}
 				break;
 			default:
@@ -98,5 +98,14 @@ trait Data_Helper {
 		}
 
 		return $param;
+	}
+
+	/**
+	 * @param mixed $value
+	 *
+	 * @return bool
+	 */
+	protected function is_default( $value ) {
+		return ! is_array( $value ) && ! is_bool( $value ) && '' === (string) ( $value );
 	}
 }
