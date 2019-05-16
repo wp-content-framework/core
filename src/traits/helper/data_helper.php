@@ -48,10 +48,11 @@ trait Data_Helper {
 	 * @param string $type
 	 * @param bool $check_null
 	 * @param bool $nullable
+	 * @param bool $update
 	 *
 	 * @return mixed
 	 */
-	protected function sanitize_input( $param, $type, $check_null = false, $nullable = false ) {
+	protected function sanitize_input( $param, $type, $check_null = false, $nullable = false, $update = false ) {
 		if ( $check_null && is_null( $param ) ) {
 			return null;
 		}
@@ -75,6 +76,9 @@ trait Data_Helper {
 				if ( $nullable && ( is_null( $param ) || $param === '' ) ) {
 					return null;
 				}
+				if ( $update && $param === '' ) {
+					return null;
+				}
 				if ( is_string( $param ) ) {
 					$param = strtolower( trim( $param ) );
 					if ( $param === 'true' ) {
@@ -91,7 +95,7 @@ trait Data_Helper {
 				}
 				break;
 			default:
-				if ( is_null( $param ) ) {
+				if ( is_null( $param ) || ( $update && (string) $param === '' ) ) {
 					return null;
 				}
 				break;
