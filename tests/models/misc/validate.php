@@ -11,6 +11,9 @@
 
 namespace WP_Framework_Core\Tests\Models\Misc;
 
+use WP_Framework_Common\Traits\Package;
+use WP_Framework_Core\Traits\Singleton;
+
 if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 	exit;
 }
@@ -21,7 +24,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
  */
 class Validate implements \WP_Framework_Core\Interfaces\Singleton, \WP_Framework_Core\Interfaces\Helper\Validate {
 
-	use \WP_Framework_Core\Traits\Singleton, \WP_Framework_Core\Traits\Helper\Validate, \WP_Framework_Common\Traits\Package;
+	use Singleton, \WP_Framework_Core\Traits\Helper\Validate, Package;
 
 	/**
 	 * @param string $name

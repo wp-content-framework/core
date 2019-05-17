@@ -11,6 +11,10 @@
 
 namespace WP_Framework_Core\Tests\Models;
 
+use Phake;
+use WP_Error;
+use WP_Framework_Core\Tests\TestCase;
+
 require_once __DIR__ . DS . 'misc' . DS . 'validate.php';
 
 /**
@@ -19,7 +23,7 @@ require_once __DIR__ . DS . 'misc' . DS . 'validate.php';
  * @group wp_framework
  * @group models
  */
-class ValidateTest extends \WP_Framework_Core\Tests\TestCase {
+class ValidateTest extends TestCase {
 
 	/**
 	 * @var Misc\Validate $_validate
@@ -28,9 +32,9 @@ class ValidateTest extends \WP_Framework_Core\Tests\TestCase {
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
-		$package = \Phake::mock( '\WP_Framework\Package_Core' );
-		\Phake::when( $package )->get_translate_settings()->thenReturn( [] );
-		\Phake::when( static::$app )->get_package_instance( 'common' )->thenReturn( $package );
+		$package = Phake::mock( '\WP_Framework\Package_Core' );
+		Phake::when( $package )->get_translate_settings()->thenReturn( [] );
+		Phake::when( static::$app )->get_package_instance( 'common' )->thenReturn( $package );
 		static::$_validate = Misc\Validate::get_instance( static::$app );
 	}
 
@@ -46,7 +50,7 @@ class ValidateTest extends \WP_Framework_Core\Tests\TestCase {
 		if ( $expected ) {
 			$this->assertEquals( true, $result );
 		} else {
-			$this->assertInstanceOf( \WP_Error::class, $result );
+			$this->assertInstanceOf( WP_Error::class, $result );
 		}
 	}
 
@@ -306,7 +310,7 @@ class ValidateTest extends \WP_Framework_Core\Tests\TestCase {
 		if ( $expected ) {
 			$this->assertEquals( true, $result );
 		} else {
-			$this->assertInstanceOf( \WP_Error::class, $result );
+			$this->assertInstanceOf( WP_Error::class, $result );
 		}
 	}
 

@@ -53,7 +53,7 @@ if ( defined( 'EXAMPLE_PLUGIN' ) ) {
 
 define( 'EXAMPLE_PLUGIN', 'Example_Plugin' );
 
-@require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+@require_once __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 WP_Framework::get_instance( EXAMPLE_PLUGIN, __FILE__ );
 ```
@@ -126,7 +126,7 @@ if ( defined( 'EXAMPLE_THEME' ) ) {
 
 define( 'EXAMPLE_THEME', 'Example_Theme' );
 
-@require_once dirname( __FILE__ ) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+@require_once __DIR__ . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 WP_Framework::get_instance( EXAMPLE_THEME, __FILE__ );
 ```
@@ -358,8 +358,10 @@ if ( $this->apply_filters( 'minify_js' ) ) {
 [Gutenberg用文字修飾 プラグイン](https://github.com/technote-space/add-richtext-toolbar-button)  
 [Marker Animation プラグイン](https://github.com/technote-space/marker-animation)  
 [Yahoo! API を使用した校正支援プラグイン](https://github.com/technote-space/y-proofreading)  
+[Gutenbergのブロックを一時的に非表示にするプラグイン](https://github.com/technote-space/hide-blocks-temporarily)  
 [CSRF検知プラグイン](https://github.com/technote-space/csrf-detector)  
 [Contact Form 7 拡張用プラグイン](https://github.com/technote-space/contact-form-7-huge-file-upload)  
+[Gutenberg サンプル用プラグイン](https://github.com/technote-space/gutenberg-samples)  
 
 # Author
 
