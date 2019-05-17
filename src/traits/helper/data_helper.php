@@ -95,7 +95,7 @@ trait Data_Helper {
 				}
 				break;
 			default:
-				if ( is_null( $param ) || ( $update && (string) $param === '' ) ) {
+				if ( is_null( $param ) || ( (string) $param === '' ) ) {
 					return null;
 				}
 				break;
