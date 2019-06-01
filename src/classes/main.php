@@ -322,6 +322,9 @@ class Main {
 		$this->_initialized = true;
 
 		$this->filter->do_action( 'app_initialize', $this );
+		if ( $this->app->is_uninstall() ) {
+			$this->system;
+		}
 	}
 
 	/**
