@@ -350,16 +350,16 @@ class Main {
 	}
 
 	/**
-	 * @deprecated
 	 * @return string
+	 * @deprecated
 	 */
 	public function get_plugin_uri() {
 		return $this->app->get_plugin_data( $this->app->is_theme ? 'ThemeURI' : 'PluginURI' );
 	}
 
 	/**
-	 * @deprecated
 	 * @return array
+	 * @deprecated
 	 */
 	public function get_package_versions() {
 		return $this->app->array->combine( array_map( function ( $package ) {

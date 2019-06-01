@@ -318,8 +318,7 @@ class WP_Framework {
 	 */
 	public static function __callStatic( $name, $arguments ) {
 		if ( preg_match( '#register_uninstall_(.+)\z#', $name, $matches ) ) {
-			$plugin_base_name = $matches[1];
-			self::uninstall( $plugin_base_name );
+			self::uninstall( $matches[1] );
 		}
 	}
 
