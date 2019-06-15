@@ -39,6 +39,7 @@ use WP_Framework_Cron\Classes\Models\Cron;
 use WP_Framework_Custom_Post\Classes\Models\Custom_Post;
 use WP_Framework_Db\Classes\Models\Db;
 use WP_Framework_Device\Classes\Models\Device;
+use WP_Framework_Editor\Classes\Models\Editor;
 use WP_Framework_Log\Classes\Models\Log;
 use WP_Framework_Mail\Classes\Models\Mail;
 use WP_Framework_Post\Classes\Models\Post;
@@ -83,6 +84,7 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
  * @property Cron $cron
  * @property Custom_Post $custom_post
  * @property Device $device
+ * @property Editor $editor
  * @property Session $session
  * @property Social $social
  * @property Post $post
