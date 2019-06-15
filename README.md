@@ -242,7 +242,7 @@ APIに関する機能を提供します。
 * [post](https://github.com/wp-content-framework/post)  
 投稿を扱う機能を提供します。
 * [device](https://github.com/wp-content-framework/device)  
-投稿を扱う機能を提供します。
+User Agent の判定などの機能を提供します。
 * [editor](https://github.com/wp-content-framework/editor)  
 エディタに関連する機能を提供します。
 * [social](https://github.com/wp-content-framework/social)  
