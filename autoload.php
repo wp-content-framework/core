@@ -24,8 +24,10 @@
  * @link https://technote.space
  */
 
-if ( ! defined( 'ABSPATH' ) && ! defined( 'PHPUNIT_COMPOSER_INSTALL' ) ) {
-	exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	if ( ! ( defined( 'PHPUNIT_COMPOSER_INSTALL' ) || ( 'cli' === php_sapi_name() && ! defined( 'WP_CLI ' ) ) ) ) {
+		exit;
+	}
 }
 
 if ( defined( 'WP_CONTENT_FRAMEWORK' ) ) {
