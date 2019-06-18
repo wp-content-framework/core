@@ -17,15 +17,17 @@
 /**
  * WP_Framework autoload
  *
- * @version 0.0.54
+ * @version 0.0.59
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
  * @link https://technote.space
  */
 
-if ( ! defined( 'ABSPATH' ) && ! defined( 'PHPUNIT_COMPOSER_INSTALL' ) ) {
-	exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	if ( ! ( defined( 'PHPUNIT_COMPOSER_INSTALL' ) || ( 'cli' === php_sapi_name() && ! defined( 'WP_CLI ' ) ) ) ) {
+		exit;
+	}
 }
 
 if ( defined( 'WP_CONTENT_FRAMEWORK' ) ) {
