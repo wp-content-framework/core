@@ -175,7 +175,6 @@ class WP_Framework {
 	 */
 	private function init() {
 		if ( ! function_exists( 'get_plugin_data' ) ) {
-			/** @noinspection PhpIncludeInspection */
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 		$this->plugin_data = get_plugin_data( $this->plugin_file, false, false );
@@ -211,14 +210,14 @@ class WP_Framework {
 	 */
 	private function admin_notices() {
 		?>
-        <div class="notice error notice-error">
+		<div class="notice error notice-error">
 			<?php if ( $this->is_not_enough_php_version() ): ?>
-                <p><?php echo $this->get_unsupported_php_version_message(); ?></p>
+				<p><?php echo $this->get_unsupported_php_version_message(); ?></p>
 			<?php endif; ?>
 			<?php if ( $this->is_not_enough_wp_version() ): ?>
-                <p><?php echo $this->get_unsupported_wp_version_message(); ?></p>
+				<p><?php echo $this->get_unsupported_wp_version_message(); ?></p>
 			<?php endif; ?>
-        </div>
+		</div>
 		<?php
 	}
 }
