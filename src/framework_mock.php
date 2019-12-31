@@ -2,7 +2,6 @@
 /**
  * WP_Framework mock
  *
- * @version 0.0.54
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -17,17 +16,19 @@ define( 'WP_FRAMEWORK_IS_MOCK', true );
 /**
  * Class WP_Framework
  */
+// @codingStandardsIgnoreStart
 class WP_Framework {
+	// @codingStandardsIgnoreEnd
 
 	/**
 	 * @var array
 	 */
-	private static $_instances = [];
+	private static $instances = [];
 
 	/**
-	 * @var bool $_framework_textdomain_loaded
+	 * @var bool $framework_textdomain_loaded
 	 */
-	private static $_framework_textdomain_loaded = false;
+	private static $framework_textdomain_loaded = false;
 
 	/**
 	 * @var string $original_plugin_name
@@ -114,9 +115,9 @@ class WP_Framework {
 				$plugin_languages_rel_path = ltrim( str_replace( WP_PLUGIN_DIR, '', $this->plugin_dir . DS . $domain_path ), DS );
 			}
 
-			if ( ! self::$_framework_textdomain_loaded ) {
-				self::$_framework_textdomain_loaded = true;
-				$framework_languages_rel_path       = ltrim( str_replace( WP_PLUGIN_DIR, '', dirname( dirname( WP_FRAMEWORK_BOOTSTRAP ) ) . DS . 'common' . DS . 'languages' ), DS );
+			if ( ! self::$framework_textdomain_loaded ) {
+				self::$framework_textdomain_loaded = true;
+				$framework_languages_rel_path      = ltrim( str_replace( WP_PLUGIN_DIR, '', dirname( dirname( WP_FRAMEWORK_BOOTSTRAP ) ) . DS . 'common' . DS . 'languages' ), DS );
 				load_plugin_textdomain( 'wp_framework-common', false, $framework_languages_rel_path );
 			}
 			if ( ! empty( $this->textdomain ) ) {
@@ -135,13 +136,13 @@ class WP_Framework {
 	private function translate( $value ) {
 		$textdomain = $this->get_textdomain();
 		if ( ! empty( $textdomain ) ) {
-			$translated = __( $value, $textdomain );
+			$translated = __( $value, $textdomain ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText,WordPress.WP.I18n.NonSingularStringLiteralDomain
 			if ( $value !== $translated ) {
 				return $translated;
 			}
 		}
 
-		return __( $value, 'wp_framework-common' );
+		return __( $value, 'wp_framework-common' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText
 	}
 
 	/**
@@ -151,11 +152,11 @@ class WP_Framework {
 	 * @return WP_Framework
 	 */
 	public static function get_instance( $plugin_name, $plugin_file ) {
-		if ( ! isset( self::$_instances[ $plugin_name ] ) ) {
-			self::$_instances[ $plugin_name ] = new static( $plugin_name, $plugin_file );
+		if ( ! array_key_exists( $plugin_name, self::$instances ) ) {
+			self::$instances[ $plugin_name ] = new static( $plugin_name, $plugin_file );
 		}
 
-		return self::$_instances[ $plugin_name ];
+		return self::$instances[ $plugin_name ];
 	}
 
 	/**
@@ -175,7 +176,6 @@ class WP_Framework {
 	 */
 	private function init() {
 		if ( ! function_exists( 'get_plugin_data' ) ) {
-			/** @noinspection PhpIncludeInspection */
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 		$this->plugin_data = get_plugin_data( $this->plugin_file, false, false );
@@ -211,14 +211,14 @@ class WP_Framework {
 	 */
 	private function admin_notices() {
 		?>
-        <div class="notice error notice-error">
-			<?php if ( $this->is_not_enough_php_version() ): ?>
-                <p><?php echo $this->get_unsupported_php_version_message(); ?></p>
+		<div class="notice error notice-error">
+			<?php if ( $this->is_not_enough_php_version() ) : ?>
+				<p><?php echo $this->get_unsupported_php_version_message(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
 			<?php endif; ?>
-			<?php if ( $this->is_not_enough_wp_version() ): ?>
-                <p><?php echo $this->get_unsupported_wp_version_message(); ?></p>
+			<?php if ( $this->is_not_enough_wp_version() ) : ?>
+				<p><?php echo $this->get_unsupported_wp_version_message(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
 			<?php endif; ?>
-        </div>
+		</div>
 		<?php
 	}
 }

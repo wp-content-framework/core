@@ -2,7 +2,6 @@
 /**
  * WP_Framework_Core Traits Translate
  *
- * @version 0.0.54
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -26,14 +25,14 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 trait Translate {
 
 	/**
-	 * @var array $_loaded_languages
+	 * @var array $loaded_languages
 	 */
-	private static $_loaded_languages = [];
+	private static $loaded_languages = [];
 
 	/**
-	 * @var array $_textdomains
+	 * @var array $textdomains
 	 */
-	private static $_textdomains;
+	private static $textdomains = [];
 
 	/**
 	 * @param string $value
@@ -41,8 +40,8 @@ trait Translate {
 	 * @return string
 	 */
 	public function translate( $value ) {
-		foreach ( $this->get_textdomains() as $textdomain => $path ) {
-			$translated = __( $value, $textdomain );
+		foreach ( array_keys( $this->get_textdomains() ) as $textdomain ) {
+			$translated = __( $value, $textdomain ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText, WordPress.WP.I18n.NonSingularStringLiteralDomain
 			if ( $value !== $translated ) {
 				return $translated;
 			}
@@ -56,22 +55,24 @@ trait Translate {
 	 */
 	protected function get_textdomains() {
 		$package = $this->get_package();
-		if ( ! isset( self::$_textdomains[ $package ][ $this->app->plugin_name ] ) ) {
-			self::$_textdomains[ $package ][ $this->app->plugin_name ] = [];
-			! empty( $this->app->define->plugin_textdomain ) and self::$_textdomains[ $package ][ $this->app->plugin_name ][ $this->app->define->plugin_textdomain ] = $this->app->define->plugin_languages_dir;
+		if ( ! array_key_exists( $this->app->plugin_name, self::$textdomains ) || ! array_key_exists( $package, self::$textdomains[ $this->app->plugin_name ] ) ) {
+			self::$textdomains[ $this->app->plugin_name ][ $package ] = [];
+			if ( ! empty( $this->app->define->plugin_textdomain ) ) {
+				self::$textdomains[ $this->app->plugin_name ][ $package ][ $this->app->define->plugin_textdomain ] = $this->app->define->plugin_languages_dir;
+			}
 			$instance = $this->get_package_instance();
 			foreach ( $instance->get_translate_settings() as $textdomain => $path ) {
-				self::$_textdomains[ $package ][ $this->app->plugin_name ][ $textdomain ] = $path;
+				self::$textdomains[ $this->app->plugin_name ][ $package ][ $textdomain ] = $path;
 			}
 
-			foreach ( self::$_textdomains[ $package ][ $this->app->plugin_name ] as $textdomain => $path ) {
+			foreach ( self::$textdomains[ $this->app->plugin_name ][ $package ] as $textdomain => $path ) {
 				if ( ! $this->setup_textdomain( $textdomain, $path ) ) {
-					unset( self::$_textdomains[ $package ][ $this->app->plugin_name ][ $textdomain ] );
+					unset( self::$textdomains[ $this->app->plugin_name ][ $package ][ $textdomain ] );
 				}
 			}
 		}
 
-		return self::$_textdomains[ $package ][ $this->app->plugin_name ];
+		return self::$textdomains[ $this->app->plugin_name ][ $package ];
 	}
 
 	/**
@@ -81,7 +82,7 @@ trait Translate {
 	 * @return bool
 	 */
 	private function setup_textdomain( $textdomain, $dir ) {
-		if ( ! isset( self::$_loaded_languages[ $textdomain ] ) ) {
+		if ( ! array_key_exists( $textdomain, self::$loaded_languages ) ) {
 			if ( function_exists( 'determine_locale' ) ) {
 				$locale = apply_filters( 'plugin_locale', determine_locale(), $textdomain );
 			} else {
@@ -90,9 +91,9 @@ trait Translate {
 			$mofile = $textdomain . '-' . $locale . '.mo';
 			$path   = $dir . DS . $mofile;
 
-			self::$_loaded_languages[ $textdomain ] = load_textdomain( $textdomain, $path );
+			self::$loaded_languages[ $textdomain ] = load_textdomain( $textdomain, $path );
 		}
 
-		return self::$_loaded_languages[ $textdomain ];
+		return self::$loaded_languages[ $textdomain ];
 	}
 }

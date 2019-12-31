@@ -2,7 +2,6 @@
 /**
  * WP_Framework_Core Traits Utility
  *
- * @version 0.0.54
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -13,6 +12,7 @@ namespace WP_Framework_Core\Traits;
 
 use Closure;
 use WP_Framework;
+use WP_Framework_Common\Classes\Models\Collection;
 use WP_Framework_Db\Classes\Models\Query\Builder;
 use WP_Framework_Db\Classes\Models\Query\Expression;
 use wpdb;
@@ -29,14 +29,14 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 trait Utility {
 
 	/**
-	 * @var string $_cache_version
+	 * @var string $cache_version
 	 */
-	private static $_cache_version;
+	private static $cache_version;
 
 	/**
-	 * @var string[] $_common_cache_version
+	 * @var string[] $common_cache_version
 	 */
-	private static $_common_cache_version = [];
+	private static $common_cache_version = [];
 
 	/**
 	 * @return wpdb
@@ -53,6 +53,7 @@ trait Utility {
 	 * @param string $as
 	 *
 	 * @return string
+	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
 	public function alias( $table, $as ) {
 		return "{$table} as {$as}";
@@ -63,6 +64,7 @@ trait Utility {
 	 * @param null|string $as
 	 *
 	 * @return string
+	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
 	public function get_wp_table( $table, $as = null ) {
 		$table = $this->wpdb()->{$table};
@@ -82,6 +84,7 @@ trait Utility {
 	 * @param null|string $as
 	 *
 	 * @return Builder
+	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
 	protected function table( $table, $as = null ) {
 		return $this->builder()->table( $as ? $this->alias( $table, $as ) : $table );
@@ -92,6 +95,7 @@ trait Utility {
 	 * @param null|string $as
 	 *
 	 * @return Builder
+	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
 	protected function wp_table( $table, $as = null ) {
 		return $this->table( $this->get_wp_table( $table, $as ) );
@@ -181,26 +185,27 @@ trait Utility {
 	 */
 	private function get_cache_version( $common ) {
 		if ( $common ) {
-			if ( ! isset( self::$_common_cache_version[ $this->app->plugin_name ] ) ) {
-				$versions                                               = [
+			if ( ! array_key_exists( $this->app->plugin_name, self::$common_cache_version ) ) {
+				$versions = [
 					$this->wp_version(),
 					$this->app->get_plugin_version(),
 				];
-				self::$_common_cache_version[ $this->app->plugin_name ] = sha1( json_encode( $versions ) );
+
+				self::$common_cache_version[ $this->app->plugin_name ] = sha1( wp_json_encode( $versions ) );
 			}
 
-			return self::$_common_cache_version[ $this->app->plugin_name ];
+			return self::$common_cache_version[ $this->app->plugin_name ];
 		}
 
-		if ( ! isset( self::$_cache_version ) ) {
-			$versions             = [
+		if ( ! isset( self::$cache_version ) ) {
+			$versions            = [
 				$this->wp_version(),
 				$this->app->utility->get_framework_plugins_hash(),
 			];
-			self::$_cache_version = sha1( json_encode( $versions ) );
+			self::$cache_version = sha1( wp_json_encode( $versions ) );
 		}
 
-		return self::$_cache_version;
+		return self::$cache_version;
 	}
 
 	/**
@@ -230,7 +235,9 @@ trait Utility {
 
 		list( $data, $version ) = $cache;
 		if ( isset( $check_version ) ) {
-			false === $check_version and $check_version = $this->get_cache_version( $common );
+			if ( false === $check_version ) {
+				$check_version = $this->get_cache_version( $common );
+			}
 			if ( $version !== $check_version ) {
 				$this->app->cache->delete( $key, $this->get_class_name_slug(), $common );
 
@@ -263,7 +270,9 @@ trait Utility {
 	 * @return bool
 	 */
 	public function cache_set_common( $key, $value, $check_version = false, $expire = null, $common = true ) {
-		false === $check_version and $check_version = $this->get_cache_version( $common );
+		if ( false === $check_version ) {
+			$check_version = $this->get_cache_version( $common );
+		}
 
 		return $this->app->cache->set( $key, [
 			$value,
@@ -302,35 +311,35 @@ trait Utility {
 	}
 
 	/**
-	 * @see \wp_create_nonce
-	 *
 	 * @param string $action
 	 * @param bool $check_user
 	 *
 	 * @return string
+	 * @see \wp_create_nonce
+	 *
 	 */
 	protected function wp_create_nonce( $action, $check_user = true ) {
 		if ( $check_user ) {
 			$user = wp_get_current_user();
 			$uid  = (int) $user->ID;
 		} else {
-			$uid = - 1;
+			$uid = -1;
 		}
 
 		$token = $this->get_session_token( $check_user );
-		$i     = wp_nonce_tick();
+		$tick  = wp_nonce_tick();
 
-		return substr( wp_hash( $i . '|' . $action . '|' . $uid . '|' . $token, 'nonce' ), - 12, 10 );
+		return substr( wp_hash( $tick . '|' . $action . '|' . $uid . '|' . $token, 'nonce' ), -12, 10 );
 	}
 
 	/**
-	 * @see \wp_verify_nonce
-	 *
 	 * @param string $nonce
 	 * @param string $action
 	 * @param bool $check_user
 	 *
 	 * @return bool|int
+	 * @see \wp_verify_nonce
+	 *
 	 */
 	protected function wp_verify_nonce( $nonce, $action, $check_user = true ) {
 		if ( empty( $nonce ) ) {
@@ -341,14 +350,14 @@ trait Utility {
 			$user = wp_get_current_user();
 			$uid  = (int) $user->ID;
 		} else {
-			$uid = - 1;
+			$uid = -1;
 		}
 
 		$token = $this->get_session_token( $check_user );
-		$i     = wp_nonce_tick();
+		$tick  = wp_nonce_tick();
 
 		// Nonce generated 0-12 hours ago
-		$expected = substr( wp_hash( $i . '|' . $action . '|' . $uid . '|' . $token, 'nonce' ), - 12, 10 );
+		$expected = substr( wp_hash( $tick . '|' . $action . '|' . $uid . '|' . $token, 'nonce' ), -12, 10 );
 		if ( hash_equals( $expected, $nonce ) ) {
 			$this->do_framework_action( 'verified_nonce', 1 );
 
@@ -356,7 +365,7 @@ trait Utility {
 		}
 
 		// Nonce generated 12-24 hours ago
-		$expected = substr( wp_hash( ( $i - 1 ) . '|' . $action . '|' . $uid . '|' . $token, 'nonce' ), - 12, 10 );
+		$expected = substr( wp_hash( ( $tick - 1 ) . '|' . $action . '|' . $uid . '|' . $token, 'nonce' ), -12, 10 );
 		if ( hash_equals( $expected, $nonce ) ) {
 			$this->do_framework_action( 'verified_nonce', 2 );
 
@@ -372,7 +381,7 @@ trait Utility {
 	 * @return int
 	 */
 	protected function timestamp() {
-		return current_time( 'timestamp' );
+		return current_time( 'timestamp' ); // phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
 	}
 
 	/**
@@ -390,10 +399,12 @@ trait Utility {
 	 *
 	 * @param mixed $value
 	 * @param bool $exit
+	 * @SuppressWarnings(PHPMD.ShortMethodName)
+	 * @SuppressWarnings(PHPMD.ExitExpression)
 	 */
 	protected function d( $value, $exit = true ) {
 		echo '<pre>';
-		var_export( $value );
+		var_export( $value ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_var_export
 		echo '</pre>';
 		if ( $exit ) {
 			exit;
@@ -405,11 +416,22 @@ trait Utility {
 	 *
 	 * @param mixed $value
 	 * @param bool $exit
+	 * @SuppressWarnings(PHPMD.ShortMethodName)
+	 * @SuppressWarnings(PHPMD.ExitExpression)
 	 */
 	protected function l( $value, $exit = false ) {
-		error_log( print_r( $value, true ) );
+		error_log( print_r( $value, true ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log, WordPress.PHP.DevelopmentFunctions.error_log_print_r
 		if ( $exit ) {
 			exit;
 		}
+	}
+
+	/**
+	 * @param mixed $items
+	 *
+	 * @return Collection
+	 */
+	public function collection( $items = [] ) {
+		return new Collection( $this->app, $items );
 	}
 }

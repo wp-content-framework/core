@@ -2,7 +2,6 @@
 /**
  * WP_Framework_Core Interfaces Utility
  *
- * @version 0.0.54
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -33,6 +32,7 @@ interface Utility {
 	 * @param string $as
 	 *
 	 * @return string
+	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
 	public function alias( $table, $as );
 
@@ -41,6 +41,7 @@ interface Utility {
 	 * @param null|string $as
 	 *
 	 * @return string
+	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
 	public function get_wp_table( $table, $as = null );
 

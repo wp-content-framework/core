@@ -2,7 +2,6 @@
 /**
  * WP_Framework_Core Traits Nonce
  *
- * @version 0.0.54
  * @author Technote
  * @copyright Technote All Rights Reserved
  * @license http://www.opensource.org/licenses/gpl-2.0.php GNU General Public License, version 2
@@ -91,6 +90,7 @@ trait Nonce {
 	 * @param string $nonce_key
 	 *
 	 * @return bool
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
 	protected function need_nonce_check(
 		/** @noinspection PhpUnusedParameterInspection */

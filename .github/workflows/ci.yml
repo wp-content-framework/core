@@ -1,0 +1,115 @@
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+    tags:
+      - "!*"
+
+name: CI
+
+env:
+  CI: 1
+  WORKSPACE: ${{ github.workspace }}
+
+jobs:
+  phpcs:
+    name: PHP Code Sniffer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 3
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer modules
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+      - name: Prepare setting
+        run: composer prepare
+      - name: Check code style
+        run: composer phpcs
+      - uses: 8398a7/action-slack@v1
+        with:
+          type: failure
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: failure()
+  phpmd:
+    name: PHPMD
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 3
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer modules
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+      - name: Prepare setting
+        run: composer prepare
+      - name: Check code style
+        run: composer phpmd
+      - uses: 8398a7/action-slack@v1
+        with:
+          type: failure
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: failure()
+  phpunit:
+    name: PHPUnit
+    needs: [phpcs, phpmd]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 3
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - name: Cache composer modules
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+      - name: Prepare setting
+        run: composer prepare
+      - name: Run unit tests
+        run: composer phpunit
+      - uses: 8398a7/action-slack@v1
+        with:
+          type: failure
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: failure()
+
+  slack:
+    name: Slack
+    needs: [phpunit]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: 8398a7/action-slack@v1
+        with:
+          type: success
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
