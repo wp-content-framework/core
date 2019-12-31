@@ -7,8 +7,32 @@
 
 WordPressのプラグインやテーマ開発用のフレームワークです。
 
-<!-- START doctoc -->
-<!-- END doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**
+
+- [要件](#%E8%A6%81%E4%BB%B6)
+- [手順](#%E6%89%8B%E9%A0%86)
+  - [プラグインからの利用](#%E3%83%97%E3%83%A9%E3%82%B0%E3%82%A4%E3%83%B3%E3%81%8B%E3%82%89%E3%81%AE%E5%88%A9%E7%94%A8)
+  - [テーマからの利用](#%E3%83%86%E3%83%BC%E3%83%9E%E3%81%8B%E3%82%89%E3%81%AE%E5%88%A9%E7%94%A8)
+  - [モジュール](#%E3%83%A2%E3%82%B8%E3%83%A5%E3%83%BC%E3%83%AB)
+  - [画面の追加](#%E7%94%BB%E9%9D%A2%E3%81%AE%E8%BF%BD%E5%8A%A0)
+  - [API の追加](#api-%E3%81%AE%E8%BF%BD%E5%8A%A0)
+  - [filter の追加](#filter-%E3%81%AE%E8%BF%BD%E5%8A%A0)
+  - [cron の追加](#cron-%E3%81%AE%E8%BF%BD%E5%8A%A0)
+  - [カスタム投稿タイプの追加](#%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E6%8A%95%E7%A8%BF%E3%82%BF%E3%82%A4%E3%83%97%E3%81%AE%E8%BF%BD%E5%8A%A0)
+  - [テストの追加](#%E3%83%86%E3%82%B9%E3%83%88%E3%81%AE%E8%BF%BD%E5%8A%A0)
+  - [コンフィグ](#%E3%82%B3%E3%83%B3%E3%83%95%E3%82%A3%E3%82%B0)
+    - [設定](#%E8%A8%AD%E5%AE%9A)
+    - [フィルタ](#%E3%83%95%E3%82%A3%E3%83%AB%E3%82%BF)
+    - [DB](#db)
+    - [権限](#%E6%A8%A9%E9%99%90)
+  - [デフォルトの動作の上書き](#%E3%83%87%E3%83%95%E3%82%A9%E3%83%AB%E3%83%88%E3%81%AE%E5%8B%95%E4%BD%9C%E3%81%AE%E4%B8%8A%E6%9B%B8%E3%81%8D)
+  - [基本設定](#%E5%9F%BA%E6%9C%AC%E8%A8%AD%E5%AE%9A)
+  - [サンプルプラグイン](#%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB%E3%83%97%E3%83%A9%E3%82%B0%E3%82%A4%E3%83%B3)
+- [Author](#author)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # 要件
 - PHP 5.6 以上
