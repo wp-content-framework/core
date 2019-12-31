@@ -34,18 +34,18 @@ composer を使用してインストールします。
 
 4. ライブラリの使用
 作成したプラグインファイルにライブラリを使用する記述を追記します。
-プラグインファイルはおおよそ以下のようなものになります。
+プラグインファイルはおおよそ以下のようになります。
 
 ```
 <?php
-/*
-Plugin Name: example
-Plugin URI:
-Description: Plugin Description
-Author: example
-Version: 0.0.0
-Author URI: http://example.com/
-*/
+/**
+ * Plugin Name: example
+ * Plugin URI:
+ * Description: Plugin Description
+ * Author: example
+ * Version: 0.0.0
+ * Author URI: http://example.com/
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -62,7 +62,7 @@ define( 'EXAMPLE_PLUGIN', 'Example_Plugin' );
 WP_Framework::get_instance( EXAMPLE_PLUGIN, __FILE__ );
 ```
 
-最終的なプラグインの構成は以下のようなものになります。
+最終的なプラグインの構成は以下のようになります。
 
 ```
 example
@@ -116,7 +116,7 @@ composer を使用してインストールします。
 
 4. ライブラリの使用
 テーマフォルダに functions.php を作成しライブラリを使用する記述を追記します。
-functions.php はおおよそ以下のようなものになります。
+functions.php はおおよそ以下のようになります。
 
 ```
 <?php
@@ -135,7 +135,7 @@ define( 'EXAMPLE_THEME', 'Example_Theme' );
 WP_Framework::get_instance( EXAMPLE_THEME, __FILE__ );
 ```
 
-最終的なテーマの構成は以下のようなものになります。
+最終的なテーマの構成は以下のようになります。
 
 ```
 example
