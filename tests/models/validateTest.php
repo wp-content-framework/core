@@ -25,27 +25,27 @@ require_once __DIR__ . DS . 'misc' . DS . 'validate.php';
 class ValidateTest extends TestCase {
 
 	/**
-	 * @var Misc\Validate $_validate
+	 * @var Misc\Validate $validate
 	 */
-	private static $_validate;
+	private static $validate;
 
 	public static function setUpBeforeClass() {
 		parent::setUpBeforeClass();
 		$package = Phake::mock( '\WP_Framework\Package_Core' );
 		Phake::when( $package )->get_translate_settings()->thenReturn( [] );
 		Phake::when( static::$app )->get_package_instance( 'common' )->thenReturn( $package );
-		static::$_validate = Misc\Validate::get_instance( static::$app );
+		static::$validate = Misc\Validate::get_instance( static::$app );
 	}
 
 	/**
-	 * @dataProvider _test_validate_provider
+	 * @dataProvider provider_test_validate
 	 *
 	 * @param string $method
 	 * @param mixed $var
 	 * @param bool $expected
 	 */
 	public function test_validate( $method, $var, $expected ) {
-		$result = static::$_validate->$method( $var );
+		$result = static::$validate->$method( $var );
 		if ( $expected ) {
 			$this->assertEquals( true, $result );
 		} else {
@@ -55,8 +55,9 @@ class ValidateTest extends TestCase {
 
 	/**
 	 * @return array
+	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
 	 */
-	public function _test_validate_provider() {
+	public function provider_test_validate() {
 		return [
 			[ 'validate_not_empty', null, false ],
 			[ 'validate_not_empty', '', false ],
@@ -83,7 +84,7 @@ class ValidateTest extends TestCase {
 			[ 'validate_date', 'test', false ],
 			[ 'validate_date', 'あいうえお', false ],
 			[ 'validate_date', '20000101', false ],
-			[ 'validate_date', date( 'Y-m-d' ), true ],
+			[ 'validate_date', gmdate( 'Y-m-d' ), true ],
 
 			[ 'validate_time', null, false ],
 			[ 'validate_time', '', false ],
@@ -92,8 +93,8 @@ class ValidateTest extends TestCase {
 			[ 'validate_time', 'test', false ],
 			[ 'validate_time', 'あいうえお', false ],
 			[ 'validate_time', '1212', false ],
-			[ 'validate_time', date( 'H:i:s' ), true ],
-			[ 'validate_time', date( 'H:i' ), true ],
+			[ 'validate_time', gmdate( 'H:i:s' ), true ],
+			[ 'validate_time', gmdate( 'H:i' ), true ],
 
 			[ 'validate_email', null, false ],
 			[ 'validate_email', '', false ],
@@ -119,8 +120,8 @@ class ValidateTest extends TestCase {
 			[ 'validate_positive', 'test', false ],
 			[ 'validate_positive', 'あいうえお', false ],
 			[ 'validate_positive', '03-1234-5678', false ],
-			[ 'validate_positive', - 1, false ],
-			[ 'validate_positive', - 0.1, false ],
+			[ 'validate_positive', -1, false ],
+			[ 'validate_positive', -0.1, false ],
 			[ 'validate_positive', '-0.1', false ],
 			[ 'validate_positive', 0, false ],
 			[ 'validate_positive', 0.1, true ],
@@ -137,9 +138,9 @@ class ValidateTest extends TestCase {
 			[ 'validate_negative', 0.1, false ],
 			[ 'validate_negative', '0.1', false ],
 			[ 'validate_negative', 0, false ],
-			[ 'validate_negative', - 0.1, true ],
+			[ 'validate_negative', -0.1, true ],
 			[ 'validate_negative', '-0.1', true ],
-			[ 'validate_negative', - 1, true ],
+			[ 'validate_negative', -1, true ],
 
 			[ 'validate_int', null, false ],
 			[ 'validate_int', '', false ],
@@ -148,12 +149,12 @@ class ValidateTest extends TestCase {
 			[ 'validate_int', 'あいうえお', false ],
 			[ 'validate_int', '03-1234-5678', false ],
 			[ 'validate_int', 0.1, false ],
-			[ 'validate_int', - 0.1, false ],
+			[ 'validate_int', -0.1, false ],
 			[ 'validate_int', '0.1', false ],
 			[ 'validate_int', '-0.1', false ],
 			[ 'validate_int', 0, true ],
 			[ 'validate_int', 1, true ],
-			[ 'validate_int', - 1, true ],
+			[ 'validate_int', -1, true ],
 			[ 'validate_int', '- 1', false ],
 
 			[ 'validate_float', null, false ],
@@ -163,12 +164,12 @@ class ValidateTest extends TestCase {
 			[ 'validate_float', 'あいうえお', false ],
 			[ 'validate_float', '03-1234-5678', false ],
 			[ 'validate_float', 0.1, true ],
-			[ 'validate_float', - 0.1, true ],
+			[ 'validate_float', -0.1, true ],
 			[ 'validate_float', '0.1', true ],
 			[ 'validate_float', '- 0.1', false ],
 			[ 'validate_float', 0, true ],
 			[ 'validate_float', 1, true ],
-			[ 'validate_float', - 1, true ],
+			[ 'validate_float', -1, true ],
 			[ 'validate_float', '- 1', false ],
 
 			[ 'validate_positive_int', null, false ],
@@ -178,13 +179,13 @@ class ValidateTest extends TestCase {
 			[ 'validate_positive_int', 'あいうえお', false ],
 			[ 'validate_positive_int', '03-1234-5678', false ],
 			[ 'validate_positive_int', 0.1, false ],
-			[ 'validate_positive_int', - 0.1, false ],
+			[ 'validate_positive_int', -0.1, false ],
 			[ 'validate_positive_int', '0.1', false ],
 			[ 'validate_positive_int', '- 0.1', false ],
 			[ 'validate_positive_int', 0, false ],
 			[ 'validate_positive_int', 1, true ],
 			[ 'validate_positive_int', '1', true ],
-			[ 'validate_positive_int', - 1, false ],
+			[ 'validate_positive_int', -1, false ],
 			[ 'validate_positive_int', '- 1', false ],
 
 			[ 'validate_negative_int', null, false ],
@@ -194,12 +195,12 @@ class ValidateTest extends TestCase {
 			[ 'validate_negative_int', 'あいうえお', false ],
 			[ 'validate_negative_int', '03-1234-5678', false ],
 			[ 'validate_negative_int', 0.1, false ],
-			[ 'validate_negative_int', - 0.1, false ],
+			[ 'validate_negative_int', -0.1, false ],
 			[ 'validate_negative_int', '0.1', false ],
 			[ 'validate_negative_int', '- 0.1', false ],
 			[ 'validate_negative_int', 0, false ],
 			[ 'validate_negative_int', 1, false ],
-			[ 'validate_negative_int', - 1, true ],
+			[ 'validate_negative_int', -1, true ],
 			[ 'validate_negative_int', '-1', true ],
 			[ 'validate_negative_int', '- 1', false ],
 
@@ -210,13 +211,13 @@ class ValidateTest extends TestCase {
 			[ 'validate_positive_float', 'あいうえお', false ],
 			[ 'validate_positive_float', '03-1234-5678', false ],
 			[ 'validate_positive_float', 0.1, true ],
-			[ 'validate_positive_float', - 0.1, false ],
+			[ 'validate_positive_float', -0.1, false ],
 			[ 'validate_positive_float', '0.1', true ],
 			[ 'validate_positive_float', '- 0.1', false ],
 			[ 'validate_positive_float', 0, false ],
 			[ 'validate_positive_float', 1, true ],
 			[ 'validate_positive_float', '1', true ],
-			[ 'validate_positive_float', - 1, false ],
+			[ 'validate_positive_float', -1, false ],
 			[ 'validate_positive_float', '- 1', false ],
 
 			[ 'validate_negative_float', null, false ],
@@ -226,13 +227,13 @@ class ValidateTest extends TestCase {
 			[ 'validate_negative_float', 'あいうえお', false ],
 			[ 'validate_negative_float', '03-1234-5678', false ],
 			[ 'validate_negative_float', 0.1, false ],
-			[ 'validate_negative_float', - 0.1, true ],
+			[ 'validate_negative_float', -0.1, true ],
 			[ 'validate_negative_float', '0.1', false ],
 			[ 'validate_negative_float', '-0.1', true ],
 			[ 'validate_negative_float', '- 0.1', false ],
 			[ 'validate_negative_float', 0, false ],
 			[ 'validate_negative_float', 1, false ],
-			[ 'validate_negative_float', - 1, true ],
+			[ 'validate_negative_float', -1, true ],
 			[ 'validate_negative_float', '-1', true ],
 			[ 'validate_negative_float', '- 1', false ],
 
@@ -240,7 +241,7 @@ class ValidateTest extends TestCase {
 			[ 'validate_string', '', true ],
 			[ 'validate_string', [], false ],
 			[ 'validate_string', 'test', true ],
-			[ 'validate_string', - 0.1, false ],
+			[ 'validate_string', -0.1, false ],
 			[ 'validate_string', '0.1', true ],
 			[ 'validate_string', '- 1', true ],
 
@@ -251,7 +252,7 @@ class ValidateTest extends TestCase {
 			[ 'validate_alpha', 'te_st', false ],
 			[ 'validate_alpha', 'te-st', false ],
 			[ 'validate_alpha', 'test123', false ],
-			[ 'validate_alpha', - 0.1, false ],
+			[ 'validate_alpha', -0.1, false ],
 			[ 'validate_alpha', '0.1', false ],
 			[ 'validate_alpha', '- 1', false ],
 
@@ -262,7 +263,7 @@ class ValidateTest extends TestCase {
 			[ 'validate_alpha_dash', 'te_st', true ],
 			[ 'validate_alpha_dash', 'te-st', true ],
 			[ 'validate_alpha_dash', 'test123', true ],
-			[ 'validate_alpha_dash', - 0.1, false ],
+			[ 'validate_alpha_dash', -0.1, false ],
 			[ 'validate_alpha_dash', '0.1', false ],
 			[ 'validate_alpha_dash', '- 1', false ],
 			[ 'validate_alpha_dash', '- 1', false ],
@@ -274,7 +275,7 @@ class ValidateTest extends TestCase {
 			[ 'validate_alpha_num', 'te_st', false ],
 			[ 'validate_alpha_num', 'te-st', false ],
 			[ 'validate_alpha_num', 'test123', true ],
-			[ 'validate_alpha_num', - 0.1, false ],
+			[ 'validate_alpha_num', -0.1, false ],
 			[ 'validate_alpha_num', '0.1', false ],
 			[ 'validate_alpha_num', '- 1', false ],
 			[ 'validate_alpha_num', '- 1', false ],
@@ -286,7 +287,7 @@ class ValidateTest extends TestCase {
 			[ 'validate_url', 'te_st', false ],
 			[ 'validate_url', 'te-st', false ],
 			[ 'validate_url', 'test123', false ],
-			[ 'validate_url', - 0.1, false ],
+			[ 'validate_url', -0.1, false ],
 			[ 'validate_url', '0.1', false ],
 			[ 'validate_url', '- 1', false ],
 			[ 'validate_url', '- 1', false ],
@@ -298,14 +299,14 @@ class ValidateTest extends TestCase {
 	}
 
 	/**
-	 * @dataProvider _test_validate_string_length_provider
+	 * @dataProvider provider_test_validate_string_length
 	 *
 	 * @param mixed $var
 	 * @param int $len
 	 * @param bool $expected
 	 */
 	public function test_validate_string_length( $var, $len, $expected ) {
-		$result = static::$_validate->validate_string_length( $var, $len );
+		$result = static::$validate->validate_string_length( $var, $len );
 		if ( $expected ) {
 			$this->assertEquals( true, $result );
 		} else {
@@ -316,7 +317,7 @@ class ValidateTest extends TestCase {
 	/**
 	 * @return array
 	 */
-	public function _test_validate_string_length_provider() {
+	public function provider_test_validate_string_length() {
 		return [
 			[ null, 0, false ],
 			[ '', 0, true ],

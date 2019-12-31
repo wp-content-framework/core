@@ -25,9 +25,9 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 trait Hook {
 
 	/**
-	 * @var string $_filter_prefix
+	 * @var string $filter_prefix
 	 */
-	private $_filter_prefix = null;
+	private $filter_prefix = null;
 
 	/**
 	 * load cache settings
@@ -51,9 +51,11 @@ trait Hook {
 	 * @return string
 	 */
 	protected function get_filter_prefix() {
-		! isset( $this->_filter_prefix ) and $this->_filter_prefix = $this->get_slug( 'filter_prefix', '' ) . $this->app->get_config( 'config', 'filter_separator' );
+		if ( ! isset( $this->filter_prefix ) ) {
+			$this->filter_prefix = $this->get_slug( 'filter_prefix', '' ) . $this->app->get_config( 'config', 'filter_separator' );
+		}
 
-		return $this->_filter_prefix;
+		return $this->filter_prefix;
 	}
 
 	/**
@@ -109,14 +111,14 @@ trait Hook {
 	 * @return mixed
 	 */
 	public function apply_filters() {
-		return $this->_apply_filters( $this->get_filter_prefix(), func_get_args() );
+		return $this->apply_common_filters( $this->get_filter_prefix(), func_get_args() );
 	}
 
 	/**
 	 * @return mixed
 	 */
 	public function apply_framework_filters() {
-		return $this->_apply_filters( $this->get_framework_filter_prefix(), func_get_args() );
+		return $this->apply_common_filters( $this->get_framework_filter_prefix(), func_get_args() );
 	}
 
 	/**
@@ -125,7 +127,7 @@ trait Hook {
 	 *
 	 * @return mixed
 	 */
-	private function _apply_filters( $prefix, $args ) {
+	private function apply_common_filters( $prefix, $args ) {
 		$key = $args[0];
 
 		list( $cache_is_valid, $cache, $is_valid_cache ) = $this->get_hook_cache( $key );
@@ -142,30 +144,7 @@ trait Hook {
 		$default = call_user_func_array( 'apply_filters', $args );
 
 		if ( ! empty( $this->app->setting ) && $this->app->setting->is_setting( $key ) ) {
-			$setting = $this->app->setting->get_setting( $key );
-			$default = $this->app->array->get( $setting, 'default', $default );
-			$this->call_if_closure_with_result( $default, $default, $this->app );
-			$value = $this->app->get_option( $args[0], null );
-			if ( ! isset( $value ) || $value === '' ) {
-				$value = $default;
-			}
-
-			$type = $this->app->array->get( $setting, 'type', '' );
-			if ( $type ) {
-				$method = 'get_' . $type . '_value';
-				if ( $this->is_method_callable( $method ) ) {
-					$value = call_user_func( [ $this, $method ], $value, $default, $setting );
-				}
-			}
-			if ( ! empty( $setting['translate'] ) && $value === $default ) {
-				$value = $this->translate( $value );
-			}
-
-			if ( $is_valid_cache ) {
-				$this->add_hook_cache( $key, $value );
-			}
-
-			return $value;
+			return $this->apply_setting_filters( $args, $key, $default, $is_valid_cache );
 		}
 
 		if ( $is_valid_cache && count( $args ) <= 2 ) {
@@ -176,11 +155,48 @@ trait Hook {
 	}
 
 	/**
+	 * @param array $args
+	 * @param string $key
+	 * @param mixed $default
+	 * @param boolean $is_valid_cache
+	 *
+	 * @return mixed
+	 */
+	private function apply_setting_filters( $args, $key, $default, $is_valid_cache ) {
+		$setting = $this->app->setting->get_setting( $key );
+		$default = $this->app->array->get( $setting, 'default', $default );
+		$this->call_if_closure_with_result( $default, $default, $this->app );
+		$value = $this->app->get_option( $args[0], null );
+		if ( ! isset( $value ) || '' === $value ) {
+			$value = $default;
+		}
+
+		$type = $this->app->array->get( $setting, 'type', '' );
+		if ( $type ) {
+			$method = 'get_' . $type . '_value';
+			if ( $this->is_method_callable( $method ) ) {
+				$value = call_user_func( [ $this, $method ], $value, $default, $setting );
+			}
+		}
+		if ( ! empty( $setting['translate'] ) && $value === $default ) {
+			$value = $this->translate( $value );
+		}
+
+		if ( $is_valid_cache ) {
+			$this->add_hook_cache( $key, $value );
+		}
+
+		return $value;
+	}
+
+	/**
 	 * @param mixed $value
 	 * @param mixed $default
 	 * @param array $setting
 	 *
 	 * @return bool
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+	 * @SuppressWarnings(PHPMD.BooleanGetMethodName)
 	 */
 	protected function get_bool_value(
 		/** @noinspection PhpUnusedParameterInspection */
@@ -195,7 +211,7 @@ trait Hook {
 		if ( 'false' === $value ) {
 			return false;
 		}
-		if ( isset( $value ) && (string) $value !== '' ) {
+		if ( isset( $value ) && '' !== (string) $value ) {
 			return ! empty( $value );
 		}
 
@@ -264,7 +280,7 @@ trait Hook {
 	 * do action
 	 */
 	public function do_action() {
-		$this->_do_action( $this->get_filter_prefix(), func_get_args() );
+		$this->do_common_action( $this->get_filter_prefix(), func_get_args() );
 	}
 
 	/**
@@ -272,15 +288,15 @@ trait Hook {
 	 */
 	public function do_framework_action() {
 		$args = func_get_args();
-		$this->_do_action( $this->get_framework_filter_prefix(), $args );
-		$this->_do_action( $this->get_filter_prefix(), $args );
+		$this->do_common_action( $this->get_framework_filter_prefix(), $args );
+		$this->do_common_action( $this->get_filter_prefix(), $args );
 	}
 
 	/**
 	 * @param string $prefix
 	 * @param array $args
 	 */
-	private function _do_action( $prefix, $args ) {
+	private function do_common_action( $prefix, $args ) {
 		$args[0] = $prefix . $args[0];
 		call_user_func_array( 'do_action', $args );
 	}

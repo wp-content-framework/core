@@ -32,6 +32,7 @@ interface Utility {
 	 * @param string $as
 	 *
 	 * @return string
+	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
 	public function alias( $table, $as );
 
@@ -40,6 +41,7 @@ interface Utility {
 	 * @param null|string $as
 	 *
 	 * @return string
+	 * @SuppressWarnings(PHPMD.ShortVariable)
 	 */
 	public function get_wp_table( $table, $as = null );
 

@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	 *
 	 * @return string
 	 */
-	function ___find_wp_blog_header( $dir ) {
+	$find = function ( $dir ) use ( &$find ) {
 		foreach ( scandir( $dir ) as $item ) {
 			$path = $dir . DS . $item;
 			if ( is_file( $path ) && 'wp-blog-header.php' === $item ) {
@@ -27,16 +27,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 		}
 
 		if ( '/' !== $dir ) {
-			return ___find_wp_blog_header( dirname( $dir ) );
+			return $find( dirname( $dir ) );
 		}
 
 		return '';
-	}
+	};
 
 	/** Loads the WordPress Environment and Template */
-	$wp_blog_header = ___find_wp_blog_header( __DIR__ );
+	$wp_blog_header = $find( __DIR__ );
 	if ( empty( $wp_blog_header ) ) {
-		fwrite(
+		fwrite( // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_fwrite
 			STDERR,
 			'wp-blog-header.php not found.' . PHP_EOL
 		);
@@ -57,7 +57,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	$_SERVER['REQUEST_URI']     = '/';
 	$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.125 Safari/537.36';
 
-	// load wordpress
+	// load WordPress
 	/** @noinspection PhpIncludeInspection */
 	require_once $wp_blog_header;
 

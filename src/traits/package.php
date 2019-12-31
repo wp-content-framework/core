@@ -27,7 +27,7 @@ trait Package {
 	/**
 	 * @return string
 	 */
-	public abstract function get_package();
+	abstract public function get_package();
 
 	/**
 	 * @param string|null $package

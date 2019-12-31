@@ -29,14 +29,14 @@ trait Singleton {
 	use Readonly, Translate, Utility, Package;
 
 	/**
-	 * @var Singleton[][] $_instances
+	 * @var Singleton[][] $instances
 	 */
-	private static $_instances = [];
+	private static $instances = [];
 
 	/**
-	 * @var string[][] $_slugs
+	 * @var string[][] $slugs
 	 */
-	private static $_slugs = [];
+	private static $slugs = [];
 
 	/**
 	 * @var WP_Framework $app
@@ -44,34 +44,35 @@ trait Singleton {
 	protected $app;
 
 	/**
-	 * @var bool $_initialize_called
+	 * @var bool $initialize_called
 	 */
-	private $_initialize_called = false;
+	private $initialize_called = false;
 
 	/**
-	 * @var bool $_initialized_called
+	 * @var bool $initialized_called
 	 */
-	private $_initialized_called = false;
+	private $initialized_called = false;
 
 	/**
-	 * @var string $_class_name
+	 * @var string $class_name
 	 */
-	private $_class_name;
+	private $class_name;
 
 	/**
-	 * @var string $_class_name_slug
+	 * @var string $class_name_slug
 	 */
-	private $_class_name_slug;
+	private $class_name_slug;
 
 	/**
-	 * @var ReflectionClass $_reflection
+	 * @var ReflectionClass $reflection
 	 */
-	private $_reflection;
+	private $reflection;
 
 	/**
 	 * @param WP_Framework $app
 	 *
 	 * @return Singleton
+	 * @SuppressWarnings(PHPMD.ExitExpression)
 	 */
 	public static function get_instance( WP_Framework $app ) {
 		$_class = get_called_class();
@@ -85,21 +86,24 @@ trait Singleton {
 		} else {
 			$key = static::is_shared_class() ? '' : $app->plugin_name;
 		}
-		empty( $class ) and $class = $_class;
-		if ( empty( self::$_instances[ $key ] ) || ! array_key_exists( $class, self::$_instances[ $key ] ) ) {
+		if ( empty( $class ) ) {
+			$class = $_class;
+		}
+
+		if ( ! array_key_exists( $key, self::$instances ) || ! array_key_exists( $class, self::$instances[ $key ] ) ) {
 			try {
 				$reflection = new ReflectionClass( $class );
 			} catch ( Exception $e ) {
-				WP_Framework::wp_die( [ 'unexpected error has occurred.', $e->getMessage(), $class, $_class ], __FILE__, __LINE__ );
+				WP_Framework::kill( [ 'unexpected error has occurred.', $e->getMessage(), $class, $_class ], __FILE__, __LINE__ );
 				exit;
 			}
 			if ( $reflection->isAbstract() ) {
-				self::$_instances[ $key ][ $class ] = null;
+				self::$instances[ $key ][ $class ] = null;
 			} else {
 				if ( $mapped ) {
 					/** @var Singleton $class */
-					$instance                           = $class::get_instance( $app );
-					self::$_instances[ $key ][ $class ] = $instance;
+					$instance                          = $class::get_instance( $app );
+					self::$instances[ $key ][ $class ] = $instance;
 				} else {
 					$instance = new static( $app, $reflection );
 					if ( $app->is_uninstall() && $instance instanceof Uninstall ) {
@@ -107,13 +111,13 @@ trait Singleton {
 							$instance->uninstall();
 						}, $instance->get_uninstall_priority() );
 					}
-					self::$_instances[ $key ][ $class ] = $instance;
+					self::$instances[ $key ][ $class ] = $instance;
 					$instance->call_initialize();
 				}
 			}
 		}
 
-		return self::$_instances[ $key ][ $class ];
+		return self::$instances[ $key ][ $class ];
 	}
 
 	/**
@@ -138,9 +142,9 @@ trait Singleton {
 	 * @param ReflectionClass $reflection
 	 */
 	protected function init( WP_Framework $app, ReflectionClass $reflection ) {
-		$this->app         = $app;
-		$this->_reflection = $reflection;
-		$this->_class_name = $reflection->getName();
+		$this->app        = $app;
+		$this->reflection = $reflection;
+		$this->class_name = $reflection->getName();
 		if ( $this instanceof \WP_Framework_Core\Interfaces\Hook ) {
 			if ( $app->has_initialized() ) {
 				$this->call_initialized();
@@ -156,24 +160,22 @@ trait Singleton {
 	 * initialize
 	 */
 	protected function initialize() {
-
 	}
 
 	/**
 	 * initialized
 	 */
 	protected function initialized() {
-
 	}
 
 	/**
 	 * call initialize
 	 */
 	private function call_initialize() {
-		if ( $this->_initialize_called ) {
+		if ( $this->initialize_called ) {
 			return;
 		}
-		$this->_initialize_called = true;
+		$this->initialize_called = true;
 		$this->set_allowed_access( true );
 		$this->initialize();
 		$this->set_allowed_access( false );
@@ -184,10 +186,10 @@ trait Singleton {
 	 */
 	private function call_initialized() {
 		$this->call_initialize();
-		if ( $this->_initialized_called ) {
+		if ( $this->initialized_called ) {
 			return;
 		}
-		$this->_initialized_called = true;
+		$this->initialized_called = true;
 		$this->initialized();
 	}
 
@@ -198,16 +200,16 @@ trait Singleton {
 	 * @return string
 	 */
 	public function get_slug( $config_name, $suffix = '-' ) {
-		if ( ! isset( self::$_slugs[ $this->app->plugin_name ][ $config_name ] ) ) {
+		if ( ! array_key_exists( $this->app->plugin_name, self::$slugs ) || ! array_key_exists( $config_name, self::$slugs[ $this->app->plugin_name ] ) ) {
 			$default = $this->app->slug_name . $suffix;
 			$slug    = $this->app->get_config( 'slug', $config_name, $default );
 			if ( empty( $slug ) ) {
 				$slug = $default;
 			}
-			self::$_slugs[ $this->app->plugin_name ][ $config_name ] = $slug;
+			self::$slugs[ $this->app->plugin_name ][ $config_name ] = $slug;
 		}
 
-		return self::$_slugs[ $this->app->plugin_name ][ $config_name ];
+		return self::$slugs[ $this->app->plugin_name ][ $config_name ];
 	}
 
 	/**
@@ -244,23 +246,25 @@ trait Singleton {
 	 * @return string
 	 */
 	public function get_class_name() {
-		return $this->_class_name;
+		return $this->class_name;
 	}
 
 	/**
 	 * @return string
 	 */
 	public function get_class_name_slug() {
-		! isset( $this->_class_name_slug ) and $this->_class_name_slug = strtolower( str_replace( [ '_', '\\' ], [ '-', '_' ], $this->get_class_name() ) );
+		if ( ! isset( $this->class_name_slug ) ) {
+			$this->class_name_slug = strtolower( str_replace( [ '_', '\\' ], [ '-', '_' ], $this->get_class_name() ) );
+		}
 
-		return $this->_class_name_slug;
+		return $this->class_name_slug;
 	}
 
 	/**
 	 * @return ReflectionClass
 	 */
 	public function get_reflection() {
-		return $this->_reflection;
+		return $this->reflection;
 	}
 
 	/**

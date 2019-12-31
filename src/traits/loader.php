@@ -29,18 +29,14 @@ trait Loader {
 	use Singleton, Hook;
 
 	/**
-	 * @var array $_list
+	 * @var array $list
 	 */
-	private $_list = null;
-	/**
-	 * @var int $_count
-	 */
-	private $_count = null;
+	private $list = null;
 
 	/**
-	 * @var array
+	 * @var array $namespaces
 	 */
-	private $_namespaces = null;
+	private $namespaces = null;
 
 	/**
 	 * @return string
@@ -57,6 +53,7 @@ trait Loader {
 	private function namespace_to_dir( $namespace ) {
 		$namespace = ltrim( $namespace, '\\' );
 		$dir       = null;
+		$matches   = null;
 		if ( preg_match( "#\A{$this->app->define->plugin_namespace}(.+)\z#", $namespace, $matches ) ) {
 			$namespace = $matches[1];
 			$dir       = $this->app->define->plugin_src_dir;
@@ -87,57 +84,71 @@ trait Loader {
 	 * @return array
 	 */
 	public function get_class_list() {
-		if ( ! isset( $this->_list ) ) {
-			$this->_list = [];
-			$cache       = $this->cache_get_common( 'class_settings', null, false, $this->is_common_cache_class_settings() );
+		if ( ! isset( $this->list ) ) {
+			$this->list = [];
+			$cache      = $this->cache_get_common( 'class_settings', null, false, $this->is_common_cache_class_settings() );
 			if ( is_array( $cache ) ) {
-				/** @var Singleton $class */
-				foreach ( $this->get_class_instances( $cache, $this->get_instanceof() ) as list( $class ) ) {
-					$slug = $class->get_class_name();
-					if ( ! isset( $this->_list[ $slug ] ) ) {
-						$this->_list[ $slug ] = $class;
-					}
-				}
+				$this->restore_class_list_from_cache( $cache );
 			} else {
-				$sort    = [];
-				$classes = [];
-				foreach ( $this->_get_namespaces() as $namespace ) {
-					/** @var Singleton $class */
-					foreach ( $this->get_classes( $this->namespace_to_dir( $namespace ), $this->get_instanceof() ) as list( $class, $setting ) ) {
-						$slug = $class->get_class_name();
-						if ( ! isset( $classes[ $slug ] ) ) {
-							$classes[ $slug ] = [ $class, $setting ];
-							if ( method_exists( $class, 'get_load_priority' ) ) {
-								$sort[ $slug ] = $class->get_load_priority();
-								if ( $sort[ $slug ] < 0 ) {
-									unset( $classes[ $slug ] );
-									unset( $sort[ $slug ] );
-								}
-							}
-						}
-					}
-				}
-				if ( ! empty( $sort ) ) {
-					uasort( $classes, function ( $a, $b ) use ( $sort ) {
-						/** @var Singleton[] $a */
-						/** @var Singleton[] $b */
-						$pa = isset( $sort[ $a[0]->get_class_name() ] ) ? $sort[ $a[0]->get_class_name() ] : 10;
-						$pb = isset( $sort[ $b[0]->get_class_name() ] ) ? $sort[ $b[0]->get_class_name() ] : 10;
-
-						return $pa == $pb ? 0 : ( $pa < $pb ? - 1 : 1 );
-					} );
-				}
-				$this->_list = $this->app->array->map( $classes, function ( $item ) {
-					return $item[0];
-				} );
-				$settings    = $this->app->array->map( $classes, function ( $item ) {
-					return $item[1];
-				} );
-				$this->cache_set_common( 'class_settings', $settings, false, null, $this->is_common_cache_class_settings() );
+				$this->set_class_list();
 			}
 		}
 
-		return $this->_list;
+		return $this->list;
+	}
+
+	/**
+	 * @param $cache
+	 */
+	private function restore_class_list_from_cache( $cache ) {
+		/** @var Singleton $class */
+		foreach ( $this->get_class_instances( $cache, $this->get_instanceof() ) as list( $class ) ) {
+			$slug = $class->get_class_name();
+			if ( ! isset( $this->list[ $slug ] ) ) {
+				$this->list[ $slug ] = $class;
+			}
+		}
+	}
+
+	/**
+	 * set class list
+	 */
+	private function set_class_list() {
+		$sort    = [];
+		$classes = [];
+		foreach ( $this->get_use_namespaces() as $namespace ) {
+			/** @var Singleton $class */
+			foreach ( $this->get_classes( $this->namespace_to_dir( $namespace ), $this->get_instanceof() ) as list( $class, $setting ) ) {
+				$slug = $class->get_class_name();
+				if ( ! isset( $classes[ $slug ] ) ) {
+					$classes[ $slug ] = [ $class, $setting ];
+					if ( method_exists( $class, 'get_load_priority' ) ) {
+						$sort[ $slug ] = $class->get_load_priority();
+						if ( $sort[ $slug ] < 0 ) {
+							unset( $classes[ $slug ] );
+							unset( $sort[ $slug ] );
+						}
+					}
+				}
+			}
+		}
+		if ( ! empty( $sort ) ) {
+			uasort( $classes, function ( $singleton1, $singleton2 ) use ( $sort ) {
+				/** @var Singleton[] $singleton1 */
+				/** @var Singleton[] $singleton2 */
+				$priority1 = isset( $sort[ $singleton1[0]->get_class_name() ] ) ? $sort[ $singleton1[0]->get_class_name() ] : 10;
+				$priority2 = isset( $sort[ $singleton2[0]->get_class_name() ] ) ? $sort[ $singleton2[0]->get_class_name() ] : 10;
+
+				return $priority1 === $priority2 ? 0 : ( $priority1 < $priority2 ? -1 : 1 );
+			} );
+		}
+		$this->list = $this->app->array->map( $classes, function ( $item ) {
+			return $item[0];
+		} );
+		$settings   = $this->app->array->map( $classes, function ( $item ) {
+			return $item[1];
+		} );
+		$this->cache_set_common( 'class_settings', $settings, false, null, $this->is_common_cache_class_settings() );
 	}
 
 	/**
@@ -196,7 +207,7 @@ trait Loader {
 	 * @return false|array
 	 */
 	protected function get_class_setting( $class_name, $add_namespace = '' ) {
-		$namespaces = $this->_get_namespaces();
+		$namespaces = $this->get_use_namespaces();
 		if ( ! empty( $namespaces ) ) {
 			foreach ( $namespaces as $namespace ) {
 				$class = rtrim( $namespace, '\\' ) . '\\' . $add_namespace . $class_name;
@@ -235,7 +246,7 @@ trait Loader {
 
 					return $instance;
 				}
-			} catch ( Exception $e ) {
+			} catch ( Exception $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
 			}
 		}
 
@@ -245,7 +256,7 @@ trait Loader {
 	/**
 	 * @return array
 	 */
-	protected abstract function get_namespaces();
+	abstract protected function get_namespaces();
 
 	/**
 	 * @return bool
@@ -257,15 +268,17 @@ trait Loader {
 	/**
 	 * @return array
 	 */
-	private function _get_namespaces() {
-		! isset( $this->_namespaces ) and $this->_namespaces = $this->get_namespaces();
+	private function get_use_namespaces() {
+		if ( ! isset( $this->namespaces ) ) {
+			$this->namespaces = $this->get_namespaces();
+		}
 
-		return $this->_namespaces;
+		return $this->namespaces;
 	}
 
 	/**
 	 * @return string
 	 */
-	protected abstract function get_instanceof();
+	abstract protected function get_instanceof();
 
 }

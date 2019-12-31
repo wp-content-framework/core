@@ -95,14 +95,14 @@ if ( ! defined( 'WP_CONTENT_FRAMEWORK' ) ) {
 class Main {
 
 	/**
-	 * @var Main[] $_instances
+	 * @var Main[] $instances
 	 */
-	private static $_instances = [];
+	private static $instances = [];
 
 	/**
-	 * @var array $_shared_object
+	 * @var array $shared_object
 	 */
-	private static $_shared_object = [];
+	private static $shared_object = [];
 
 	/**
 	 * @var WP_Framework $app
@@ -110,39 +110,39 @@ class Main {
 	protected $app;
 
 	/**
-	 * @var bool $_initialized
+	 * @var bool $initialized
 	 */
-	private $_initialized = false;
+	private $initialized = false;
 
 	/**
-	 * @var array $_properties
+	 * @var array $properties
 	 */
-	private $_properties;
+	private $properties;
 
 	/**
-	 * @var array $_class_map
+	 * @var array $class_map
 	 */
-	private $_class_map;
+	private $class_map;
 
 	/**
-	 * @var array $_class_target_package
+	 * @var array $class_target_package
 	 */
-	private $_class_target_package;
+	private $class_target_package;
 
 	/**
-	 * @var array $_namespace_target_package
+	 * @var array $namespace_target_package
 	 */
-	private $_namespace_target_package;
+	private $namespace_target_package;
 
 	/**
-	 * @var WP_Framework|null[] $_alternative_instances
+	 * @var WP_Framework|null[] $alternative_instances
 	 */
-	private $_alternative_instances;
+	private $alternative_instances;
 
 	/**
-	 * @var array $_property_instances
+	 * @var array $property_instances
 	 */
-	private $_property_instances = [];
+	private $property_instances = [];
 
 	/**
 	 * @param WP_Framework $app
@@ -150,9 +150,11 @@ class Main {
 	 * @return Main
 	 */
 	public static function get_instance( WP_Framework $app ) {
-		! isset( self::$_instances[ $app->plugin_name ] ) and self::$_instances[ $app->plugin_name ] = new self( $app );
+		if ( ! array_key_exists( $app->plugin_name, self::$instances ) ) {
+			self::$instances[ $app->plugin_name ] = new self( $app );
+		}
 
-		return self::$_instances[ $app->plugin_name ];
+		return self::$instances[ $app->plugin_name ];
 	}
 
 	/**
@@ -181,46 +183,46 @@ class Main {
 	 * @return bool
 	 */
 	public function __isset( $name ) {
-		return array_key_exists( $name, $this->_properties );
+		return array_key_exists( $name, $this->properties );
 	}
 
 	/**
 	 * initialize
 	 */
 	protected function initialize() {
-		$this->_properties               = [];
-		$this->_class_target_package     = [];
-		$this->_namespace_target_package = [];
-		$this->_alternative_instances    = [];
-		$this->_class_map                = [];
+		$this->properties               = [];
+		$this->class_target_package     = [];
+		$this->namespace_target_package = [];
+		$this->alternative_instances    = [];
+		$this->class_map                = [];
 		foreach ( $this->app->get_packages() as $package ) {
 			$map = $package->get_config( 'map', $this->app );
 			foreach ( $map as $name => $class ) {
 				if ( is_array( $class ) ) {
 					foreach ( $class as $k => $v ) {
-						$class                                 = ltrim( $v, '\\' );
-						$this->_properties[ $k ]               = $class;
-						$this->_class_target_package[ $class ] = $name;
+						$class                                = ltrim( $v, '\\' );
+						$this->properties[ $k ]               = $class;
+						$this->class_target_package[ $class ] = $name;
 						if ( ! $this->app->is_valid_package( $name ) ) {
-							$this->_alternative_instances[ $class ] = $this->get_alternative_instance( $name );
+							$this->alternative_instances[ $class ] = $this->get_alternative_instance( $name );
 						}
 					}
 				} else {
-					$class                                 = ltrim( $class, '\\' );
-					$this->_properties[ $name ]            = $class;
-					$this->_class_target_package[ $class ] = $package->get_package();
+					$class                                = ltrim( $class, '\\' );
+					$this->properties[ $name ]            = $class;
+					$this->class_target_package[ $class ] = $package->get_package();
 				}
 			}
 			$map = $package->get_config( 'class_map', $this->app );
 			foreach ( $map as $class_map ) {
 				foreach ( $class_map as $from => $to ) {
-					$from                               = ltrim( $from, '\\' );
-					$to                                 = ltrim( $to, '\\' );
-					$this->_class_map [ $from ]         = $to;
-					$this->_class_target_package[ $to ] = $package->get_package();
+					$from                              = ltrim( $from, '\\' );
+					$to                                = ltrim( $to, '\\' );
+					$this->class_map [ $from ]         = $to;
+					$this->class_target_package[ $to ] = $package->get_package();
 				}
 			}
-			$this->_namespace_target_package[ $package->get_namespace() ] = $package->get_package();
+			$this->namespace_target_package[ $package->get_namespace() ] = $package->get_package();
 		}
 	}
 
@@ -245,20 +247,20 @@ class Main {
 	 * @return Singleton
 	 */
 	public function get( $name ) {
-		if ( isset( $this->_properties[ $name ] ) ) {
-			$class = $this->_properties[ $name ];
-			if ( ! isset( $this->_property_instances[ $class ] ) ) {
+		if ( isset( $this->properties[ $name ] ) ) {
+			$class = $this->properties[ $name ];
+			if ( ! isset( $this->property_instances[ $class ] ) ) {
 				/** @var Singleton $class */
 				try {
-					$this->_property_instances[ $class ] = $class::get_instance( $this->app );
+					$this->property_instances[ $class ] = $class::get_instance( $this->app );
 				} catch ( Exception $e ) {
-					WP_Framework::wp_die( $e->getMessage(), __FILE__, __LINE__ );
+					WP_Framework::kill( $e->getMessage(), __FILE__, __LINE__ );
 				}
 			}
 
-			return $this->_property_instances[ $class ];
+			return $this->property_instances[ $class ];
 		}
-		WP_Framework::wp_die( $name . ' is undefined.', __FILE__, __LINE__ );
+		WP_Framework::kill( $name . ' is undefined.', __FILE__, __LINE__ );
 
 		return null;
 	}
@@ -269,44 +271,37 @@ class Main {
 	 * @return bool
 	 */
 	public function load_class( $class ) {
-		$dirs  = null;
-		$class = ltrim( $class, '\\' );
-		if ( isset( $this->_property_instances[ $this->_properties['define'] ] ) && preg_match( "#\A{$this->define->plugin_namespace}(.+)\z#", $class, $matches ) ) {
+		$matches = null;
+		$class   = ltrim( $class, '\\' );
+		if ( isset( $this->property_instances[ $this->properties['define'] ] ) && preg_match( "#\A{$this->define->plugin_namespace}(.+)\z#", $class, $matches ) ) {
 			$class = $matches[1];
-			$dirs  = $this->define->plugin_src_dir;
-		} elseif ( isset( $this->_class_target_package[ $class ] ) ) {
-			if ( array_key_exists( $class, $this->_alternative_instances ) ) {
-				if ( ! isset( $this->_alternative_instances[ $class ] ) ) {
-					$this->_alternative_instances[ $class ] = $this->get_alternative_instance( $this->_class_target_package[ $class ] );
-					if ( ! isset( $this->_alternative_instances[ $class ] ) ) {
-						$this->_alternative_instances[ $class ] = $this->app;
+			$class = ltrim( $class, '\\' );
+			$class = strtolower( $class );
+			$path  = $this->define->plugin_src_dir . DS . str_replace( '\\', DS, $class ) . '.php';
+			if ( is_readable( $path ) ) {
+				/** @noinspection PhpIncludeInspection */
+				require_once $path;
+
+				return true;
+			}
+		} elseif ( isset( $this->class_target_package[ $class ] ) ) {
+			if ( array_key_exists( $class, $this->alternative_instances ) ) {
+				if ( ! isset( $this->alternative_instances[ $class ] ) ) {
+					$this->alternative_instances[ $class ] = $this->get_alternative_instance( $this->class_target_package[ $class ] );
+					if ( ! isset( $this->alternative_instances[ $class ] ) ) {
+						$this->alternative_instances[ $class ] = $this->app;
 					}
 				}
-				$instance = $this->_alternative_instances[ $class ];
+				$instance = $this->alternative_instances[ $class ];
 			} else {
 				$instance = $this->app;
 			}
-			if ( $instance->get_package_instance( $this->_class_target_package[ $class ] )->load_class( $class ) ) {
+			if ( $instance->get_package_instance( $this->class_target_package[ $class ] )->load_class( $class ) ) {
 				return true;
 			}
-		} elseif ( preg_match( '#\A(\w+)\\\\#', $class, $matches ) && isset( $this->_namespace_target_package[ $matches[1] ] ) ) {
-			if ( $this->app->get_package_instance( $this->_namespace_target_package[ $matches[1] ] )->load_class( $class ) ) {
+		} elseif ( preg_match( '#\A(\w+)\\\\#', $class, $matches ) && isset( $this->namespace_target_package[ $matches[1] ] ) ) {
+			if ( $this->app->get_package_instance( $this->namespace_target_package[ $matches[1] ] )->load_class( $class ) ) {
 				return true;
-			}
-		}
-
-		if ( isset( $dirs ) ) {
-			$class = ltrim( $class, '\\' );
-			$class = strtolower( $class );
-			! is_array( $dirs ) and $dirs = [ $dirs ];
-			foreach ( $dirs as $dir ) {
-				$path = $dir . DS . str_replace( '\\', DS, $class ) . '.php';
-				if ( is_readable( $path ) ) {
-					/** @noinspection PhpIncludeInspection */
-					require_once $path;
-
-					return true;
-				}
 			}
 		}
 
@@ -317,10 +312,10 @@ class Main {
 	 * main init
 	 */
 	public function main_init() {
-		if ( $this->_initialized ) {
+		if ( $this->initialized ) {
 			return;
 		}
-		$this->_initialized = true;
+		$this->initialized = true;
 
 		$this->filter->do_action( 'app_initialize', $this );
 		$this->system;
@@ -330,7 +325,7 @@ class Main {
 	 * @return bool
 	 */
 	public function has_initialized() {
-		return $this->_initialized;
+		return $this->initialized;
 	}
 
 	/**
@@ -339,7 +334,7 @@ class Main {
 	 * @return array
 	 */
 	public function get_mapped_class( $class ) {
-		return isset( $this->_class_map[ $class ] ) ? [ true, $this->_class_map[ $class ] ] : [ false, $class ];
+		return isset( $this->class_map[ $class ] ) ? [ true, $this->class_map[ $class ] ] : [ false, $class ];
 	}
 
 	/**
@@ -348,7 +343,7 @@ class Main {
 	 * @return bool
 	 */
 	public function is_loaded( $name ) {
-		return isset( $this->_property_instances[ $this->app->plugin_name ][ $name ] );
+		return isset( $this->property_instances[ $this->app->plugin_name ][ $name ] );
 	}
 
 	/**
@@ -448,11 +443,11 @@ class Main {
 	 */
 	private function error_log( $message, $context ) {
 		if ( $message instanceof Exception ) {
-			error_log( $message->getMessage() );
-			error_log( print_r( isset( $context ) ? $context : $message->getTraceAsString(), true ) );
+			error_log( $message->getMessage() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log( print_r( isset( $context ) ? $context : $message->getTraceAsString(), true ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log, WordPress.PHP.DevelopmentFunctions.error_log_print_r
 		} elseif ( $message instanceof WP_Error ) {
-			error_log( $message->get_error_message() );
-			error_log( print_r( isset( $context ) ? $context : $message->get_error_data(), true ) );
+			error_log( $message->get_error_message() ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+			error_log( print_r( isset( $context ) ? $context : $message->get_error_data(), true ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log, WordPress.PHP.DevelopmentFunctions.error_log_print_r
 		}
 	}
 
@@ -471,19 +466,19 @@ class Main {
 	}
 
 	/**
-	 * @param string $to
+	 * @param string $send_to
 	 * @param string $subject
 	 * @param string|array $body
 	 * @param string|false $text
 	 *
 	 * @return bool
 	 */
-	public function send_mail( $to, $subject, $body, $text = false ) {
+	public function send_mail( $send_to, $subject, $body, $text = false ) {
 		if ( ! $this->app->is_valid_package( 'mail' ) ) {
 			return false;
 		}
 
-		return $this->mail->send( $to, $subject, $body, $text );
+		return $this->mail->send( $send_to, $subject, $body, $text );
 	}
 
 	/**
@@ -604,21 +599,27 @@ class Main {
 	 * @param string|null $target
 	 *
 	 * @return mixed
+	 * @SuppressWarnings(PHPMD.UndefinedVariable)
 	 */
 	public function get_shared_object( $key, $target = null ) {
-		! isset( $target ) and $target = $this->app->plugin_name;
+		if ( ! isset( $target ) ) {
+			$target = $this->app->plugin_name;
+		}
 
-		return isset( self::$_shared_object[ $target ][ $key ] ) ? self::$_shared_object[ $target ][ $key ] : null;
+		return isset( self::$shared_object[ $target ][ $key ] ) ? self::$shared_object[ $target ][ $key ] : null;
 	}
 
 	/**
 	 * @param string $key
 	 * @param mixed $object
 	 * @param string|null $target
+	 * @SuppressWarnings(PHPMD.UndefinedVariable)
 	 */
 	public function set_shared_object( $key, $object, $target = null ) {
-		! isset( $target ) and $target = $this->app->plugin_name;
-		self::$_shared_object[ $target ][ $key ] = $object;
+		if ( ! isset( $target ) ) {
+			$target = $this->app->plugin_name;
+		}
+		self::$shared_object[ $target ][ $key ] = $object;
 	}
 
 	/**
@@ -626,20 +627,26 @@ class Main {
 	 * @param string|null $target
 	 *
 	 * @return bool
+	 * @SuppressWarnings(PHPMD.UndefinedVariable)
 	 */
 	public function isset_shared_object( $key, $target = null ) {
-		! isset( $target ) and $target = $this->app->plugin_name;
+		if ( ! isset( $target ) ) {
+			$target = $this->app->plugin_name;
+		}
 
-		return isset( self::$_shared_object[ $target ] ) && array_key_exists( $key, self::$_shared_object[ $target ] );
+		return isset( self::$shared_object[ $target ] ) && array_key_exists( $key, self::$shared_object[ $target ] );
 	}
 
 	/**
 	 * @param string $key
 	 * @param string|null $target
+	 * @SuppressWarnings(PHPMD.UndefinedVariable)
 	 */
 	public function delete_shared_object( $key, $target = null ) {
-		! isset( $target ) and $target = $this->app->plugin_name;
-		unset( self::$_shared_object[ $target ][ $key ] );
+		if ( ! isset( $target ) ) {
+			$target = $this->app->plugin_name;
+		}
+		unset( self::$shared_object[ $target ][ $key ] );
 	}
 
 	/**
@@ -657,7 +664,7 @@ class Main {
 	 * @return bool
 	 */
 	public function is_enough_version() {
-		if ( ! isset( $this->_property_instances[ $this->_properties['system'] ] ) ) {
+		if ( ! isset( $this->property_instances[ $this->properties['system'] ] ) ) {
 			return true;
 		}
 
@@ -668,7 +675,7 @@ class Main {
 	 * load all packages
 	 */
 	public function load_all_packages() {
-		foreach ( $this->_properties as $name => $class ) {
+		foreach ( array_keys( $this->properties ) as $name ) {
 			if ( ! $this->app->is_valid_package( $name ) ) {
 				continue;
 			}

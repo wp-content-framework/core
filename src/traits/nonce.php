@@ -90,6 +90,7 @@ trait Nonce {
 	 * @param string $nonce_key
 	 *
 	 * @return bool
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 */
 	protected function need_nonce_check(
 		/** @noinspection PhpUnusedParameterInspection */

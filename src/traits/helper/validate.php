@@ -255,6 +255,8 @@ trait Validate {
 		if ( $this->is_ignore_empty( $var, $ignore_empty ) ) {
 			return true;
 		}
+
+		$matches = null;
 		if ( is_string( $var ) && preg_match( '#\A(https?:)?(//.+)\z#', $var, $matches ) ) {
 			if ( false !== filter_var( 'http:' . $matches[2], FILTER_VALIDATE_URL ) ) {
 				return true;
@@ -330,11 +332,13 @@ trait Validate {
 	 * @return bool|WP_Error
 	 */
 	protected function validate_float( $var, $min = null, $max = null ) {
-		if ( ! is_int( $var ) && ! is_float( $var ) && ! is_string( $var ) && empty( $var ) ) {
-			return new WP_Error( 400, $this->translate( 'Value is required.' ) );
-		}
-		if ( ! is_int( $var ) && ! is_float( $var ) && ( ! is_string( $var ) || ! preg_match( '#\A-?\d*\.?\d+\z#', $var ) ) ) {
-			return new WP_Error( 400, $this->translate( 'Invalid format.' ) );
+		if ( ! is_int( $var ) && ! is_float( $var ) ) {
+			if ( ! is_string( $var ) && empty( $var ) ) {
+				return new WP_Error( 400, $this->translate( 'Value is required.' ) );
+			}
+			if ( ( ! is_string( $var ) || ! preg_match( '#\A-?\d*\.?\d+\z#', $var ) ) ) {
+				return new WP_Error( 400, $this->translate( 'Invalid format.' ) );
+			}
 		}
 		if ( isset( $min ) && $var < $min ) {
 			return new WP_Error( 400, $this->translate( 'Outside the range of allowed values.' ) );
@@ -417,16 +421,16 @@ trait Validate {
 	/**
 	 * @param mixed $var
 	 * @param string $table
-	 * @param string $id
 	 * @param string $column
+	 * @param array|mixed $columns
 	 *
 	 * @return bool|WP_Error
 	 */
-	protected function validate_exists( $var, $table, $id = 'id', $column = '*' ) {
+	protected function validate_exists( $var, $table, $column = 'id', $columns = '*' ) {
 		if ( ! $this->app->is_valid_package( 'db' ) ) {
 			return new WP_Error( 400, $this->translate( 'DB module is not available.' ) );
 		}
-		if ( $this->table( $table )->select( $column )->where( $id, $var )->doesnt_exist() ) {
+		if ( $this->table( $table )->select( $columns )->where( $column, $var )->doesnt_exist() ) {
 			return new WP_Error( 400, $this->translate( 'Data does not exist.' ) );
 		}
 

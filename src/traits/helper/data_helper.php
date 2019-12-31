@@ -30,7 +30,7 @@ trait Data_Helper {
 	 * @return bool
 	 */
 	protected function convert_to_bool( array $data, $key ) {
-		return ! empty( $data[ $key ] ) && $data[ $key ] !== '0' && $data[ $key ] !== 'false';
+		return ! empty( $data[ $key ] ) && '0' !== $data[ $key ] && 'false' !== $data[ $key ];
 	}
 
 	/**
@@ -58,46 +58,85 @@ trait Data_Helper {
 
 		switch ( $type ) {
 			case 'int':
-				if ( ! is_int( $param ) && ! ctype_digit( ltrim( $param, '-' ) ) ) {
-					return null;
-				}
-				$param -= 0;
-				$param = (int) $param;
-				break;
+				return $this->sanitize_int( $param );
 			case 'float':
 			case 'number':
-				if ( ! is_numeric( $param ) && ! ctype_alpha( $param ) ) {
-					return null;
-				}
-				$param -= 0;
-				break;
+				return $this->sanitize_number( $param );
 			case 'bool':
-				if ( $nullable && ( is_null( $param ) || $param === '' ) ) {
-					return null;
-				}
-				if ( $update && $param === '' ) {
-					return null;
-				}
-				if ( is_string( $param ) ) {
-					$param = strtolower( trim( $param ) );
-					if ( $param === 'true' ) {
-						$param = 1;
-					} elseif ( $param === 'false' ) {
-						$param = 0;
-					} elseif ( $param === '0' ) {
-						$param = 0;
-					} else {
-						$param = ! empty( $param ) ? 1 : 0;
-					}
-				} else {
-					$param = ! empty( $param ) ? 1 : 0;
-				}
-				break;
+				return $this->sanitize_bool( $param, $nullable, $update );
 			default:
-				if ( is_null( $param ) || ( (string) $param === '' ) ) {
-					return null;
-				}
-				break;
+				return $this->sanitize_misc( $param );
+		}
+	}
+
+	/**
+	 * @param mixed $param
+	 *
+	 * @return int|null
+	 */
+	private function sanitize_int( $param ) {
+		if ( ! is_int( $param ) && ! ctype_digit( ltrim( $param, '-' ) ) ) {
+			return null;
+		}
+		$param = (int) $param;
+
+		return $param;
+	}
+
+	/**
+	 * @param mixed $param
+	 *
+	 * @return float|null
+	 */
+	private function sanitize_number( $param ) {
+		if ( ! is_numeric( $param ) && ! ctype_alpha( $param ) ) {
+			return null;
+		}
+		$param -= 0.0;
+
+		return $param;
+	}
+
+	/**
+	 * @param mixed $param
+	 * @param bool $nullable
+	 * @param bool $update
+	 *
+	 * @return int|string|null
+	 */
+	private function sanitize_bool( $param, $nullable, $update ) {
+		if ( $nullable && ( is_null( $param ) || '' === $param ) ) {
+			return null;
+		}
+		if ( $update && '' === $param ) {
+			return null;
+		}
+		if ( is_string( $param ) ) {
+			$param = strtolower( trim( $param ) );
+			if ( 'true' === $param ) {
+				$param = 1;
+			} elseif ( 'false' === $param ) {
+				$param = 0;
+			} elseif ( '0' === $param ) {
+				$param = 0;
+			} else {
+				$param = ! empty( $param ) ? 1 : 0;
+			}
+		} else {
+			$param = ! empty( $param ) ? 1 : 0;
+		}
+
+		return $param;
+	}
+
+	/**
+	 * @param mixed $param
+	 *
+	 * @return mixed
+	 */
+	private function sanitize_misc( $param ) {
+		if ( is_null( $param ) || '' === (string) $param ) {
+			return null;
 		}
 
 		return $param;
