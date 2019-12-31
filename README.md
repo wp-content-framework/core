@@ -396,6 +396,5 @@ if ( $this->apply_filters( 'minify_js' ) ) {
 [Travis CI テスト用プラグイン](https://github.com/technote-space/test-travis)
 
 # Author
-
-[GitHub (Technote)](https://github.com/technote-space)
-[Blog](https://technote.space)
+- [GitHub (Technote)](https://github.com/technote-space)
+- [Blog](https://technote.space)
