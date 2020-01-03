@@ -16,7 +16,7 @@
   ],
   "require": {
     "php": ">=5.6.0",
-    "wp-content-framework/common": "^0.0.57",
+    "wp-content-framework/common": "^0.0.59",
     "wp-content-framework/cache": "^0.0.14"
   },
   "require-dev": {
