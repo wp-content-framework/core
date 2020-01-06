@@ -16,7 +16,7 @@
   ],
   "require": {
     "php": ">=5.6.0",
-    "wp-content-framework/common": "^0.0.57",
+    "wp-content-framework/common": "^0.0.59",
     "wp-content-framework/cache": "^0.0.14"
   },
   "require-dev": {
@@ -27,6 +27,15 @@
     "squizlabs/php_codesniffer": "^3.5",
     "wp-coding-standards/wpcs": "^2.2",
     "phpcompatibility/phpcompatibility-wp": "^2.1"
+  },
+  "autoload": {
+    "files": [
+      "autoload.php"
+    ]
+  },
+  "license": "GPL-2.0+",
+  "config": {
+    "process-timeout": 1200
   },
   "scripts": {
     "prepare": [
@@ -43,11 +52,5 @@
     "phpcbf": "WORKSPACE=${WORKSPACE:-$(cd $(dirname $0); pwd)} bash ./fixtures/bin/php/phpcbf.sh",
     "phpunit": "WORKSPACE=${WORKSPACE:-$(cd $(dirname $0); pwd)} bash ./fixtures/bin/php/phpunit.sh",
     "packages": "WORKSPACE=${WORKSPACE:-$(cd $(dirname $0); pwd)} bash ./fixtures/bin/packages.sh"
-  },
-  "autoload": {
-    "files": [
-      "autoload.php"
-    ]
-  },
-  "license": "GPL-2.0+"
+  }
 }

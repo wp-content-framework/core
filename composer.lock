@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "867306dd3f3e82753f1c49676a9aa4ef",
+    "content-hash": "7b7d47b07e7d1fcb080ce32f02fa4d1a",
     "packages": [
         {
             "name": "wp-content-framework/cache",
@@ -49,16 +49,16 @@
         },
         {
             "name": "wp-content-framework/common",
-            "version": "v0.0.57",
+            "version": "v0.0.59",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-content-framework/common.git",
-                "reference": "b337f22d76a0c597484061a48afaabc242c51108"
+                "reference": "50f2488e278f2464e64ac132949992815594d230"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/common/zipball/b337f22d76a0c597484061a48afaabc242c51108",
-                "reference": "b337f22d76a0c597484061a48afaabc242c51108",
+                "url": "https://api.github.com/repos/wp-content-framework/common/zipball/50f2488e278f2464e64ac132949992815594d230",
+                "reference": "50f2488e278f2464e64ac132949992815594d230",
                 "shasum": ""
             },
             "require": {
@@ -91,7 +91,7 @@
                 "framework",
                 "wordpress"
             ],
-            "time": "2019-12-31T15:51:24+00:00"
+            "time": "2020-01-03T12:21:40+00:00"
         }
     ],
     "packages-dev": [
