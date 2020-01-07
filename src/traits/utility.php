@@ -191,7 +191,7 @@ trait Utility {
 					$this->app->get_plugin_version(),
 				];
 
-				self::$common_cache_version[ $this->app->plugin_name ] = sha1( wp_json_encode( $versions ) );
+				self::$common_cache_version[ $this->app->plugin_name ] = sha1( $this->app->utility->json_encode( $versions ) );
 			}
 
 			return self::$common_cache_version[ $this->app->plugin_name ];
@@ -202,7 +202,7 @@ trait Utility {
 				$this->wp_version(),
 				$this->app->utility->get_framework_plugins_hash(),
 			];
-			self::$cache_version = sha1( wp_json_encode( $versions ) );
+			self::$cache_version = sha1( $this->app->utility->json_encode( $versions ) );
 		}
 
 		return self::$cache_version;
