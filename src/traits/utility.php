@@ -191,7 +191,7 @@ trait Utility {
 					$this->app->get_plugin_version(),
 				];
 
-				self::$common_cache_version[ $this->app->plugin_name ] = sha1( wp_json_encode( $versions ) );
+				self::$common_cache_version[ $this->app->plugin_name ] = sha1( $this->json_encode( $versions ) );
 			}
 
 			return self::$common_cache_version[ $this->app->plugin_name ];
@@ -202,7 +202,7 @@ trait Utility {
 				$this->wp_version(),
 				$this->app->utility->get_framework_plugins_hash(),
 			];
-			self::$cache_version = sha1( wp_json_encode( $versions ) );
+			self::$cache_version = sha1( $this->json_encode( $versions ) );
 		}
 
 		return self::$cache_version;
@@ -433,5 +433,20 @@ trait Utility {
 	 */
 	public function collection( $items = [] ) {
 		return new Collection( $this->app, $items );
+	}
+
+	/**
+	 * @param $data
+	 * @param int $options
+	 * @param int $depth
+	 *
+	 * @return string|false
+	 */
+	public function json_encode( $data, $options = 0, $depth = 512 ) {
+		if ( function_exists( 'wp_json_encode' ) ) {
+			return @wp_json_encode( $data, $options, $depth ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		}
+
+		return @json_encode( $data, $options, $depth ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 	}
 }
