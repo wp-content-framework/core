@@ -384,16 +384,16 @@ if ( $this->apply_filters( 'minify_js' ) ) {
 |admin_menu_position|管理画面のメニューの表示位置|
 
 ## サンプルプラグイン
-[関連記事提供用プラグイン](https://github.com/technote-space/wp-related-post-jp)
-[Gutenberg用文字修飾 プラグイン](https://github.com/technote-space/add-richtext-toolbar-button)
-[Marker Animation プラグイン](https://github.com/technote-space/marker-animation)
-[Yahoo! API を使用した校正支援プラグイン](https://github.com/technote-space/y-proofreading)
-[Gutenbergのブロックを一時的に非表示にするプラグイン](https://github.com/technote-space/hide-blocks-temporarily)
-[Gutenbergのブロック検索キーワードを設定するプラグイン](https://github.com/technote-space/change-block-keywords)
-[CSRF検知プラグイン](https://github.com/technote-space/csrf-detector)
-[Contact Form 7 拡張用プラグイン](https://github.com/technote-space/contact-form-7-huge-file-upload)
-[Gutenberg サンプル用プラグイン](https://github.com/technote-space/gutenberg-samples)
-[Travis CI テスト用プラグイン](https://github.com/technote-space/test-travis)
+- [関連記事提供用プラグイン](https://github.com/technote-space/wp-related-post-jp)
+- [Gutenberg用文字修飾 プラグイン](https://github.com/technote-space/add-richtext-toolbar-button)
+- [Marker Animation プラグイン](https://github.com/technote-space/marker-animation)
+- [Yahoo! API を使用した校正支援プラグイン](https://github.com/technote-space/y-proofreading)
+- [Gutenbergのブロックを一時的に非表示にするプラグイン](https://github.com/technote-space/hide-blocks-temporarily)
+- [Gutenbergのブロック検索キーワードを設定するプラグイン](https://github.com/technote-space/change-block-keywords)
+- [CSRF検知プラグイン](https://github.com/technote-space/csrf-detector)
+- [Contact Form 7 拡張用プラグイン](https://github.com/technote-space/contact-form-7-huge-file-upload)
+- [Gutenberg サンプル用プラグイン](https://github.com/technote-space/gutenberg-samples)
+- [Travis CI テスト用プラグイン](https://github.com/technote-space/test-travis)
 
 # Author
 - [GitHub (Technote)](https://github.com/technote-space)
