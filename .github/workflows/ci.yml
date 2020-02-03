@@ -16,6 +16,8 @@ jobs:
   phpcs:
     name: PHP Code Sniffer
     runs-on: ubuntu-latest
+    env:
+      LINT: 1
     steps:
       - uses: actions/checkout@v2
         with:
@@ -56,6 +58,8 @@ jobs:
   phpmd:
     name: PHPMD
     runs-on: ubuntu-latest
+    env:
+      LINT: 1
     steps:
       - uses: actions/checkout@v2
         with:
