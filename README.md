@@ -7,9 +7,12 @@
 
 WordPressのプラグインやテーマ開発用のフレームワークです。
 
+## Table of Contents
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**
+<details>
+<summary>Details</summary>
 
 - [要件](#%E8%A6%81%E4%BB%B6)
 - [手順](#%E6%89%8B%E9%A0%86)
@@ -32,6 +35,7 @@ WordPressのプラグインやテーマ開発用のフレームワークです�
   - [サンプルプラグイン](#%E3%82%B5%E3%83%B3%E3%83%97%E3%83%AB%E3%83%97%E3%83%A9%E3%82%B0%E3%82%A4%E3%83%B3)
 - [Author](#author)
 
+</details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # 要件
