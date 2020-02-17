@@ -43,7 +43,6 @@
       "chmod -R +w ./fixtures/.git && rm -rdf ./fixtures",
       "rm -f ./phpcs.xml ./phpmd.xml ./phpunit.xml",
       "git clone --depth=1 https://github.com/wp-content-framework/fixtures.git fixtures",
-      "@packages",
       "WORKSPACE=${WORKSPACE:-$(cd $(dirname $0); pwd)} bash ./fixtures/bin/prepare.sh"
     ],
     "test": "WORKSPACE=${WORKSPACE:-$(cd $(dirname $0); pwd)} bash ./fixtures/bin/test.sh",
