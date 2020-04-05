@@ -13,13 +13,15 @@ jobs:
     env:
       LINT: 1
     steps:
+      - uses: technote-space/auto-cancel-redundant-job@v1
+        with:
+          EXCLUDE_MERGED: 'true'
       - name: Set running flag
         run: echo "::set-env name=RUNNING::1"
       - uses: actions/checkout@v2
       - uses: technote-space/get-git-comment-action@v1
       - uses: technote-space/get-diff-action@v1
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PREFIX_FILTER: |
             configs/
             src/
@@ -48,13 +50,6 @@ jobs:
       - name: Check code style
         run: composer phpcs
         if: env.RUNNING
-      - uses: 8398a7/action-slack@v2
-        with:
-          status: failure
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: failure()
 
   phpmd:
     name: PHPMD
@@ -68,7 +63,6 @@ jobs:
       - uses: technote-space/get-git-comment-action@v1
       - uses: technote-space/get-diff-action@v1
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PREFIX_FILTER: |
             configs/
             src/
@@ -98,13 +92,6 @@ jobs:
       - name: Check code style
         run: composer phpmd
         if: env.RUNNING
-      - uses: 8398a7/action-slack@v2
-        with:
-          status: failure
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: failure()
 
   phpunit:
     name: PHPUnit
@@ -128,7 +115,6 @@ jobs:
       - uses: technote-space/get-git-comment-action@v1
       - uses: technote-space/get-diff-action@v1
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PREFIX_FILTER: |
             configs/
             src/
@@ -140,7 +126,10 @@ jobs:
         run: echo "::set-env name=RUNNING::"
         if: "! env.GIT_DIFF"
       - name: Set running flag
-        if: matrix.SEND_CODECOV == 1 && github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+        if: "matrix.SEND_CODECOV == 1 && ! startsWith(github.ref, 'refs/tags/') && github.event.base_ref == format('refs/heads/{0}', github.event.repository.default_branch)"
+        run: echo "::set-env name=RUNNING::1"
+      - name: Set running flag
+        if: matrix.SEND_CODECOV == 1 && startsWith(github.ref, 'refs/tags/v')
         run: echo "::set-env name=RUNNING::1"
       - name: Set running flag
         run: |
@@ -149,9 +138,10 @@ jobs:
           fi
 
       - name: Switch PHP version
-        env:
-          PHP_VERSION: ${{ matrix.php }}
-        run: sudo ln -sf "/usr/bin/php$PHP_VERSION" /etc/alternatives/php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: xdebug
         if: env.RUNNING
       - name: Get Composer Cache Directory
         id: composer-cache
@@ -180,13 +170,6 @@ jobs:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
           COVERAGE_FILE: ./coverage/clover.xml
         if: env.RUNNING && matrix.SEND_CODECOV == 1
-      - uses: 8398a7/action-slack@v2
-        with:
-          status: failure
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: failure()
 
   publishRelease:
     name: Create Release
@@ -213,11 +196,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always() && steps.drafter.outputs.html_url
+        if: success() && env.SLACK_WEBHOOK_URL
+
+  slack:
+    name: Slack
+    needs: publishRelease
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - uses: technote-space/workflow-conclusion-action@v1
       - uses: 8398a7/action-slack@v2
         with:
-          status: ${{ job.status }}
+          status: failure
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: always() && ! steps.drafter.outputs.html_url
+        if: env.WORKFLOW_CONCLUSION == 'failure' && env.SLACK_WEBHOOK_URL
