@@ -8,68 +8,16 @@
     "packages": [
         {
             "name": "wp-content-framework/cache",
-            "version": "v1.0.13",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/wp-content-framework/cache.git",
-                "reference": "e06145442c0988aaf9768e5416ec7f8f279cc9b4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/cache/zipball/e06145442c0988aaf9768e5416ec7f8f279cc9b4",
-                "reference": "e06145442c0988aaf9768e5416ec7f8f279cc9b4",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6.0"
-            },
-            "require-dev": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
-                "phake/phake": "~2.0",
-                "phpcompatibility/phpcompatibility-wp": "^2.1",
-                "phpmd/phpmd": "^2.8",
-                "phpunit/phpunit": "~5.7",
-                "squizlabs/php_codesniffer": "^3.5",
-                "wp-coding-standards/wpcs": "^2.3"
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "technote",
-                    "email": "technote.space@gmail.com",
-                    "homepage": "https://technote.space"
-                }
-            ],
-            "description": "Wordpress content framework",
-            "homepage": "https://github.com/wp-content-framework",
-            "keywords": [
-                "framework",
-                "wordpress"
-            ],
-            "funding": [
-                {
-                    "url": "https://paypal.me/technote0space",
-                    "type": "custom"
-                }
-            ],
-            "time": "2020-07-21T11:44:17+00:00"
-        },
-        {
-            "name": "wp-content-framework/common",
             "version": "v1.0.14",
             "source": {
                 "type": "git",
-                "url": "https://github.com/wp-content-framework/common.git",
-                "reference": "a8962444aa27aeb10b0e1d094dc45b55329cafb0"
+                "url": "https://github.com/wp-content-framework/cache.git",
+                "reference": "879038941680268fe65f8b4d3b088f71adc1ef58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/common/zipball/a8962444aa27aeb10b0e1d094dc45b55329cafb0",
-                "reference": "a8962444aa27aeb10b0e1d094dc45b55329cafb0",
+                "url": "https://api.github.com/repos/wp-content-framework/cache/zipball/879038941680268fe65f8b4d3b088f71adc1ef58",
+                "reference": "879038941680268fe65f8b4d3b088f71adc1ef58",
                 "shasum": ""
             },
             "require": {
@@ -108,7 +56,59 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-07-21T04:12:33+00:00"
+            "time": "2020-07-28T14:08:02+00:00"
+        },
+        {
+            "name": "wp-content-framework/common",
+            "version": "v1.0.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wp-content-framework/common.git",
+                "reference": "200963897935b1f7c49345a90d53bc168b212ce4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wp-content-framework/common/zipball/200963897935b1f7c49345a90d53bc168b212ce4",
+                "reference": "200963897935b1f7c49345a90d53bc168b212ce4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+                "phake/phake": "~2.0",
+                "phpcompatibility/phpcompatibility-wp": "^2.1",
+                "phpmd/phpmd": "^2.8",
+                "phpunit/phpunit": "~5.7",
+                "squizlabs/php_codesniffer": "^3.5",
+                "wp-coding-standards/wpcs": "^2.3"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "technote",
+                    "email": "technote.space@gmail.com",
+                    "homepage": "https://technote.space"
+                }
+            ],
+            "description": "Wordpress content framework",
+            "homepage": "https://github.com/wp-content-framework",
+            "keywords": [
+                "framework",
+                "wordpress"
+            ],
+            "funding": [
+                {
+                    "url": "https://paypal.me/technote0space",
+                    "type": "custom"
+                }
+            ],
+            "time": "2020-07-28T03:44:22+00:00"
         }
     ],
     "packages-dev": [
