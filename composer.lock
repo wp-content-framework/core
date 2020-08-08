@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "wp-content-framework/cache",
-            "version": "v1.0.14",
+            "version": "v1.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-content-framework/cache.git",
-                "reference": "879038941680268fe65f8b4d3b088f71adc1ef58"
+                "reference": "913a404363671deab092f7d5aa7d7808803a909d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/cache/zipball/879038941680268fe65f8b4d3b088f71adc1ef58",
-                "reference": "879038941680268fe65f8b4d3b088f71adc1ef58",
+                "url": "https://api.github.com/repos/wp-content-framework/cache/zipball/913a404363671deab092f7d5aa7d7808803a909d",
+                "reference": "913a404363671deab092f7d5aa7d7808803a909d",
                 "shasum": ""
             },
             "require": {
@@ -56,7 +56,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-07-28T14:08:02+00:00"
+            "time": "2020-08-04T16:25:24+00:00"
         },
         {
             "name": "wp-content-framework/common",
@@ -2260,7 +2260,7 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.18.0",
+            "version": "v1.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
@@ -2336,7 +2336,7 @@
         },
         {
             "name": "symfony/polyfill-php80",
-            "version": "v1.18.0",
+            "version": "v1.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
