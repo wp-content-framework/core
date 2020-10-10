@@ -8,68 +8,16 @@
     "packages": [
         {
             "name": "wp-content-framework/cache",
-            "version": "v1.0.22",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/wp-content-framework/cache.git",
-                "reference": "af56506ac5327f82040daa4dd2f9e5ca8f20fe2e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/cache/zipball/af56506ac5327f82040daa4dd2f9e5ca8f20fe2e",
-                "reference": "af56506ac5327f82040daa4dd2f9e5ca8f20fe2e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.6.0"
-            },
-            "require-dev": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
-                "phake/phake": "~2.0",
-                "phpcompatibility/phpcompatibility-wp": "^2.1",
-                "phpmd/phpmd": "^2.9",
-                "phpunit/phpunit": "~5.7",
-                "squizlabs/php_codesniffer": "^3.5",
-                "wp-coding-standards/wpcs": "^2.3"
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "technote",
-                    "email": "technote.space@gmail.com",
-                    "homepage": "https://technote.space"
-                }
-            ],
-            "description": "Wordpress content framework",
-            "homepage": "https://github.com/wp-content-framework",
-            "keywords": [
-                "framework",
-                "wordpress"
-            ],
-            "funding": [
-                {
-                    "url": "https://paypal.me/technote0space",
-                    "type": "custom"
-                }
-            ],
-            "time": "2020-09-30T14:58:03+00:00"
-        },
-        {
-            "name": "wp-content-framework/common",
             "version": "v1.0.23",
             "source": {
                 "type": "git",
-                "url": "https://github.com/wp-content-framework/common.git",
-                "reference": "a08f5d6f6fc6bb9abb1cfc862c5fa5edf83d72a7"
+                "url": "https://github.com/wp-content-framework/cache.git",
+                "reference": "755c704449ab8d0d69de4cc1665b0d0bf46db532"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/common/zipball/a08f5d6f6fc6bb9abb1cfc862c5fa5edf83d72a7",
-                "reference": "a08f5d6f6fc6bb9abb1cfc862c5fa5edf83d72a7",
+                "url": "https://api.github.com/repos/wp-content-framework/cache/zipball/755c704449ab8d0d69de4cc1665b0d0bf46db532",
+                "reference": "755c704449ab8d0d69de4cc1665b0d0bf46db532",
                 "shasum": ""
             },
             "require": {
@@ -108,7 +56,59 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-09-30T14:58:08+00:00"
+            "time": "2020-10-06T16:29:22+00:00"
+        },
+        {
+            "name": "wp-content-framework/common",
+            "version": "v1.0.24",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wp-content-framework/common.git",
+                "reference": "73bb5b94cbbe47e9dce0bcf6e2671de302a22acf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wp-content-framework/common/zipball/73bb5b94cbbe47e9dce0bcf6e2671de302a22acf",
+                "reference": "73bb5b94cbbe47e9dce0bcf6e2671de302a22acf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+                "phake/phake": "~2.0",
+                "phpcompatibility/phpcompatibility-wp": "^2.1",
+                "phpmd/phpmd": "^2.9",
+                "phpunit/phpunit": "~5.7",
+                "squizlabs/php_codesniffer": "^3.5",
+                "wp-coding-standards/wpcs": "^2.3"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "technote",
+                    "email": "technote.space@gmail.com",
+                    "homepage": "https://technote.space"
+                }
+            ],
+            "description": "Wordpress content framework",
+            "homepage": "https://github.com/wp-content-framework",
+            "keywords": [
+                "framework",
+                "wordpress"
+            ],
+            "funding": [
+                {
+                    "url": "https://paypal.me/technote0space",
+                    "type": "custom"
+                }
+            ],
+            "time": "2020-10-06T09:12:45+00:00"
         }
     ],
     "packages-dev": [
@@ -1972,7 +1972,7 @@
         },
         {
             "name": "symfony/config",
-            "version": "v5.1.6",
+            "version": "v5.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
@@ -2052,16 +2052,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v5.1.6",
+            "version": "v5.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "61e9e7be2c30a779deb26e555243eaca9d26b0f3"
+                "reference": "2dea4a3ef2eb79138354c1d49e9372cc921af20b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/61e9e7be2c30a779deb26e555243eaca9d26b0f3",
-                "reference": "61e9e7be2c30a779deb26e555243eaca9d26b0f3",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/2dea4a3ef2eb79138354c1d49e9372cc921af20b",
+                "reference": "2dea4a3ef2eb79138354c1d49e9372cc921af20b",
                 "shasum": ""
             },
             "require": {
@@ -2137,7 +2137,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-11T11:43:06+00:00"
+            "time": "2020-10-01T12:14:45+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -2205,16 +2205,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v5.1.6",
+            "version": "v5.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "f3194303d3077829dbbc1d18f50288b2a01146f2"
+                "reference": "1a8697545a8d87b9f2f6b1d32414199cc5e20aae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/f3194303d3077829dbbc1d18f50288b2a01146f2",
-                "reference": "f3194303d3077829dbbc1d18f50288b2a01146f2",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/1a8697545a8d87b9f2f6b1d32414199cc5e20aae",
+                "reference": "1a8697545a8d87b9f2f6b1d32414199cc5e20aae",
                 "shasum": ""
             },
             "require": {
@@ -2265,7 +2265,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-02T16:23:27+00:00"
+            "time": "2020-09-27T14:02:37+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -2501,7 +2501,7 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.4.14",
+            "version": "v4.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
