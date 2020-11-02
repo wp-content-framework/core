@@ -13,7 +13,7 @@ jobs:
     env:
       LINT: 1
     steps:
-      - uses: technote-space/auto-cancel-redundant-job@v1
+      - uses: technote-space/auto-cancel-redundant-workflow@v1
         with:
           EXCLUDE_MERGED: 'true'
       - name: Set running flag
@@ -33,7 +33,7 @@ jobs:
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
         if: env.RUNNING
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -72,7 +72,7 @@ jobs:
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
         if: env.RUNNING
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -139,7 +139,7 @@ jobs:
         run: |
           echo "::set-output name=dir::$(composer config cache-files-dir)"
         if: env.RUNNING
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -183,12 +183,11 @@ jobs:
           DRAFT: false
           NAME: ${{ env.TAG_NAME }}
           TAG: ${{ env.TAG_NAME }}
-      - uses: 8398a7/action-slack@v2
+      - uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
           text: ${{ format('<{0}>', steps.drafter.outputs.html_url) }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: success() && env.SLACK_WEBHOOK_URL
 
@@ -200,10 +199,9 @@ jobs:
     if: always()
     steps:
       - uses: technote-space/workflow-conclusion-action@v1
-      - uses: 8398a7/action-slack@v2
+      - uses: 8398a7/action-slack@v3
         with:
           status: failure
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         if: env.WORKFLOW_CONCLUSION == 'failure' && env.SLACK_WEBHOOK_URL
