@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "wp-content-framework/cache",
-            "version": "v1.0.26",
+            "version": "v1.0.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-content-framework/cache.git",
-                "reference": "b195bb1c3da9cb8b7d3a7524beaab9c73aa46172"
+                "reference": "dada2562747f11097bbfa7e795cf61fcf2826eb9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/cache/zipball/b195bb1c3da9cb8b7d3a7524beaab9c73aa46172",
-                "reference": "b195bb1c3da9cb8b7d3a7524beaab9c73aa46172",
+                "url": "https://api.github.com/repos/wp-content-framework/cache/zipball/dada2562747f11097bbfa7e795cf61fcf2826eb9",
+                "reference": "dada2562747f11097bbfa7e795cf61fcf2826eb9",
                 "shasum": ""
             },
             "require": {
@@ -52,7 +52,7 @@
             ],
             "support": {
                 "issues": "https://github.com/wp-content-framework/cache/issues",
-                "source": "https://github.com/wp-content-framework/cache/tree/v1.0.26"
+                "source": "https://github.com/wp-content-framework/cache/tree/v1.0.27"
             },
             "funding": [
                 {
@@ -60,20 +60,20 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-11-17T12:36:43+00:00"
+            "time": "2020-12-01T12:52:22+00:00"
         },
         {
             "name": "wp-content-framework/common",
-            "version": "v1.0.27",
+            "version": "v1.0.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-content-framework/common.git",
-                "reference": "7a0ca27bc29f96d612914b1f1a0884bf7ab53a38"
+                "reference": "3b50b640be5999accdf2525503f48373d35e4b89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/common/zipball/7a0ca27bc29f96d612914b1f1a0884bf7ab53a38",
-                "reference": "7a0ca27bc29f96d612914b1f1a0884bf7ab53a38",
+                "url": "https://api.github.com/repos/wp-content-framework/common/zipball/3b50b640be5999accdf2525503f48373d35e4b89",
+                "reference": "3b50b640be5999accdf2525503f48373d35e4b89",
                 "shasum": ""
             },
             "require": {
@@ -108,7 +108,7 @@
             ],
             "support": {
                 "issues": "https://github.com/wp-content-framework/common/issues",
-                "source": "https://github.com/wp-content-framework/common/tree/v1.0.27"
+                "source": "https://github.com/wp-content-framework/common/tree/v1.0.28"
             },
             "funding": [
                 {
@@ -116,7 +116,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-11-17T09:11:32+00:00"
+            "time": "2020-12-01T06:17:14+00:00"
         }
     ],
     "packages-dev": [
@@ -1507,23 +1507,23 @@
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/code-unit-reverse-lookup.git",
-                "reference": "4419fcdb5eabb9caa61a27c7a1db532a6b55dd18"
+                "reference": "1de8cd5c010cb153fcd68b8d0f64606f523f7619"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/code-unit-reverse-lookup/zipball/4419fcdb5eabb9caa61a27c7a1db532a6b55dd18",
-                "reference": "4419fcdb5eabb9caa61a27c7a1db532a6b55dd18",
+                "url": "https://api.github.com/repos/sebastianbergmann/code-unit-reverse-lookup/zipball/1de8cd5c010cb153fcd68b8d0f64606f523f7619",
+                "reference": "1de8cd5c010cb153fcd68b8d0f64606f523f7619",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.6 || ^7.0"
+                "php": ">=5.6"
             },
             "require-dev": {
-                "phpunit/phpunit": "^5.7 || ^6.0"
+                "phpunit/phpunit": "^8.5"
             },
             "type": "library",
             "extra": {
@@ -1550,9 +1550,15 @@
             "homepage": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/",
             "support": {
                 "issues": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/issues",
-                "source": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/tree/master"
+                "source": "https://github.com/sebastianbergmann/code-unit-reverse-lookup/tree/1.0.2"
             },
-            "time": "2017-03-04T06:30:41+00:00"
+            "funding": [
+                {
+                    "url": "https://github.com/sebastianbergmann",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-11-30T08:15:22+00:00"
         },
         {
             "name": "sebastian/comparator",
@@ -2116,16 +2122,16 @@
         },
         {
             "name": "symfony/config",
-            "version": "v5.1.8",
+            "version": "v5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "11baeefa4c179d6908655a7b6be728f62367c193"
+                "reference": "fa1219ecbf96bb5db59f2599cba0960a0d9c3aea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/11baeefa4c179d6908655a7b6be728f62367c193",
-                "reference": "11baeefa4c179d6908655a7b6be728f62367c193",
+                "url": "https://api.github.com/repos/symfony/config/zipball/fa1219ecbf96bb5db59f2599cba0960a0d9c3aea",
+                "reference": "fa1219ecbf96bb5db59f2599cba0960a0d9c3aea",
                 "shasum": ""
             },
             "require": {
@@ -2174,7 +2180,7 @@
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/config/tree/v5.1.8"
+                "source": "https://github.com/symfony/config/tree/v5.2.0"
             },
             "funding": [
                 {
@@ -2190,20 +2196,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-24T12:01:57+00:00"
+            "time": "2020-11-16T18:02:40+00:00"
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v5.1.8",
+            "version": "v5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "829ca6bceaf68036a123a13a979f3c89289eae78"
+                "reference": "98cec9b9f410a4832e239949a41d47182862c3a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/829ca6bceaf68036a123a13a979f3c89289eae78",
-                "reference": "829ca6bceaf68036a123a13a979f3c89289eae78",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/98cec9b9f410a4832e239949a41d47182862c3a4",
+                "reference": "98cec9b9f410a4832e239949a41d47182862c3a4",
                 "shasum": ""
             },
             "require": {
@@ -2261,7 +2267,7 @@
             "description": "Symfony DependencyInjection Component",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dependency-injection/tree/v5.1.8"
+                "source": "https://github.com/symfony/dependency-injection/tree/v5.2.0"
             },
             "funding": [
                 {
@@ -2277,7 +2283,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-27T10:11:13+00:00"
+            "time": "2020-11-28T11:24:18+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -2348,16 +2354,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v5.1.8",
+            "version": "v5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "df08650ea7aee2d925380069c131a66124d79177"
+                "reference": "bb92ba7f38b037e531908590a858a04d85c0e238"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/df08650ea7aee2d925380069c131a66124d79177",
-                "reference": "df08650ea7aee2d925380069c131a66124d79177",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/bb92ba7f38b037e531908590a858a04d85c0e238",
+                "reference": "bb92ba7f38b037e531908590a858a04d85c0e238",
                 "shasum": ""
             },
             "require": {
@@ -2390,7 +2396,7 @@
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v5.1.8"
+                "source": "https://github.com/symfony/filesystem/tree/v5.2.0"
             },
             "funding": [
                 {
@@ -2406,7 +2412,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-24T12:01:57+00:00"
+            "time": "2020-11-12T09:58:18+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -2651,16 +2657,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.4.16",
+            "version": "v4.4.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "543cb4dbd45ed803f08a9a65f27fb149b5dd20c2"
+                "reference": "7531361cf38e4816821b4a12a42542b3c6143ad1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/543cb4dbd45ed803f08a9a65f27fb149b5dd20c2",
-                "reference": "543cb4dbd45ed803f08a9a65f27fb149b5dd20c2",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/7531361cf38e4816821b4a12a42542b3c6143ad1",
+                "reference": "7531361cf38e4816821b4a12a42542b3c6143ad1",
                 "shasum": ""
             },
             "require": {
@@ -2702,7 +2708,7 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/yaml/tree/v4.4.16"
+                "source": "https://github.com/symfony/yaml/tree/v4.4.17"
             },
             "funding": [
                 {
@@ -2718,7 +2724,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-10-24T11:50:19+00:00"
+            "time": "2020-11-24T12:28:30+00:00"
         },
         {
             "name": "webmozart/assert",
