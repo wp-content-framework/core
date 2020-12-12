@@ -4,27 +4,27 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5ed5a58af53d8347dff39678f0539769",
+    "content-hash": "c545a26091e4aa10e74491421c550975",
     "packages": [
         {
             "name": "wp-content-framework/cache",
-            "version": "v1.0.27",
+            "version": "v1.0.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-content-framework/cache.git",
-                "reference": "dada2562747f11097bbfa7e795cf61fcf2826eb9"
+                "reference": "959cf5ce4e7cd8a31c6785e0f7aa2ea83aceac07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/cache/zipball/dada2562747f11097bbfa7e795cf61fcf2826eb9",
-                "reference": "dada2562747f11097bbfa7e795cf61fcf2826eb9",
+                "url": "https://api.github.com/repos/wp-content-framework/cache/zipball/959cf5ce4e7cd8a31c6785e0f7aa2ea83aceac07",
+                "reference": "959cf5ce4e7cd8a31c6785e0f7aa2ea83aceac07",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.6.0"
             },
             "require-dev": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
                 "phake/phake": "~2.0",
                 "phpcompatibility/phpcompatibility-wp": "^2.1",
                 "phpmd/phpmd": "^2.9",
@@ -52,7 +52,7 @@
             ],
             "support": {
                 "issues": "https://github.com/wp-content-framework/cache/issues",
-                "source": "https://github.com/wp-content-framework/cache/tree/v1.0.27"
+                "source": "https://github.com/wp-content-framework/cache/tree/v1.0.28"
             },
             "funding": [
                 {
@@ -60,27 +60,27 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-12-01T12:52:22+00:00"
+            "time": "2020-12-08T09:55:10+00:00"
         },
         {
             "name": "wp-content-framework/common",
-            "version": "v1.0.28",
+            "version": "v1.0.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wp-content-framework/common.git",
-                "reference": "3b50b640be5999accdf2525503f48373d35e4b89"
+                "reference": "975c472ad45c9aea09677a0d6154c9af83f2fe24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wp-content-framework/common/zipball/3b50b640be5999accdf2525503f48373d35e4b89",
-                "reference": "3b50b640be5999accdf2525503f48373d35e4b89",
+                "url": "https://api.github.com/repos/wp-content-framework/common/zipball/975c472ad45c9aea09677a0d6154c9af83f2fe24",
+                "reference": "975c472ad45c9aea09677a0d6154c9af83f2fe24",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.6.0"
             },
             "require-dev": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
                 "phake/phake": "~2.0",
                 "phpcompatibility/phpcompatibility-wp": "^2.1",
                 "phpmd/phpmd": "^2.9",
@@ -108,7 +108,7 @@
             ],
             "support": {
                 "issues": "https://github.com/wp-content-framework/common/issues",
-                "source": "https://github.com/wp-content-framework/common/tree/v1.0.28"
+                "source": "https://github.com/wp-content-framework/common/tree/v1.0.29"
             },
             "funding": [
                 {
@@ -116,7 +116,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2020-12-01T06:17:14+00:00"
+            "time": "2020-12-08T04:34:32+00:00"
         }
     ],
     "packages-dev": [
@@ -185,22 +185,22 @@
         },
         {
             "name": "dealerdirect/phpcodesniffer-composer-installer",
-            "version": "v0.7.0",
+            "version": "v0.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Dealerdirect/phpcodesniffer-composer-installer.git",
-                "reference": "e8d808670b8f882188368faaf1144448c169c0b7"
+                "reference": "fe390591e0241955f22eb9ba327d137e501c771c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Dealerdirect/phpcodesniffer-composer-installer/zipball/e8d808670b8f882188368faaf1144448c169c0b7",
-                "reference": "e8d808670b8f882188368faaf1144448c169c0b7",
+                "url": "https://api.github.com/repos/Dealerdirect/phpcodesniffer-composer-installer/zipball/fe390591e0241955f22eb9ba327d137e501c771c",
+                "reference": "fe390591e0241955f22eb9ba327d137e501c771c",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.0 || ^2.0",
                 "php": ">=5.3",
-                "squizlabs/php_codesniffer": "^2 || ^3 || 4.0.x-dev"
+                "squizlabs/php_codesniffer": "^2.0 || ^3.0 || ^4.0"
             },
             "require-dev": {
                 "composer/composer": "*",
@@ -251,7 +251,7 @@
                 "issues": "https://github.com/dealerdirect/phpcodesniffer-composer-installer/issues",
                 "source": "https://github.com/dealerdirect/phpcodesniffer-composer-installer"
             },
-            "time": "2020-06-25T14:57:39+00:00"
+            "time": "2020-12-07T18:04:37+00:00"
         },
         {
             "name": "doctrine/instantiator",
