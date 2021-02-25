@@ -712,6 +712,7 @@ class WP_Framework {
 
 	/**
 	 * setup framework version
+	 * @SuppressWarnings(PHPMD.ErrorControlOperator)
 	 */
 	private function setup_framework_version() {
 		list( $is_valid, $root_directory, $versions ) = $this->get_plugin_cache();
@@ -761,6 +762,7 @@ class WP_Framework {
 
 	/**
 	 * @return array|false
+	 * @SuppressWarnings(PHPMD.ErrorControlOperator)
 	 */
 	private function load_additional() {
 		$additional = false;
@@ -779,7 +781,6 @@ class WP_Framework {
 
 	/**
 	 * @param WP_Framework $app
-	 * @SuppressWarnings(PHPMD.UndefinedVariable)
 	 */
 	private static function update_framework_packages( WP_Framework $app ) {
 		foreach ( $app->package_versions as $package => $version ) {
@@ -792,7 +793,7 @@ class WP_Framework {
 
 	/**
 	 * initialize framework
-	 * @SuppressWarnings(PHPMD.UndefinedVariable)
+	 * @SuppressWarnings(PHPMD.ErrorControlOperator)
 	 */
 	private static function load_packages() {
 		if ( ! class_exists( '\WP_Framework\Package_Base' ) ) {

@@ -599,7 +599,6 @@ class Main {
 	 * @param string|null $target
 	 *
 	 * @return mixed
-	 * @SuppressWarnings(PHPMD.UndefinedVariable)
 	 */
 	public function get_shared_object( $key, $target = null ) {
 		if ( ! isset( $target ) ) {
@@ -613,7 +612,6 @@ class Main {
 	 * @param string $key
 	 * @param mixed $object
 	 * @param string|null $target
-	 * @SuppressWarnings(PHPMD.UndefinedVariable)
 	 */
 	public function set_shared_object( $key, $object, $target = null ) {
 		if ( ! isset( $target ) ) {
@@ -627,7 +625,6 @@ class Main {
 	 * @param string|null $target
 	 *
 	 * @return bool
-	 * @SuppressWarnings(PHPMD.UndefinedVariable)
 	 */
 	public function isset_shared_object( $key, $target = null ) {
 		if ( ! isset( $target ) ) {
@@ -640,7 +637,6 @@ class Main {
 	/**
 	 * @param string $key
 	 * @param string|null $target
-	 * @SuppressWarnings(PHPMD.UndefinedVariable)
 	 */
 	public function delete_shared_object( $key, $target = null ) {
 		if ( ! isset( $target ) ) {
